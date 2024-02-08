@@ -94,7 +94,7 @@ export function Overview() {
             color: "var(--foreground, #000)",
           }}
         />
-        <Bar dataKey="total" fill="#adfa1d" radius={[0, 4, 4, 0]} />
+        <Bar dataKey="total" fill="#05a02c" radius={[0, 4, 4, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );
