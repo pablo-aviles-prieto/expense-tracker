@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import {
   Bar,
   BarChart,
@@ -61,6 +62,8 @@ const data = [
 ];
 
 export function Overview() {
+  const { data: session } = useSession();
+  console.log("session", session);
   return (
     <ResponsiveContainer width="100%" height={350}>
       <BarChart data={data} layout="vertical">
