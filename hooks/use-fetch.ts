@@ -25,5 +25,5 @@ export const useFetch = () => {
     return response.json() as Promise<T>;
   };
 
-  return fetchPetition;
+  return { fetchPetition };
 };

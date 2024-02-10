@@ -13,3 +13,21 @@ export const authProviders = {
 } as const;
 
 export const DEFAULT_CALLBACK_URL = "/dashboard";
+
+export const errorMessages = {
+  authorizedResource: "Not Authorized for this resource",
+  createUser: "Error creating the user",
+  credentials: "Check the credentials provided",
+  emailRegistered: "Email already registered",
+  generic: "Something went wrong. Try again later",
+  invalidUserId: "Invalid user ID",
+  methodAllowed: "Method Not Allowed",
+  missingData: "There is missing data in the request",
+  parsingImg: "Unable to parse the image",
+  relogAcc: "Something happened, please relog into your account",
+  gettingCategories: "Error getting the categories",
+  addingTransaction: "Error adding the transaction to database",
+  fileParsing: "File processing failed. Try again later",
+  fileType: "Wrong file type. Only CSV is allowed",
+  dateFormatCSV: "Please, select the correct date format used on your CSV file",
+};

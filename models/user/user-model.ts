@@ -4,7 +4,7 @@ import { modelExists } from "@/utils/check-model-exists";
 
 export interface IUser extends Document {
   _id: ObjectId;
-  image: string;
+  image?: string;
   name: string;
   email: string;
   password: string;
@@ -13,7 +13,7 @@ export interface IUser extends Document {
 }
 
 const UserSchema: Schema = new Schema({
-  image: { type: String, required: true },
+  image: { type: String },
   name: { type: String, required: true },
   email: {
     type: String,
