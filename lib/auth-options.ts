@@ -3,13 +3,11 @@ import {
   DefaultSession,
   Account,
   Profile,
-  NextAuthOptions,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb-config";
-import { MongoClient } from "mongodb";
 import { ICategories, IUser } from "@/models";
 import { JWT, encode } from "next-auth/jwt";
 import { CustomSessionI } from "@/types";
@@ -57,7 +55,7 @@ export const authOptions = {
     strategy: "jwt",
   },
   theme: {
-    colorScheme: "light",
+    colorScheme: "dark",
   },
   jwt: {
     secret: process.env.JWT_SECRET,
@@ -153,4 +151,7 @@ export const authOptions = {
     },
   },
   debug: false,
+  pages: {
+    signIn: "/",
+  },
 };

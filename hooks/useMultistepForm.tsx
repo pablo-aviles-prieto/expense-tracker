@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactElement, useCallback, useState } from "react";
 
 export default function useMultistepForm(steps: ReactElement[]) {
