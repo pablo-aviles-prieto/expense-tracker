@@ -11,3 +11,5 @@ export const COMMON_CATEGORIES = [
 export const authProviders = {
   google: "google",
 } as const;
+
+export const DEFAULT_CALLBACK_URL = "/dashboard";
