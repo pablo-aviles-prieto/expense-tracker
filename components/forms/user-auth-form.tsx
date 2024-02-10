@@ -15,7 +15,7 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import GoogleSignInButton from "../github-auth-button";
+import GoogleSignInButton from "../google-auth-button";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Enter a valid email address" }),
@@ -47,7 +47,7 @@ export default function UserAuthForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-2 w-full"
+          className="w-full space-y-2"
         >
           <FormField
             control={form.control}
@@ -68,7 +68,7 @@ export default function UserAuthForm() {
             )}
           />
 
-          <Button disabled={loading} className="ml-auto w-full" type="submit">
+          <Button disabled={loading} className="w-full ml-auto" type="submit">
             Continue With Email
           </Button>
         </form>
@@ -78,7 +78,7 @@ export default function UserAuthForm() {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
+          <span className="px-2 bg-background text-muted-foreground">
             Or continue with
           </span>
         </div>
