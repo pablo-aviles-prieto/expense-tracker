@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { DEFAULT_CALLBACK_URL } from "@/utils/const";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
@@ -42,6 +43,7 @@ type Props = {
 
 export const RegisterForm = ({ callbackUrl }: Props) => {
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   const defaultValues = {
     email: "",
@@ -57,7 +59,36 @@ export const RegisterForm = ({ callbackUrl }: Props) => {
   const { trigger } = form;
 
   const onSubmit = async (data: UserFormValue) => {
+    const { update, id: toastId } = toast({
+      title: "Signing up...",
+      description: "Please wait while we create your account.",
+      variant: "default",
+    });
     console.log("data", data);
+
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("✅ Signup Successful");
+      }, 2000);
+    })
+      .then((message: unknown) => {
+        update({
+          id: toastId,
+          title: message as string,
+          description: "Your account has been created successfully.",
+          variant: "success",
+        });
+      })
+      .catch((error) => {
+        update({
+          id: toastId,
+          title: "Signup Failed",
+          description:
+            "There was a problem creating your account. Please try again.",
+          variant: "destructive",
+        });
+      });
+
     // signIn("user-pw", {
     //   email: data.email,
     //   password: data.password,
