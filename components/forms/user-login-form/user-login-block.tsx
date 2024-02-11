@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { LoginForm } from "./login-form";
 import { DEFAULT_CALLBACK_URL } from "@/utils/const";
+import GoogleSignInButton from "../google-auth-button";
 
 type Props = {
   switchForm: () => void;
@@ -23,6 +24,9 @@ export const UserLoginBlock = ({ switchForm }: Props) => {
         </p>
       </div>
       <LoginForm callbackUrl={callbackUrl ?? DEFAULT_CALLBACK_URL} />
+      <div className="my-4">
+        <GoogleSignInButton callbackUrl={callbackUrl ?? DEFAULT_CALLBACK_URL} />
+      </div>
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
