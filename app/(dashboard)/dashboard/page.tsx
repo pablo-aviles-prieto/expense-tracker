@@ -29,16 +29,9 @@ export default async function page() {
           </h2>
           <div className="items-center hidden space-x-2 md:flex">
             <CalendarDateRangePicker />
-            <Button>Download</Button>
           </div>
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics" disabled>
-              Analytics
-            </TabsTrigger>
-          </TabsList>
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <Card>
@@ -49,7 +42,7 @@ export default async function page() {
                   <Icons.incomes className="w-6 h-6 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-success">
+                  <div className="text-2xl font-bold text-green-600">
                     €45,231.89
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -65,7 +58,7 @@ export default async function page() {
                   <Icons.expenses className="w-6 h-6 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-destructive">
+                  <div className="text-2xl font-bold text-red-700">
                     €23,350.24
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -105,7 +98,7 @@ export default async function page() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
               <Card className="col-span-4">
                 <CardHeader>
-                  <CardTitle>Overview</CardTitle>
+                  <CardTitle>Selected period overview</CardTitle>
                 </CardHeader>
                 <CardContent className="pl-2">
                   <Overview />

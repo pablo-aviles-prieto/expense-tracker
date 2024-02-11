@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 import {
   Bar,
   BarChart,
@@ -62,19 +62,21 @@ const data = [
 ];
 
 export function Overview() {
+  const { resolvedTheme } = useTheme();
+
   return (
     <ResponsiveContainer width="100%" height={350}>
-      <BarChart data={data} layout="vertical">
+      <BarChart data={data} layout="horizontal">
         <XAxis
-          type="number"
+          type="category"
+          dataKey="name"
           stroke="#888888"
           fontSize={12}
           tickLine={false}
           axisLine={false}
         />
         <YAxis
-          type="category"
-          dataKey="name"
+          type="number"
           stroke="#888888"
           fontSize={12}
           tickLine={false}
@@ -87,15 +89,16 @@ export function Overview() {
             props.payload.name,
           ]}
           contentStyle={{
-            backgroundColor: "var(--card, #f0f0f0)",
+            backgroundColor:
+              resolvedTheme === "dark" ? "hsl(24 9.8% 10%)" : "hsl(0 0% 100%)",
             borderColor: "var(--border, #000)",
             borderRadius: "var(--radius, 15px)",
             borderStyle: "solid",
-            borderWidth: "1px",
+            borderWidth: "2px",
             color: "var(--foreground, #000)",
           }}
         />
-        <Bar dataKey="total" fill="#05a02c" radius={[0, 4, 4, 0]} />
+        <Bar dataKey="total" fill="#1da850" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );
