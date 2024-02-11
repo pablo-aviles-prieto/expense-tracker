@@ -107,7 +107,7 @@ export const RegisterForm = ({ callbackUrl }: Props) => {
         redirect: false,
       });
       if (loginResponse?.ok && registerResponse.createdUser) {
-        router.push(callbackUrl ?? DEFAULT_CALLBACK_URL);
+        router.push(callbackUrl);
         update({
           id: toastId,
           title: "✅ Signup Successful",
