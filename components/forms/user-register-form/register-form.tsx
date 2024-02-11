@@ -220,7 +220,11 @@ export const RegisterForm = ({ callbackUrl }: Props) => {
           )}
         />
 
-        <Button disabled={loading} className="w-full ml-auto" type="submit">
+        <Button
+          disabled={loading}
+          className="w-full !mt-4 ml-auto"
+          type="submit"
+        >
           Register
         </Button>
       </form>
