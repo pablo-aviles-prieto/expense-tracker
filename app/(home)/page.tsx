@@ -1,0 +1,15 @@
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth-options";
+import { type NextAuthOptions } from "next-auth";
+
+export const metadata: Metadata = {
+  title: "Expense tracker",
+  description: "Manage your expenses and incomes easily!",
+};
+
+export default async function Home() {
+  const session = await getServerSession(authOptions as NextAuthOptions);
+  redirect(session?.user ? "/dashboard" : "/auth");
+}

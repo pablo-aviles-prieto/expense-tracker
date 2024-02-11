@@ -6,21 +6,12 @@ import { AuthBlock } from "@/components/auth-block";
 
 export const metadata: Metadata = {
   title: "Authentication",
-  description: "Authentication forms built using the components.",
+  description: "Signin or signup into expense tracker",
 };
 
 export default function AuthenticationPage() {
   return (
     <div className="relative flex-col items-center justify-center h-screen md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <Link
-        href="/examples/authentication"
-        className={cn(
-          buttonVariants({ variant: "ghost" }),
-          "absolute right-4 hidden top-4 md:right-8 md:top-8",
-        )}
-      >
-        Login
-      </Link>
       <div className="relative flex-col hidden h-full p-10 text-white bg-muted dark:border-r lg:flex">
         <div className="absolute inset-0 bg-zinc-900" />
         <div className="relative z-20 flex items-center text-lg font-medium">
