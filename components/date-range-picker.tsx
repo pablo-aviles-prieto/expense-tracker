@@ -12,9 +12,11 @@ import { format, subDays } from "date-fns";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
 
-export function CalendarDateRangePicker({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+  setParentDate?: (e: DateRange | undefined) => void;
+}
+
+export function CalendarDateRangePicker({ setParentDate, className }: Props) {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: subDays(new Date(), 30),
     to: new Date(),
@@ -53,7 +55,10 @@ export function CalendarDateRangePicker({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={(e) => {
+              setDate(e);
+              setParentDate && setParentDate(e);
+            }}
             numberOfMonths={2}
           />
         </PopoverContent>
