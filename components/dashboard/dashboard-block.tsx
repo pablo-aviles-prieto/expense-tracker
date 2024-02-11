@@ -28,10 +28,6 @@ export const Dashboard = ({ session }: Props) => {
     from: subDays(new Date(), 30),
     to: new Date(),
   });
-  if (date?.to && date?.from) {
-    console.log("date from", format(new Date(date.from), "yyyy-MM-dd"));
-    console.log("date to", format(new Date(date.to), "yyyy-MM-dd"));
-  }
 
   const getDate = (e: DateRange | undefined) => {
     setDate(e);
@@ -116,7 +112,7 @@ export const Dashboard = ({ session }: Props) => {
                   <CardTitle>Selected period overview</CardTitle>
                 </CardHeader>
                 <CardContent className="pl-2">
-                  <Overview />
+                  <Overview from={date?.from} to={date?.to} />
                 </CardContent>
               </Card>
               <Card className="col-span-4 md:col-span-3">

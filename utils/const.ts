@@ -30,4 +30,10 @@ export const errorMessages = {
   fileParsing: "File processing failed. Try again later",
   fileType: "Wrong file type. Only CSV is allowed",
   dateFormatCSV: "Please, select the correct date format used on your CSV file",
-};
+} as const;
+
+export const dateFormat = {
+  ISO: "yyyy-MM-dd",
+  US: "MM/dd/yyyy",
+  EU: "dd/MM/yyyy",
+} as const;
