@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useFetch } from "@/hooks/use-fetch";
 import type { ResponseUser } from "@/types";
-import { DEFAULT_CALLBACK_URL, errorMessages } from "@/utils/const";
+import { errorMessages } from "@/utils/const";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";

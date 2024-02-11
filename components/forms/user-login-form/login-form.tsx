@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import type { CustomSessionI } from "@/types";
-import { DEFAULT_CALLBACK_URL, errorMessages } from "@/utils/const";
+import { errorMessages } from "@/utils/const";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -130,7 +130,11 @@ export const LoginForm = ({ callbackUrl }: Props) => {
           )}
         />
 
-        <Button disabled={loading} className="w-full ml-auto" type="submit">
+        <Button
+          disabled={loading}
+          className="w-full !mt-4 ml-auto"
+          type="submit"
+        >
           Login
         </Button>
       </form>
