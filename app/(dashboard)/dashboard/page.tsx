@@ -12,14 +12,20 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { authOptions } from "@/lib/auth-options";
+import { type NextAuthOptions, getServerSession } from "next-auth";
 
-export default function page() {
+export default async function page() {
+  const session = await getServerSession(authOptions as NextAuthOptions);
+
   return (
     <ScrollArea className="h-full">
       <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">
-            Hi, Welcome back 👋
+            Hi, Welcome back{" "}
+            <span className="text-muted-foreground">{session?.user?.name}</span>{" "}
+            👋
           </h2>
           <div className="items-center hidden space-x-2 md:flex">
             <CalendarDateRangePicker />
@@ -43,7 +49,9 @@ export default function page() {
                   <Icons.incomes className="w-6 h-6 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">$45,231.89</div>
+                  <div className="text-2xl font-bold text-success">
+                    €45,231.89
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     +20.1% from last month
                   </p>
@@ -57,7 +65,9 @@ export default function page() {
                   <Icons.expenses className="w-6 h-6 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">+2350</div>
+                  <div className="text-2xl font-bold text-destructive">
+                    €23,350.24
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     +180.1% from last month
                   </p>
