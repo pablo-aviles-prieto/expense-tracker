@@ -4,7 +4,11 @@ import { useSearchParams } from "next/navigation";
 import { LoginForm } from "./login-form";
 import { DEFAULT_CALLBACK_URL } from "@/utils/const";
 
-export const UserLoginBlock = () => {
+type Props = {
+  switchForm: () => void;
+};
+
+export const UserLoginBlock = ({ switchForm }: Props) => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
 
@@ -29,10 +33,7 @@ export const UserLoginBlock = () => {
           </span>
         </div>
       </div>
-      <Button
-        onClick={() => console.log("set login state to false")}
-        variant="outline"
-      >
+      <Button onClick={switchForm} variant="outline">
         Create an account
       </Button>
     </>

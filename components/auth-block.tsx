@@ -7,5 +7,9 @@ import { UserLoginBlock } from "./forms/user-login-form/user-login-block";
 export const AuthBlock = () => {
   const [isLoginPage, setIsLoginPage] = useState(true);
 
-  return isLoginPage ? <UserLoginBlock /> : <UserRegisterBlock />;
+  return isLoginPage ? (
+    <UserLoginBlock switchForm={() => setIsLoginPage(false)} />
+  ) : (
+    <UserRegisterBlock switchForm={() => setIsLoginPage(true)} />
+  );
 };

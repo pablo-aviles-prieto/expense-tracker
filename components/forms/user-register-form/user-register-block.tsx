@@ -5,7 +5,11 @@ import { DEFAULT_CALLBACK_URL } from "@/utils/const";
 import { RegisterForm } from "./register-form";
 import { Button } from "@/components/ui/button";
 
-export const UserRegisterBlock = () => {
+type Props = {
+  switchForm: () => void;
+};
+
+export const UserRegisterBlock = ({ switchForm }: Props) => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
 
@@ -30,10 +34,7 @@ export const UserRegisterBlock = () => {
           </span>
         </div>
       </div>
-      <Button
-        onClick={() => console.log("set login state to true")}
-        variant="outline"
-      >
+      <Button onClick={switchForm} variant="outline">
         Login with your account
       </Button>
     </>
