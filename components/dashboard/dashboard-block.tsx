@@ -71,9 +71,7 @@ export const Dashboard = ({ session }: Props) => {
     enabled: !!date?.from && !!date?.to,
   });
 
-  console.log("filteredData", filteredData);
-  // console.log("isLoading", isLoading);
-  // console.log("error", error);
+  // TODO: Disply a toast when error is true via useEffect?
 
   return (
     <ScrollArea className="h-full">
@@ -87,11 +85,7 @@ export const Dashboard = ({ session }: Props) => {
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <KpiBlock
-                filteredData={filteredData}
-                isLoading={isLoading}
-                error={error}
-              />
+              <KpiBlock filteredData={filteredData} isLoading={isLoading} />
             </div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
               <Card className="col-span-4">
