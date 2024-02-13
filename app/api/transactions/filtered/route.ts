@@ -7,7 +7,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
-    // TODO: Separate it into a service to get the user id??
     const tokenNext = await getToken({
       req,
       secret: process.env.NEXTAUTH_SECRET,

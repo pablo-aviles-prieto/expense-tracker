@@ -5,7 +5,6 @@ export type FetchParams = {
   method: "GET" | "POST" | "PUT" | "DELETE";
   body?: Record<string, any>;
   extraHeaders?: Record<string, string>;
-  revalidate?: number;
 };
 
 export const useFetch = () => {

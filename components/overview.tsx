@@ -1,12 +1,6 @@
 "use client";
 
-import { useFetch } from "@/hooks/use-fetch";
-import { useCustomSession } from "@/hooks/user-custom-session";
-import type { TransactionObjBack } from "@/types";
-import { dateFormat } from "@/utils/const";
-import { format } from "date-fns";
 import { useTheme } from "next-themes";
-import { useEffect } from "react";
 import {
   Bar,
   BarChart,
@@ -67,14 +61,6 @@ const data = [
   },
 ];
 
-const URL_POST_TRANSACTION = `/api/transactions/filtered`;
-
-type ResponseFilteredDataI = {
-  ok: boolean;
-  transactions?: TransactionObjBack[];
-  error?: string;
-};
-
 type Props = {
   from: Date | undefined;
   to: Date | undefined;
@@ -82,32 +68,6 @@ type Props = {
 
 export function Overview({ from, to }: Props) {
   const { resolvedTheme } = useTheme();
-  const { fetchPetition } = useFetch();
-  const { data: dataSession } = useCustomSession();
-
-  useEffect(() => {
-    if (!from || !to || !dataSession) return;
-
-    const fetchData = async () => {
-      const formatedStartDate = format(new Date(from), dateFormat.ISO);
-      const formatedEndDate = format(new Date(to), dateFormat.ISO);
-      const URL = `${URL_POST_TRANSACTION}?startDate=${formatedStartDate}&endDate=${formatedEndDate}$`;
-      const response = await fetchFilteredTransactions(URL);
-      console.log("response", response);
-    };
-    fetchData();
-  }, [from, to, dataSession]);
-
-  const fetchFilteredTransactions = async (url: string) => {
-    const extraHeaders = {
-      Authorization: `Bearer ${dataSession?.accessToken || ""}`,
-    };
-    return fetchPetition<ResponseFilteredDataI>({
-      url,
-      method: "GET",
-      extraHeaders,
-    });
-  };
 
   return (
     <ResponsiveContainer width="100%" height={350}>

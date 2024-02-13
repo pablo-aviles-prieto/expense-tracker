@@ -18,16 +18,62 @@ import { UserMessage } from "./user-message";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { format, subDays } from "date-fns";
+import { dateFormat } from "@/utils/const";
+import { useFetch } from "@/hooks/use-fetch";
+import { TransactionObjBack } from "@/types";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {
   session: Session | null;
 };
+
+type ResponseFilteredData = {
+  ok: boolean;
+  transactions?: TransactionObjBack[];
+  error?: string;
+};
+
+const URL_POST_TRANSACTION = `/api/transactions/filtered`;
 
 export const Dashboard = ({ session }: Props) => {
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 30),
     to: new Date(),
   });
+  const { fetchPetition } = useFetch();
+
+  const fetchFilteredTransactions = async ({ queryKey }: { queryKey: any }) => {
+    const [keyPath, { startDate, endDate }] = queryKey;
+    const URL = `${keyPath}?startDate=${startDate}&endDate=${endDate}`;
+    const response = await fetchPetition<ResponseFilteredData>({
+      url: URL,
+      method: "GET",
+    });
+    if (!response.ok) {
+      throw new Error(response.error ?? "Network response was not ok");
+    }
+    return response.transactions;
+  };
+
+  const {
+    data: filteredData,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: [
+      URL_POST_TRANSACTION,
+      {
+        startDate: format(date?.from ?? new Date(), dateFormat.ISO),
+        endDate: format(date?.to ?? new Date(), dateFormat.ISO),
+      },
+    ],
+    queryFn: fetchFilteredTransactions,
+    enabled: !!date?.from && !!date?.to,
+  });
+
+  console.log("filteredData", filteredData);
+  // console.log("isLoading", isLoading);
+  // console.log("error", error);
 
   const getDate = (e: DateRange | undefined) => {
     setDate(e);
