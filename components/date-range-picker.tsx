@@ -8,20 +8,16 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format, subDays } from "date-fns";
+import { format } from "date-fns";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  setParentDate?: (e: DateRange | undefined) => void;
+  date: DateRange | undefined;
+  setDate: (e: DateRange | undefined) => void;
 }
 
-export function CalendarDateRangePicker({ setParentDate, className }: Props) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: subDays(new Date(), 30),
-    to: new Date(),
-  });
-
+export function CalendarDateRangePicker({ date, setDate, className }: Props) {
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -57,7 +53,6 @@ export function CalendarDateRangePicker({ setParentDate, className }: Props) {
             selected={date}
             onSelect={(e) => {
               setDate(e);
-              setParentDate && setParentDate(e);
             }}
             numberOfMonths={2}
           />
