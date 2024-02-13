@@ -46,16 +46,25 @@ export function CalendarDateRangePicker({ date, setDate, className }: Props) {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="end">
-          <Calendar
-            initialFocus
-            mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={(e) => {
-              setDate(e);
-            }}
-            numberOfMonths={2}
-          />
+          <div className="flex flex-col">
+            <Calendar
+              initialFocus
+              mode="range"
+              defaultMonth={date?.from}
+              selected={date}
+              onSelect={(e) => {
+                setDate(e);
+              }}
+              numberOfMonths={2}
+            />
+            <Button
+              variant="secondary"
+              className="self-center mb-1"
+              onClick={() => setDate(undefined)}
+            >
+              Clear Dates
+            </Button>
+          </div>
         </PopoverContent>
       </Popover>
     </div>
