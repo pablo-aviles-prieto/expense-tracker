@@ -37,3 +37,5 @@ export const dateFormat = {
   US: "MM/dd/yyyy",
   EU: "dd/MM/yyyy",
 } as const;
+
+export const getEllipsed = "overflow-hidden text-ellipsis whitespace-nowrap";

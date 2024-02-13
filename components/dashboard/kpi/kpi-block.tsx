@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import type { TransactionObjBack } from "@/types";
 import { calculateTotalTypeTrans } from "../utils/calculate-total-type-trans";
 import { getDateRangeInfo } from "../utils/get-date-ragen-info";
+import { getEllipsed } from "@/utils/const";
 
 type Props = {
   filteredData: TransactionObjBack[] | undefined;
@@ -42,7 +43,7 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
     <>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-          <CardTitle className="text-sm font-medium">
+          <CardTitle className={`text-sm font-medium ${getEllipsed}`}>
             Incomes in this period
           </CardTitle>
           <Icons.incomes className="w-6 h-6 text-muted-foreground" />
@@ -58,7 +59,7 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
               <div className="text-2xl font-bold text-green-600">
                 +{formatterUS.format(incomes)}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
                 <span className="font-bold">
                   {formatterUS.format(incomeTransactions.length)}{" "}
                 </span>
@@ -66,13 +67,15 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
               </p>
             </>
           ) : (
-            <div className="text-lg font-semibold">No transactions found</div>
+            <div className={`text-lg font-semibold ${getEllipsed}`}>
+              No transactions found
+            </div>
           )}
         </CardContent>
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-          <CardTitle className="text-sm font-medium">
+          <CardTitle className={`text-sm font-medium ${getEllipsed}`}>
             Expenses in this period
           </CardTitle>
           <Icons.expenses className="w-6 h-6 text-muted-foreground" />
@@ -88,7 +91,7 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
               <div className="text-2xl font-bold text-red-700">
                 {formatterUS.format(expenses)}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
                 <span className="font-bold">
                   {formatterUS.format(expenseTransactions.length)}{" "}
                 </span>
@@ -96,13 +99,15 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
               </p>
             </>
           ) : (
-            <div className="text-lg font-semibold">No transactions found</div>
+            <div className={`text-lg font-semibold ${getEllipsed}`}>
+              No transactions found
+            </div>
           )}
         </CardContent>
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-          <CardTitle className="text-sm font-medium">
+          <CardTitle className={`text-sm font-medium ${getEllipsed}`}>
             Net saving in this period
           </CardTitle>
           <Icons.netSavings className="w-6 h-6 text-muted-foreground" />
@@ -123,7 +128,7 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
                 {netSavingSymbol}
                 {formatterUS.format(netSavings)}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
                 <span className="font-bold">
                   {netSavingSymbol}
                   {formatterUS.format(moneyPerDay)}{" "}
@@ -132,13 +137,15 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
               </p>
             </>
           ) : (
-            <div className="text-lg font-semibold">No transactions found</div>
+            <div className={`text-lg font-semibold ${getEllipsed}`}>
+              No transactions found
+            </div>
           )}
         </CardContent>
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-          <CardTitle className="text-sm font-medium">
+          <CardTitle className={`text-sm font-medium ${getEllipsed}`}>
             Transactions in this period
           </CardTitle>
           <Icons.transactions className="w-6 h-6 text-muted-foreground" />
@@ -154,7 +161,7 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
               <div className="text-2xl font-bold">
                 {formatterUS.format(filteredData.length)}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
                 <span className="font-bold">
                   {incomes >= Math.abs(expenses)
                     ? formatterUS.format(
@@ -172,7 +179,9 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
               </p>
             </>
           ) : (
-            <div className="text-lg font-semibold">No transactions found</div>
+            <div className={`text-lg font-semibold ${getEllipsed}`}>
+              No transactions found
+            </div>
           )}
         </CardContent>
       </Card>
