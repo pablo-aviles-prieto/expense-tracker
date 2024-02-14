@@ -1,7 +1,6 @@
 "use client";
 
 import type { TransactionObjBack } from "@/types";
-import { countUniqueMonths } from "../utils/count-unique-months";
 import { aggregateTransactionsByMonth } from "../utils/aggregate-transactions-by-month";
 import { BarChartBlock } from "./bar-chart";
 import { LoadingSpinner } from "@/components/ui/spinner";

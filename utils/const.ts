@@ -38,6 +38,22 @@ export const dateFormat = {
   EU: "dd/MM/yyyy",
   monthYear: "yyyy-MM",
   shortMonth: "MMM",
+  shortMonthWithYear: "MMM yy",
 } as const;
 
 export const getEllipsed = "overflow-hidden text-ellipsis whitespace-nowrap";
+
+export const monthOrder = {
+  Jan: 1,
+  Feb: 2,
+  Mar: 3,
+  Apr: 4,
+  May: 5,
+  Jun: 6,
+  Jul: 7,
+  Aug: 8,
+  Sep: 9,
+  Oct: 10,
+  Nov: 11,
+  Dec: 12,
+} as const;
