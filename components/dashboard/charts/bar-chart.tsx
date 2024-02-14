@@ -1,6 +1,5 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import {
   Bar,
   BarChart,
@@ -10,14 +9,13 @@ import {
   YAxis,
   Legend,
 } from "recharts";
+import CustomTooltipContent from "./custom-tooltip-content";
 
 type Props = {
   data: Record<string, any>[];
 };
 
 export const BarChartBlock = ({ data }: Props) => {
-  const { resolvedTheme } = useTheme();
-
   return (
     <ResponsiveContainer width="100%" height={400}>
       <BarChart data={data} layout="horizontal">
@@ -37,19 +35,8 @@ export const BarChartBlock = ({ data }: Props) => {
           axisLine={false}
         />
         <Tooltip
+          content={<CustomTooltipContent />}
           cursor={{ fill: "transparent" }}
-          formatter={(value: number, name: string, props: any) => {
-            return [`$${value}`, name];
-          }}
-          contentStyle={{
-            backgroundColor:
-              resolvedTheme === "dark" ? "hsl(24 9.8% 10%)" : "hsl(0 0% 100%)",
-            borderColor: "var(--border, #000)",
-            borderRadius: "var(--radius, 15px)",
-            borderStyle: "solid",
-            borderWidth: "2px",
-            color: "var(--foreground, #000)",
-          }}
         />
         <Legend />
         <Bar

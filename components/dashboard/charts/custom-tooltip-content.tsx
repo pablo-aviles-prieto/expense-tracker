@@ -23,13 +23,15 @@ export const CustomTooltipContent = ({
           borderRadius: "var(--radius, 15px)",
           borderStyle: "solid",
           borderWidth: "2px",
-          // color: "var(--foreground, #000)",
           padding: "10px",
         }}
       >
-        <p>{label}</p>
+        <p className="font-semibold text-center">{label}</p>
         {payload.map((entry, index) => (
-          <p key={index}>${entry.value}</p>
+          <p style={{ color: entry.color }} key={index}>
+            {entry.dataKey}:{" "}
+            <span className="font-semibold">{entry.value}€</span>
+          </p>
         ))}
       </div>
     );

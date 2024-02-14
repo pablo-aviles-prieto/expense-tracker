@@ -7,6 +7,7 @@ import { BarChartBlock } from "./bar-chart";
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { aggregateTransactionsByDay } from "../utils/aggregate-transactions-by-day";
 import { LineChartBlock } from "./line-chart";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type Props = {
   filteredData: TransactionObjBack[] | undefined;
@@ -14,21 +15,33 @@ type Props = {
 };
 
 export function TransactionsBlockChart({ filteredData, isLoading }: Props) {
-  const uniqueMonthCount = countUniqueMonths(filteredData);
   const barChartData = aggregateTransactionsByMonth(filteredData ?? []);
   const lineChartData = aggregateTransactionsByDay(filteredData ?? []);
 
-  console.log("uniqueMonthCount", uniqueMonthCount);
-  console.log("barChartData", barChartData);
-  console.log("lineChartData", lineChartData);
-
   return isLoading ? (
-    <div className="flex items-center justify-center pt-24">
+    <div className="flex items-center justify-center pt-28">
       <LoadingSpinner size={140} />
     </div>
-  ) : uniqueMonthCount >= 3 ? (
-    <BarChartBlock data={barChartData} />
+  ) : !filteredData || filteredData.length === 0 ? (
+    <div className="flex items-center justify-center pt-36">
+      <p className="text-lg font-semibold">
+        There is no data for the selected dates
+      </p>
+    </div>
   ) : (
-    <LineChartBlock data={lineChartData} />
+    <div className="relative">
+      <Tabs defaultValue="monthly" className="w-full">
+        <TabsList className="absolute -top-[58px] right-0">
+          <TabsTrigger value="monthly">Monthly</TabsTrigger>
+          <TabsTrigger value="daily">Daily</TabsTrigger>
+        </TabsList>
+        <TabsContent value="monthly">
+          <BarChartBlock data={barChartData} />
+        </TabsContent>
+        <TabsContent value="daily">
+          <LineChartBlock data={lineChartData} />
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 }

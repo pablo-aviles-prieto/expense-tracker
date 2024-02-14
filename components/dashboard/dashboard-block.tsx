@@ -21,7 +21,6 @@ import { useFetch } from "@/hooks/use-fetch";
 import type { TransactionObjBack } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { KpiBlock } from "./kpi/kpi-block";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type Props = {
   session: Session | null;
@@ -82,37 +81,31 @@ export const Dashboard = ({ session }: Props) => {
             <CalendarDateRangePicker date={date} setDate={setDate} />
           </div>
         </div>
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsContent value="overview" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <KpiBlock filteredData={filteredData} isLoading={isLoading} />
-            </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
-              <Card className="col-span-4">
-                <CardHeader>
-                  <CardTitle>Selected period overview</CardTitle>
-                </CardHeader>
-                <CardContent className="pl-2 h-[400px]">
-                  <TransactionsBlockChart
-                    filteredData={filteredData}
-                    isLoading={isLoading}
-                  />
-                </CardContent>
-              </Card>
-              <Card className="col-span-4 md:col-span-3">
-                <CardHeader>
-                  <CardTitle>Recent Sales</CardTitle>
-                  <CardDescription>
-                    You made 265 sales this month.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <TransactionsPieChart />
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <KpiBlock filteredData={filteredData} isLoading={isLoading} />
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
+          <Card className="col-span-4">
+            <CardHeader>
+              <CardTitle>Selected period overview</CardTitle>
+            </CardHeader>
+            <CardContent className="pl-2 h-[400px]">
+              <TransactionsBlockChart
+                filteredData={filteredData}
+                isLoading={isLoading}
+              />
+            </CardContent>
+          </Card>
+          <Card className="col-span-4 md:col-span-3">
+            <CardHeader>
+              <CardTitle>Recent Sales</CardTitle>
+              <CardDescription>You made 265 sales this month.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <TransactionsPieChart />
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </ScrollArea>
   );

@@ -1,6 +1,6 @@
-import { useTheme } from "next-themes";
+"use client";
+
 import {
-  CartesianGrid,
   Legend,
   Line,
   LineChart,
@@ -16,8 +16,6 @@ type Props = {
 };
 
 export const LineChartBlock = ({ data }: Props) => {
-  const { resolvedTheme } = useTheme();
-
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart data={data}>
@@ -30,25 +28,9 @@ export const LineChartBlock = ({ data }: Props) => {
         />
         <YAxis type="number" stroke="#888888" fontSize={12} tickLine={false} />
         <Tooltip
-          cursor={{ fill: "transparent" }}
-          formatter={(value: number, name: string, props: any) => [
-            `$${value}`,
-            props.payload.name,
-          ]}
-          contentStyle={{
-            backgroundColor:
-              resolvedTheme === "dark" ? "hsl(24 9.8% 10%)" : "hsl(0 0% 100%)",
-            borderColor: "var(--border, #000)",
-            borderRadius: "var(--radius, 15px)",
-            borderStyle: "solid",
-            borderWidth: "2px",
-            color: "var(--foreground, #000)",
-          }}
-        />
-        {/* <Tooltip
           content={<CustomTooltipContent />}
-          cursor={{ fill: "transparent" }}
-        /> */}
+          cursor={{ stroke: "rgba(136, 136, 136, 0.9)", strokeWidth: 0.2 }}
+        />
         <Legend />
         <Line
           type="monotone"
