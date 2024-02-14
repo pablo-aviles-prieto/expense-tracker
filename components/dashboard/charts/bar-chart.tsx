@@ -8,69 +8,18 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  Legend,
 } from "recharts";
 
-const data = [
-  {
-    name: "Jan",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Feb",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Mar",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Apr",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "May",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Jun",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Jul",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Aug",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Sep",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Oct",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Nov",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Dec",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-];
-
 type Props = {
-  from: Date | undefined;
-  to: Date | undefined;
+  data: Record<string, any>[];
 };
 
-export function Overview({ from, to }: Props) {
+export const BarChartBlock = ({ data }: Props) => {
   const { resolvedTheme } = useTheme();
 
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <ResponsiveContainer width="100%" height={400}>
       <BarChart data={data} layout="horizontal">
         <XAxis
           type="category"
@@ -103,8 +52,20 @@ export function Overview({ from, to }: Props) {
             color: "var(--foreground, #000)",
           }}
         />
-        <Bar dataKey="total" fill="#1da850" radius={[4, 4, 0, 0]} />
+        <Legend />
+        <Bar
+          dataKey="incomes"
+          fill="#419644"
+          name="Incomes"
+          radius={[4, 4, 0, 0]}
+        />
+        <Bar
+          dataKey="expenses"
+          fill="#dd3d32"
+          name="Expenses"
+          radius={[4, 4, 0, 0]}
+        />
       </BarChart>
     </ResponsiveContainer>
   );
-}
+};

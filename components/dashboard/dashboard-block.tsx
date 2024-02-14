@@ -1,8 +1,8 @@
 "use client";
 
 import { CalendarDateRangePicker } from "@/components/date-range-picker";
-import { Overview } from "@/components/overview";
-import { RecentSales } from "@/components/recent-sales";
+import { TransactionsBlockChart } from "@/components/dashboard/charts/transactions-block-chart";
+import { TransactionsPieChart } from "@/components/dashboard/charts/transactions-pie-chart";
 import {
   Card,
   CardContent,
@@ -92,8 +92,11 @@ export const Dashboard = ({ session }: Props) => {
                 <CardHeader>
                   <CardTitle>Selected period overview</CardTitle>
                 </CardHeader>
-                <CardContent className="pl-2">
-                  <Overview from={date?.from} to={date?.to} />
+                <CardContent className="pl-2 h-[400px]">
+                  <TransactionsBlockChart
+                    filteredData={filteredData}
+                    isLoading={isLoading}
+                  />
                 </CardContent>
               </Card>
               <Card className="col-span-4 md:col-span-3">
@@ -104,7 +107,7 @@ export const Dashboard = ({ session }: Props) => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <RecentSales />
+                  <TransactionsPieChart />
                 </CardContent>
               </Card>
             </div>

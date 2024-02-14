@@ -36,6 +36,8 @@ export const dateFormat = {
   ISO: "yyyy-MM-dd",
   US: "MM/dd/yyyy",
   EU: "dd/MM/yyyy",
+  monthYear: "yyyy-MM",
+  shortMonth: "MMM",
 } as const;
 
 export const getEllipsed = "overflow-hidden text-ellipsis whitespace-nowrap";
