@@ -11,7 +11,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Session } from "next-auth";
 import { UserMessage } from "./user-message";
 import { useState } from "react";
@@ -22,6 +21,7 @@ import { useFetch } from "@/hooks/use-fetch";
 import type { TransactionObjBack } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { KpiBlock } from "./kpi/kpi-block";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type Props = {
   session: Session | null;

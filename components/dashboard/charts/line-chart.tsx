@@ -1,46 +1,40 @@
-"use client";
-
 import { useTheme } from "next-themes";
 import {
-  Bar,
-  BarChart,
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
-  Legend,
 } from "recharts";
+import { CustomTooltipContent } from "./custom-tooltip-content";
 
 type Props = {
   data: Record<string, any>[];
 };
 
-export const BarChartBlock = ({ data }: Props) => {
+export const LineChartBlock = ({ data }: Props) => {
   const { resolvedTheme } = useTheme();
 
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <BarChart data={data} layout="horizontal">
+      <LineChart data={data}>
         <XAxis
-          type="category"
           dataKey="name"
+          type="category"
           stroke="#888888"
           fontSize={12}
           tickLine={false}
-          axisLine={false}
         />
-        <YAxis
-          type="number"
-          stroke="#888888"
-          fontSize={12}
-          tickLine={false}
-          axisLine={false}
-        />
+        <YAxis type="number" stroke="#888888" fontSize={12} tickLine={false} />
         <Tooltip
           cursor={{ fill: "transparent" }}
-          formatter={(value: number, name: string, props: any) => {
-            return [`$${value}`, name];
-          }}
+          formatter={(value: number, name: string, props: any) => [
+            `$${value}`,
+            props.payload.name,
+          ]}
           contentStyle={{
             backgroundColor:
               resolvedTheme === "dark" ? "hsl(24 9.8% 10%)" : "hsl(0 0% 100%)",
@@ -51,20 +45,24 @@ export const BarChartBlock = ({ data }: Props) => {
             color: "var(--foreground, #000)",
           }}
         />
+        {/* <Tooltip
+          content={<CustomTooltipContent />}
+          cursor={{ fill: "transparent" }}
+        /> */}
         <Legend />
-        <Bar
+        <Line
+          type="monotone"
           dataKey="incomes"
-          fill="#419644"
+          stroke="#419644"
           name="Incomes"
-          radius={[4, 4, 0, 0]}
         />
-        <Bar
+        <Line
+          type="monotone"
           dataKey="expenses"
-          fill="#dd3d32"
+          stroke="#dd3d32"
           name="Expenses"
-          radius={[4, 4, 0, 0]}
         />
-      </BarChart>
+      </LineChart>
     </ResponsiveContainer>
   );
 };
