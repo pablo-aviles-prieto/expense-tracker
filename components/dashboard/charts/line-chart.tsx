@@ -37,12 +37,14 @@ export const LineChartBlock = ({ data }: Props) => {
           dataKey="incomes"
           stroke="#419644"
           name="Incomes"
+          dot={{ stroke: "#419644", strokeWidth: 0, fill: "transparent" }}
         />
         <Line
           type="monotone"
           dataKey="expenses"
           stroke="#dd3d32"
           name="Expenses"
+          dot={{ stroke: "#dd3d32", strokeWidth: 0, fill: "transparent" }}
         />
       </LineChart>
     </ResponsiveContainer>

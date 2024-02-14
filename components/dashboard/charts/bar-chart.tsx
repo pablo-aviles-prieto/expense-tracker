@@ -36,7 +36,7 @@ export const BarChartBlock = ({ data }: Props) => {
         />
         <Tooltip
           content={<CustomTooltipContent />}
-          cursor={{ fill: "transparent" }}
+          cursor={{ fill: "rgba(119, 118, 118, 0.07)" }}
         />
         <Legend />
         <Bar
