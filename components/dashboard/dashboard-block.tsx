@@ -13,7 +13,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Session } from "next-auth";
 import { UserMessage } from "./user-message";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { format, subYears } from "date-fns";
 import { dateFormat } from "@/utils/const";
@@ -35,11 +35,36 @@ type ResponseFilteredData = {
 const URL_POST_TRANSACTION = `/api/transactions/filtered`;
 
 export const Dashboard = ({ session }: Props) => {
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: subYears(new Date(), 1),
-    to: new Date(),
-  });
+  const [date, setDate] = useState<DateRange | undefined>(undefined);
   const { fetchPetition } = useFetch();
+
+  useEffect(() => {
+    const localStorageDates = localStorage.getItem("expenses-dashboard-dates");
+    if (localStorageDates) {
+      const parsedStoredDates = JSON.parse(localStorageDates);
+      setDate({
+        from: new Date(parsedStoredDates.from),
+        to: new Date(parsedStoredDates.to),
+      });
+    } else {
+      setDate({
+        from: subYears(new Date(), 1),
+        to: new Date(),
+      });
+    }
+  }, []);
+
+  const onSetDate = (dateRange: DateRange | undefined) => {
+    setDate(dateRange);
+    if (dateRange?.from && dateRange?.to) {
+      const from = format(new Date(dateRange.from), dateFormat.ISO);
+      const to = format(new Date(dateRange.to), dateFormat.ISO);
+      localStorage.setItem(
+        "expenses-dashboard-dates",
+        JSON.stringify({ from, to }),
+      );
+    }
+  };
 
   const fetchFilteredTransactions = async ({ queryKey }: { queryKey: any }) => {
     const [keyPath, { startDate, endDate }] = queryKey;
@@ -78,7 +103,7 @@ export const Dashboard = ({ session }: Props) => {
         <div className="flex items-center justify-between space-y-2">
           <UserMessage session={session} />
           <div className="items-center hidden space-x-2 md:flex">
-            <CalendarDateRangePicker date={date} setDate={setDate} />
+            <CalendarDateRangePicker date={date} setDate={onSetDate} />
           </div>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
