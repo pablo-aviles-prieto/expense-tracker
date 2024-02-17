@@ -39,6 +39,7 @@ export const Dashboard = ({ session }: Props) => {
   const { fetchPetition } = useFetch();
 
   useEffect(() => {
+    // Reading the localStorage inside useEffect to ensure is read on the client side
     const localStorageDates = localStorage.getItem("expenses-dashboard-dates");
     if (localStorageDates) {
       const parsedStoredDates = JSON.parse(localStorageDates);
@@ -127,7 +128,10 @@ export const Dashboard = ({ session }: Props) => {
               <CardDescription>You made 265 sales this month.</CardDescription>
             </CardHeader>
             <CardContent>
-              <TransactionsPieChart />
+              <TransactionsPieChart
+                filteredData={filteredData}
+                isLoading={isLoading}
+              />
             </CardContent>
           </Card>
         </div>
