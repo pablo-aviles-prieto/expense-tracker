@@ -28,19 +28,17 @@ export function TransactionsBlockChart({ filteredData, isLoading }: Props) {
       </p>
     </div>
   ) : (
-    <div className="relative">
-      <Tabs defaultValue="monthly" className="w-full">
-        <TabsList className="absolute -top-[58px] right-0">
-          <TabsTrigger value="monthly">Monthly</TabsTrigger>
-          <TabsTrigger value="daily">Daily</TabsTrigger>
-        </TabsList>
-        <TabsContent value="monthly">
-          <BarChartBlock data={barChartData} />
-        </TabsContent>
-        <TabsContent value="daily">
-          <LineChartBlock data={lineChartData} />
-        </TabsContent>
-      </Tabs>
-    </div>
+    <Tabs defaultValue="monthly" className="w-full">
+      <TabsList className="absolute top-[14px] right-[24px]">
+        <TabsTrigger value="monthly">Monthly</TabsTrigger>
+        <TabsTrigger value="daily">Daily</TabsTrigger>
+      </TabsList>
+      <TabsContent value="monthly">
+        <BarChartBlock data={barChartData} />
+      </TabsContent>
+      <TabsContent value="daily">
+        <LineChartBlock data={lineChartData} />
+      </TabsContent>
+    </Tabs>
   );
 }

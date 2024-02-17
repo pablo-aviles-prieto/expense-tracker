@@ -10,6 +10,7 @@ import {
   Legend,
 } from "recharts";
 import CustomTooltipContent from "./custom-tooltip-content";
+import { EXPENSES_CHART_COLOR, INCOMES_CHART_COLOR } from "../utils/const";
 
 type Props = {
   data: Record<string, any>[];
@@ -41,13 +42,13 @@ export const BarChartBlock = ({ data }: Props) => {
         <Legend />
         <Bar
           dataKey="incomes"
-          fill="#419644"
+          fill={INCOMES_CHART_COLOR}
           name="Incomes"
           radius={[4, 4, 0, 0]}
         />
         <Bar
           dataKey="expenses"
-          fill="#dd3d32"
+          fill={EXPENSES_CHART_COLOR}
           name="Expenses"
           radius={[4, 4, 0, 0]}
         />

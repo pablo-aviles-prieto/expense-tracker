@@ -35,6 +35,8 @@ type ResponseFilteredData = {
 const URL_POST_TRANSACTION = `/api/transactions/filtered`;
 
 export const Dashboard = ({ session }: Props) => {
+  // Have to add this initial loader cuz the useEffect cause a flicker
+  const [initialLoading, setInitialLoading] = useState(true);
   const [date, setDate] = useState<DateRange | undefined>(undefined);
   const { fetchPetition } = useFetch();
 
@@ -53,6 +55,7 @@ export const Dashboard = ({ session }: Props) => {
         to: new Date(),
       });
     }
+    setInitialLoading(false);
   }, []);
 
   const onSetDate = (dateRange: DateRange | undefined) => {
@@ -108,29 +111,35 @@ export const Dashboard = ({ session }: Props) => {
           </div>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <KpiBlock filteredData={filteredData} isLoading={isLoading} />
+          <KpiBlock
+            filteredData={filteredData}
+            isLoading={isLoading || initialLoading}
+          />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
-          <Card className="col-span-4">
+          <Card className="relative col-span-4">
             <CardHeader>
               <CardTitle>Selected period overview</CardTitle>
             </CardHeader>
-            <CardContent className="pl-2 h-[400px]">
+            <CardContent className="pl-0 h-[400px]">
               <TransactionsBlockChart
                 filteredData={filteredData}
-                isLoading={isLoading}
+                isLoading={isLoading || initialLoading}
               />
             </CardContent>
           </Card>
-          <Card className="col-span-4 md:col-span-3">
+          <Card className="relative col-span-4 md:col-span-3">
             <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
-              <CardDescription>You made 265 sales this month.</CardDescription>
+              <CardTitle>Organized by categories</CardTitle>
+              <CardDescription className="text-[13px] italic !mt-3">
+                If a transaction has multiple categories, the amount will be
+                added to all of them
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <TransactionsPieChart
                 filteredData={filteredData}
-                isLoading={isLoading}
+                isLoading={isLoading || initialLoading}
               />
             </CardContent>
           </Card>
