@@ -114,6 +114,7 @@ export const Dashboard = ({ session }: Props) => {
           <KpiBlock
             filteredData={filteredData}
             isLoading={isLoading || initialLoading}
+            dateBlock={date}
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">

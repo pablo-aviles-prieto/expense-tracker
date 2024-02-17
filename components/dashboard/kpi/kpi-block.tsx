@@ -3,19 +3,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TransactionObjBack } from "@/types";
 import { calculateTotalTypeTrans } from "../utils/calculate-total-type-trans";
-import { getDateRangeInfo } from "../utils/get-date-ragen-info";
 import { getEllipsed } from "@/utils/const";
+import { differenceInCalendarDays } from "date-fns";
+import { DateRange } from "react-day-picker";
 
 type Props = {
   filteredData: TransactionObjBack[] | undefined;
   isLoading: boolean;
+  dateBlock: DateRange | undefined;
 };
 
 const formatterUS = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
 
-export const KpiBlock = ({ filteredData, isLoading }: Props) => {
+export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
   const incomes = filteredData
     ? calculateTotalTypeTrans({ transactions: filteredData })
     : 0;
@@ -34,11 +36,11 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
 
   const netSavings = incomes + expenses;
   const netSavingSymbol = netSavings > 0 ? "+" : "";
-  const dateRangeInfo = getDateRangeInfo(filteredData ?? []);
-  const moneyPerDay = dateRangeInfo.daysBetween
-    ? (netSavings >= 0 ? incomes : expenses) / dateRangeInfo.daysBetween
-    : 0;
-
+  const daysBetweenDates =
+    dateBlock?.from && dateBlock?.to
+      ? differenceInCalendarDays(dateBlock.to, dateBlock.from)
+      : 0;
+  const moneyPerDay = (netSavings >= 0 ? incomes : expenses) / daysBetweenDates;
   return (
     <>
       <Card>
@@ -133,7 +135,7 @@ export const KpiBlock = ({ filteredData, isLoading }: Props) => {
                   {netSavingSymbol}
                   {formatterUS.format(moneyPerDay)}{" "}
                 </span>
-                per day (in {dateRangeInfo.daysBetween} days)
+                per day (in {daysBetweenDates} days)
               </p>
             </>
           ) : (

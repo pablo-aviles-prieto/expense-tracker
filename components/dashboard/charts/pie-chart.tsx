@@ -47,7 +47,7 @@ const renderActiveShape = (props: any, pieColor: string) => {
         outerRadius={outerRadius}
         startAngle={startAngle}
         endAngle={endAngle}
-        fill={`${pieColor}90`}
+        fill={pieColor}
       />
       <Sector
         cx={cx}
@@ -101,7 +101,7 @@ export const PieChartBlock = ({ data, pieColor }: Props) => {
           cy="50%"
           innerRadius={50}
           outerRadius={65}
-          fill={pieColor}
+          fill={`${pieColor}80`}
           dataKey="value"
           onMouseEnter={onPieEnter}
         />
