@@ -21,7 +21,7 @@ export const TransactionsPieChart = ({ filteredData, isLoading }: Props) => {
   });
 
   return isLoading ? (
-    <div className="flex items-center justify-center pt-[80px]">
+    <div className="flex items-center justify-center pt-28">
       <LoadingSpinner size={140} />
     </div>
   ) : !filteredData || filteredData.length === 0 ? (

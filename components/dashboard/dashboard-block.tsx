@@ -21,6 +21,7 @@ import { useFetch } from "@/hooks/use-fetch";
 import type { TransactionObjBack } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { KpiBlock } from "./kpi/kpi-block";
+import { useToast } from "../ui/use-toast";
 
 type Props = {
   session: Session | null;
@@ -39,36 +40,7 @@ export const Dashboard = ({ session }: Props) => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [date, setDate] = useState<DateRange | undefined>(undefined);
   const { fetchPetition } = useFetch();
-
-  useEffect(() => {
-    // Reading the localStorage inside useEffect to ensure is read on the client side
-    const localStorageDates = localStorage.getItem("expenses-dashboard-dates");
-    if (localStorageDates) {
-      const parsedStoredDates = JSON.parse(localStorageDates);
-      setDate({
-        from: new Date(parsedStoredDates.from),
-        to: new Date(parsedStoredDates.to),
-      });
-    } else {
-      setDate({
-        from: subYears(new Date(), 1),
-        to: new Date(),
-      });
-    }
-    setInitialLoading(false);
-  }, []);
-
-  const onSetDate = (dateRange: DateRange | undefined) => {
-    setDate(dateRange);
-    if (dateRange?.from && dateRange?.to) {
-      const from = format(new Date(dateRange.from), dateFormat.ISO);
-      const to = format(new Date(dateRange.to), dateFormat.ISO);
-      localStorage.setItem(
-        "expenses-dashboard-dates",
-        JSON.stringify({ from, to }),
-      );
-    }
-  };
+  const { toast } = useToast();
 
   const fetchFilteredTransactions = async ({ queryKey }: { queryKey: any }) => {
     const [keyPath, { startDate, endDate }] = queryKey;
@@ -99,7 +71,45 @@ export const Dashboard = ({ session }: Props) => {
     enabled: !!date?.from && !!date?.to,
   });
 
-  // TODO: Disply a toast when error is true via useEffect?
+  useEffect(() => {
+    // Reading the localStorage inside useEffect to ensure is read on the client side
+    const localStorageDates = localStorage.getItem("expenses-dashboard-dates");
+    if (localStorageDates) {
+      const parsedStoredDates = JSON.parse(localStorageDates);
+      setDate({
+        from: new Date(parsedStoredDates.from),
+        to: new Date(parsedStoredDates.to),
+      });
+    } else {
+      setDate({
+        from: subYears(new Date(), 1),
+        to: new Date(),
+      });
+    }
+    setInitialLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (error && !isLoading) {
+      toast({
+        title: "There has been an error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  }, [error, isLoading]);
+
+  const onSetDate = (dateRange: DateRange | undefined) => {
+    setDate(dateRange);
+    if (dateRange?.from && dateRange?.to) {
+      const from = format(new Date(dateRange.from), dateFormat.ISO);
+      const to = format(new Date(dateRange.to), dateFormat.ISO);
+      localStorage.setItem(
+        "expenses-dashboard-dates",
+        JSON.stringify({ from, to }),
+      );
+    }
+  };
 
   return (
     <ScrollArea className="h-full">
@@ -132,10 +142,12 @@ export const Dashboard = ({ session }: Props) => {
           <Card className="relative col-span-4 lg:col-span-3">
             <CardHeader>
               <CardTitle>Organized by categories</CardTitle>
-              <CardDescription className="text-[13px] italic !mt-3">
-                If a transaction has multiple categories, the amount will be
-                added to all of them
-              </CardDescription>
+              {filteredData && (
+                <CardDescription className="text-[13px] italic !mt-3">
+                  If a transaction has multiple categories, the amount will be
+                  added to all of them
+                </CardDescription>
+              )}
             </CardHeader>
             <CardContent>
               <TransactionsPieChart
