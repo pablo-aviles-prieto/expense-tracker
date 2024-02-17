@@ -129,7 +129,7 @@ export const Dashboard = ({ session }: Props) => {
               />
             </CardContent>
           </Card>
-          <Card className="relative col-span-4 md:col-span-3">
+          <Card className="relative col-span-4 lg:col-span-3">
             <CardHeader>
               <CardTitle>Organized by categories</CardTitle>
               <CardDescription className="text-[13px] italic !mt-3">
