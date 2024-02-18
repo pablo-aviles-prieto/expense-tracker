@@ -10,7 +10,7 @@ import {
   Legend,
 } from "recharts";
 import CustomTooltipContent from "./custom-tooltip-content";
-import { EXPENSES_CHART_COLOR, INCOMES_CHART_COLOR } from "../utils/const";
+import { EXPENSES_CHART_COLOR, INCOMES_CHART_COLOR } from "../../utils/const";
 
 type Props = {
   data: Record<string, any>[];

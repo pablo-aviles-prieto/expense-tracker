@@ -1,4 +1,4 @@
-import { Dashboard } from "@/components/dashboard/dashboard-block";
+import { Dashboard } from "@/components/dashboard/components/dashboard-block";
 import { authOptions } from "@/lib/auth-options";
 import { type NextAuthOptions, getServerSession } from "next-auth";
 

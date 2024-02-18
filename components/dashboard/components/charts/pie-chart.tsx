@@ -1,7 +1,7 @@
 "use client";
 
 import { PieChart, Pie, ResponsiveContainer, Sector } from "recharts";
-import type { PieChartData } from "../types/pie-chart";
+import type { PieChartData } from "../../types/pie-chart";
 import { useState } from "react";
 
 type Props = {

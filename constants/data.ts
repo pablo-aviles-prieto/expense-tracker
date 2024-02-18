@@ -132,7 +132,7 @@ export const navItems: NavItemWithOptionalChildren[] = [
       {
         title: "List",
         href: "/dashboard/transactions/list",
-        icon: "wallet",
+        icon: "listTransaction",
         label: "list",
       },
       {

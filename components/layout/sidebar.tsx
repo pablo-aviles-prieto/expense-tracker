@@ -1,4 +1,4 @@
-import { DashboardNav } from "@/components/dashboard-nav";
+import { DashboardNav } from "@/components/layout/dashboard-nav";
 import { navItems } from "@/constants/data";
 import { cn } from "@/lib/utils";
 

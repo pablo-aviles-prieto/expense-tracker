@@ -1,10 +1,10 @@
 "use client";
 
 import type { TransactionObjBack } from "@/types";
-import { aggregateTransactionsByMonth } from "../utils/aggregate-transactions-by-month";
+import { aggregateTransactionsByMonth } from "../../utils/aggregate-transactions-by-month";
 import { BarChartBlock } from "./bar-chart";
 import { LoadingSpinner } from "@/components/ui/spinner";
-import { aggregateTransactionsByDay } from "../utils/aggregate-transactions-by-day";
+import { aggregateTransactionsByDay } from "../../utils/aggregate-transactions-by-day";
 import { LineChartBlock } from "./line-chart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 

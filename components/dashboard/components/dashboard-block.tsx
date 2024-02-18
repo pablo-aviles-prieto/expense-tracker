@@ -1,8 +1,8 @@
 "use client";
 
 import { CalendarDateRangePicker } from "@/components/date-range-picker";
-import { TransactionsBlockChart } from "@/components/dashboard/charts/transactions-block-chart";
-import { TransactionsPieChart } from "@/components/dashboard/charts/transactions-pie-chart";
+import { TransactionsBlockChart } from "@/components/dashboard/components/charts/transactions-block-chart";
+import { TransactionsPieChart } from "@/components/dashboard/components/charts/transactions-pie-chart";
 import {
   Card,
   CardContent,
@@ -21,7 +21,7 @@ import { useFetch } from "@/hooks/use-fetch";
 import type { TransactionObjBack } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { KpiBlock } from "./kpi/kpi-block";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "../../ui/use-toast";
 
 type Props = {
   session: Session | null;

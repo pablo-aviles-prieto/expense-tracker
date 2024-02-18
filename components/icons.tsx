@@ -30,7 +30,8 @@ import {
   UserX2Icon,
   Wallet,
   X,
-  MailPlus,
+  FilePlus,
+  ClipboardList,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -183,5 +184,6 @@ export const Icons = {
     </svg>
   ),
   wallet: Wallet,
-  addTransaction: MailPlus,
+  addTransaction: FilePlus,
+  listTransaction: ClipboardList,
 };

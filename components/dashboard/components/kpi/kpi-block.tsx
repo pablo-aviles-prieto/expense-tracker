@@ -2,7 +2,7 @@ import { Icons } from "@/components/icons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TransactionObjBack } from "@/types";
-import { calculateTotalTypeTrans } from "../utils/calculate-total-type-trans";
+import { calculateTotalTypeTrans } from "../../utils/calculate-total-type-trans";
 import { getEllipsed } from "@/utils/const";
 import { differenceInCalendarDays } from "date-fns";
 import { DateRange } from "react-day-picker";

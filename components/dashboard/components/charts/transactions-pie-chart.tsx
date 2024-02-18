@@ -1,9 +1,9 @@
 import { LoadingSpinner } from "@/components/ui/spinner";
 import type { TransactionObjBack } from "@/types";
-import { aggregateTransactionsPerCategories } from "../utils/aggregate-transactions-per-categories";
+import { aggregateTransactionsPerCategories } from "../../utils/aggregate-transactions-per-categories";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PieChartBlock } from "./pie-chart";
-import { EXPENSES_CHART_COLOR, INCOMES_CHART_COLOR } from "../utils/const";
+import { EXPENSES_CHART_COLOR, INCOMES_CHART_COLOR } from "../../utils/const";
 
 type Props = {
   filteredData: TransactionObjBack[] | undefined;
