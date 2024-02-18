@@ -18,11 +18,11 @@ export interface NavItem {
 }
 
 export interface NavItemWithChildren extends NavItem {
-  items: NavItemWithChildren[];
+  subItems: NavItemWithChildren[];
 }
 
 export interface NavItemWithOptionalChildren extends NavItem {
-  items?: NavItemWithChildren[];
+  subItems?: NavItemWithOptionalChildren[];
 }
 
 export interface FooterItem {

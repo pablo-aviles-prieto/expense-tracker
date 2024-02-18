@@ -1,5 +1,4 @@
-import { Icons } from "@/components/icons";
-import { NavItem, SidebarNavItem } from "@/types";
+import { NavItemWithOptionalChildren } from "@/types";
 
 export type User = {
   id: number;
@@ -111,24 +110,12 @@ export type Employee = {
   profile_picture?: string | null; // Profile picture can be a string (URL) or null (if no picture)
 };
 
-export const navItems: NavItem[] = [
+export const navItems: NavItemWithOptionalChildren[] = [
   {
     title: "Dashboard",
     href: "/dashboard",
     icon: "dashboard",
     label: "Dashboard",
-  },
-  {
-    title: "User",
-    href: "/dashboard/user",
-    icon: "user",
-    label: "user",
-  },
-  {
-    title: "Employee",
-    href: "/dashboard/employee",
-    icon: "employee",
-    label: "employee",
   },
   {
     title: "Profile",
@@ -137,15 +124,23 @@ export const navItems: NavItem[] = [
     label: "profile",
   },
   {
-    title: "Kanban",
-    href: "/dashboard/kanban",
-    icon: "kanban",
-    label: "kanban",
-  },
-  {
-    title: "Login",
-    href: "/",
-    icon: "login",
-    label: "login",
+    title: "Transactions",
+    href: "/dashboard/transactions",
+    icon: "wallet",
+    label: "transactions",
+    subItems: [
+      {
+        title: "List",
+        href: "/dashboard/transactions/list",
+        icon: "wallet",
+        label: "list",
+      },
+      {
+        title: "Add",
+        href: "/dashboard/transactions/add",
+        icon: "addTransaction",
+        label: "add",
+      },
+    ],
   },
 ];
