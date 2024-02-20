@@ -1,5 +1,6 @@
 "use client";
 
+import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { ShowPasswordBlock } from "../show-password-block";
 
 const formSchema = z
   .object({
@@ -55,6 +57,8 @@ type Props = {
 };
 
 export const RegisterForm = ({ callbackUrl }: Props) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { fetchPetition } = useFetch();
@@ -182,16 +186,22 @@ export const RegisterForm = ({ callbackUrl }: Props) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Enter your password..."
-                  disabled={loading}
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    trigger(field.name);
-                  }}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password..."
+                    disabled={loading}
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      trigger(field.name);
+                    }}
+                  />
+                  <ShowPasswordBlock
+                    showPassword={showPassword}
+                    onClick={() => setShowPassword((prevState) => !prevState)}
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -204,16 +214,24 @@ export const RegisterForm = ({ callbackUrl }: Props) => {
             <FormItem>
               <FormLabel>Confirm password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Confirm the password..."
-                  disabled={loading}
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    trigger(field.name);
-                  }}
-                />
+                <div className="relative">
+                  <Input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm the password..."
+                    disabled={loading}
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      trigger(field.name);
+                    }}
+                  />
+                  <ShowPasswordBlock
+                    showPassword={showConfirmPassword}
+                    onClick={() =>
+                      setShowConfirmPassword((prevState) => !prevState)
+                    }
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

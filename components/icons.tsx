@@ -32,6 +32,8 @@ import {
   X,
   FilePlus,
   ClipboardList,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -186,4 +188,6 @@ export const Icons = {
   wallet: Wallet,
   addTransaction: FilePlus,
   listTransaction: ClipboardList,
+  eye: Eye,
+  eyeOff: EyeOff,
 };

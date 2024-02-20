@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { ShowPasswordBlock } from "../show-password-block";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Enter a valid email address" }),
@@ -38,6 +39,7 @@ type Props = {
 
 export const LoginForm = ({ callbackUrl }: Props) => {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -118,12 +120,18 @@ export const LoginForm = ({ callbackUrl }: Props) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Enter your password..."
-                  disabled={loading}
-                  {...field}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password..."
+                    disabled={loading}
+                    {...field}
+                  />
+                  <ShowPasswordBlock
+                    showPassword={showPassword}
+                    onClick={() => setShowPassword((prevState) => !prevState)}
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
