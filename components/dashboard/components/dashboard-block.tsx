@@ -142,7 +142,7 @@ export const Dashboard = ({ session }: Props) => {
           <Card className="relative col-span-4 lg:col-span-3">
             <CardHeader>
               <CardTitle>Organized by categories</CardTitle>
-              {filteredData && (
+              {filteredData && filteredData.length > 0 && (
                 <CardDescription className="text-[13px] italic !mt-3">
                   If a transaction has multiple categories, the amount will be
                   added to all of them
