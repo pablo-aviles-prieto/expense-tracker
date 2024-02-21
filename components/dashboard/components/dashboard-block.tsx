@@ -16,7 +16,7 @@ import { UserMessage } from "./user-message";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { format, subYears } from "date-fns";
-import { dateFormat } from "@/utils/const";
+import { URL_POST_TRANSACTION, dateFormat } from "@/utils/const";
 import { useFetch } from "@/hooks/use-fetch";
 import type { TransactionObjBack } from "@/types";
 import { useQuery } from "@tanstack/react-query";
@@ -32,8 +32,6 @@ type ResponseFilteredData = {
   transactions?: TransactionObjBack[];
   error?: string;
 };
-
-const URL_POST_TRANSACTION = `/api/transactions/filtered`;
 
 export const Dashboard = ({ session }: Props) => {
   // Have to add this initial loader cuz the useEffect cause a flicker

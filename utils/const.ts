@@ -57,3 +57,5 @@ export const monthOrder = {
   Nov: 11,
   Dec: 12,
 } as const;
+
+export const URL_POST_TRANSACTION = `/api/transactions/filtered`;

@@ -5,11 +5,19 @@ import { buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { Employee } from "@/constants/data";
+import { authOptions } from "@/lib/auth-options";
 import { cn } from "@/lib/utils";
+import { getFilteredTransactions } from "@/services/transactions";
+import type { CustomSessionI } from "@/types";
+import { URL_POST_TRANSACTION } from "@/utils/const";
 import { Plus } from "lucide-react";
+import { type NextAuthOptions, getServerSession } from "next-auth";
 import Link from "next/link";
 
-const breadcrumbItems = [{ title: "Employee", link: "/dashboard/employee" }];
+const breadcrumbItems = [
+  { title: "Transactions", link: "/dashboard/transactions" },
+  { title: "List", link: "/dashboard/transactions/list" },
+];
 
 type paramsProps = {
   searchParams: {
@@ -22,6 +30,22 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
   const pageLimit = Number(searchParams.limit) || 10;
   const country = searchParams.search || null;
   const offset = (page - 1) * pageLimit;
+
+  const URL = `${URL_POST_TRANSACTION}?startDate=2023-04-01&endDate=2023-09-30`;
+  const session = (await getServerSession(
+    authOptions as NextAuthOptions,
+  )) as CustomSessionI;
+  const transactions = await getFilteredTransactions({
+    userId: session?.user?.id ?? "",
+    startDate: "2023-04-01",
+    endDate: "2023-09-30",
+    transType: null,
+    filterType: null,
+    filterOperator: null,
+    filterValue: null,
+    filteredCategories: undefined,
+  });
+  console.log("resTransactions", transactions);
 
   const res = await fetch(
     `https://api.slingacademy.com/v1/sample-data/users?offset=${offset}&limit=${pageLimit}` +
@@ -38,8 +62,8 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Employee (${totalUsers})`}
-            description="Manage employees (Server side table functionalities.)"
+            title={`Transactions (${transactions.transactions.length})`}
+            description="Manage your transactions!"
           />
 
           <Link
