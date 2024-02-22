@@ -1,6 +1,6 @@
 import BreadCrumb from "@/components/breadcrumb";
 import { columns } from "@/components/tables/employee-tables/columns";
-import { EmployeeTable } from "@/components/tables/employee-tables/employee-table";
+import { TransactionsTable } from "@/components/tables/transactions-tables/transaction-table";
 import { buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
@@ -9,7 +9,8 @@ import { authOptions } from "@/lib/auth-options";
 import { cn } from "@/lib/utils";
 import { getFilteredTransactions } from "@/services/transactions";
 import type { CustomSessionI } from "@/types";
-import { URL_POST_TRANSACTION } from "@/utils/const";
+import { dateFormat } from "@/utils/const";
+import { format, subYears } from "date-fns";
 import { Plus } from "lucide-react";
 import { type NextAuthOptions, getServerSession } from "next-auth";
 import Link from "next/link";
@@ -26,26 +27,46 @@ type paramsProps = {
 };
 
 export default async function ListTransactions({ searchParams }: paramsProps) {
-  const page = Number(searchParams.page) || 1;
+  const page = Number(searchParams.page) || 2;
   const pageLimit = Number(searchParams.limit) || 10;
   const country = searchParams.search || null;
   const offset = (page - 1) * pageLimit;
 
-  const URL = `${URL_POST_TRANSACTION}?startDate=2023-04-01&endDate=2023-09-30`;
+  // TODO: Sanitize the queryParams to avoid crashing
+  const {
+    startDate: startDateParam,
+    endDate: endDateParam,
+    transType, // incomes / expenses
+    filterType, // Amount / Name (also looking in notes)
+    filterOperator, // gt / lt (used along Amount as filterType)
+    filterValue, // used along with the filterType, number (Amount) or string (Name)
+    categories, // string[] of category names
+  } = searchParams;
+
+  const startDate =
+    typeof startDateParam === "string"
+      ? startDateParam
+      : format(subYears(new Date(), 1), dateFormat.ISO);
+  const endDate =
+    typeof endDateParam === "string"
+      ? endDateParam
+      : format(new Date(), dateFormat.ISO);
+
   const session = (await getServerSession(
     authOptions as NextAuthOptions,
   )) as CustomSessionI;
-  const transactions = await getFilteredTransactions({
+  const { ok, transactions } = await getFilteredTransactions({
     userId: session?.user?.id ?? "",
-    startDate: "2023-04-01",
-    endDate: "2023-09-30",
-    transType: null,
-    filterType: null,
-    filterOperator: null,
-    filterValue: null,
-    filteredCategories: undefined,
+    startDate: startDate,
+    endDate: endDate,
+    transType: transType ? String(transType) : null,
+    filterType: filterType ? String(filterType) : null,
+    filterOperator: filterOperator ? String(filterOperator) : null,
+    filterValue: filterValue ? String(filterValue) : null,
+    filteredCategories:
+      typeof categories === "string" ? [categories] : categories,
   });
-  console.log("resTransactions", transactions);
+  // console.log("transactions", transactions);
 
   const res = await fetch(
     `https://api.slingacademy.com/v1/sample-data/users?offset=${offset}&limit=${pageLimit}` +
@@ -62,20 +83,20 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Transactions (${transactions.transactions.length})`}
-            description="Manage your transactions!"
+            title={`Transactions (${transactions.length})`}
+            description="Manage your transactions! (show the filters active)"
           />
 
           <Link
-            href={"/dashboard/employee/new"}
+            href={"/dashboard/transactions/add"}
             className={cn(buttonVariants({ variant: "default" }))}
           >
-            <Plus className="w-4 h-4 mr-2" /> Add New
+            <Plus className="w-4 h-4 mr-2" /> Add transaction
           </Link>
         </div>
         <Separator />
 
-        <EmployeeTable
+        <TransactionsTable
           searchKey="country"
           pageNo={page}
           columns={columns}

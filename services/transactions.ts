@@ -43,6 +43,8 @@ export const getAllTransactionsPerUser = cache(async (userId: string) => {
   return { ok: true, transactions: parsedTransactions };
 });
 
+// TODO: Use zod schema to validate the properties since they gonna come from queryParams
+// also, check if filterOperator is gt or lt, not other options
 export const getFilteredTransactions = async ({
   userId,
   startDate,
@@ -70,6 +72,10 @@ export const getFilteredTransactions = async ({
     query.amount = { $lt: 0 };
   }
 
+  // TODO: Should recieve an array of names and get his mongo id's using getCategoriesId
+  // to search by the ID.
+  // TODO: Verify that getCategoriesId returns the array of cat IDs of the correct categories
+  // name provided, discarding any worng category name
   if (filteredCategories) {
     query.categories = {
       $in: filteredCategories.map(

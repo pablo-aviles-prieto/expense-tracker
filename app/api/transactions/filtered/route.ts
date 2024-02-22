@@ -33,6 +33,7 @@ export const GET = async (req: NextRequest) => {
     const filterValue = searchParams.get("filterValue");
     const filteredCategories = searchParams.get("categories")?.split(",");
 
+    // TODO: This should be done inside getFilteredTransactions
     const categoriesId =
       filteredCategories && filteredCategories.length > 0
         ? await getCategoriesId({
