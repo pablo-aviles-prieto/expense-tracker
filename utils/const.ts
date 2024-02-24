@@ -41,6 +41,12 @@ export const dateFormat = {
   shortMonthWithYear: "MMM yy",
 } as const;
 
+export const shortDateFormat = {
+  ISO: "yy-MM-dd",
+  US: "MM/dd/yy",
+  EU: "dd/MM/yy",
+} as const;
+
 export const getEllipsed = "overflow-hidden text-ellipsis whitespace-nowrap";
 
 export const monthOrder = {

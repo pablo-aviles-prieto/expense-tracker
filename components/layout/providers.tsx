@@ -1,9 +1,11 @@
 "use client";
+
 import React from "react";
 import ThemeProvider from "./ThemeToggle/theme-provider";
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { DateFormatProvider } from "@/contexts/date-format-provider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,7 +27,9 @@ export default function Providers({
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <SessionProvider session={session}>
           <QueryClientProvider client={queryClient}>
-            <TooltipProvider>{children}</TooltipProvider>
+            <DateFormatProvider>
+              <TooltipProvider>{children}</TooltipProvider>
+            </DateFormatProvider>
           </QueryClientProvider>
         </SessionProvider>
       </ThemeProvider>

@@ -1,3 +1,7 @@
+"use client";
+
+import { useDateFormat } from "@/hooks/use-date-format";
+import { format } from "date-fns";
 import { useTheme } from "next-themes";
 import React from "react";
 import { TooltipProps } from "recharts";
@@ -6,12 +10,18 @@ import {
   NameType,
 } from "recharts/types/component/DefaultTooltipContent";
 
+interface CustomTooltipProps extends TooltipProps<ValueType, NameType> {
+  formatLabelDate?: boolean;
+}
+
 export const CustomTooltipContent = ({
   active,
   payload,
   label,
-}: TooltipProps<ValueType, NameType>) => {
+  formatLabelDate = false,
+}: CustomTooltipProps) => {
   const { resolvedTheme } = useTheme();
+  const { dateFormat } = useDateFormat();
 
   if (active && payload && payload.length) {
     return (
@@ -26,7 +36,9 @@ export const CustomTooltipContent = ({
           padding: "10px",
         }}
       >
-        <p className="font-semibold text-center">{label}</p>
+        <p className="font-semibold text-center">
+          {formatLabelDate ? format(new Date(label), dateFormat) : label}
+        </p>
         {payload.map((entry, index) => (
           <p style={{ color: entry.color }} key={index}>
             {entry.dataKey}:{" "}

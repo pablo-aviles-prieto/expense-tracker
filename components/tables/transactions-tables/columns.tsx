@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import { getEllipsed } from "@/utils/const";
 import { Button } from "@/components/ui/button";
+import { DateCell } from "./date-cell";
 
 export const columns: ColumnDef<TransactionObjBack>[] = [
   {
@@ -42,6 +43,7 @@ export const columns: ColumnDef<TransactionObjBack>[] = [
   {
     accessorKey: "date",
     header: "DATE",
+    cell: ({ getValue }) => <DateCell date={getValue() as string} />,
   },
   {
     accessorKey: "categories",
