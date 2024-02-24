@@ -1,5 +1,5 @@
 import BreadCrumb from "@/components/breadcrumb";
-import { columns } from "@/components/tables/employee-tables/columns";
+import { columns } from "@/components/tables/transactions-tables/columns";
 import { TransactionsTable } from "@/components/tables/transactions-tables/transaction-table";
 import { buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
@@ -68,14 +68,12 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
   });
   // console.log("transactions", transactions);
 
-  const res = await fetch(
-    `https://api.slingacademy.com/v1/sample-data/users?offset=${offset}&limit=${pageLimit}` +
-      (country ? `&search=${country}` : ""),
-  );
-  const employeeRes = await res.json();
-  const totalUsers = employeeRes.total_users; //1000
+  // const res = await fetch(
+  //   `https://api.slingacademy.com/v1/sample-data/users?offset=${offset}&limit=${pageLimit}` +
+  //     (country ? `&search=${country}` : ""),
+  // );
+  const totalUsers = transactions.length; //1000
   const pageCount = Math.ceil(totalUsers / pageLimit);
-  const employee: Employee[] = employeeRes.users;
   return (
     <>
       <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
@@ -97,11 +95,11 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
         <Separator />
 
         <TransactionsTable
-          searchKey="country"
+          searchKey="name"
           pageNo={page}
           columns={columns}
           totalUsers={totalUsers}
-          data={employee}
+          data={transactions}
           pageCount={pageCount}
         />
       </div>

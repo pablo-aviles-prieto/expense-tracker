@@ -18,6 +18,7 @@ export type TransactionObjBack = TransactionObj & {
   userId: string;
   createdAt: string;
   updatedAt: string;
+  id: string;
 };
 
 export interface ResponseTransaction {

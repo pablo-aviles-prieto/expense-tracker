@@ -3,6 +3,7 @@ import React from "react";
 import ThemeProvider from "./ThemeToggle/theme-provider";
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +25,7 @@ export default function Providers({
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <SessionProvider session={session}>
           <QueryClientProvider client={queryClient}>
-            {children}
+            <TooltipProvider>{children}</TooltipProvider>
           </QueryClientProvider>
         </SessionProvider>
       </ThemeProvider>

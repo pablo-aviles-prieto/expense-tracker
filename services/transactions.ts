@@ -19,6 +19,7 @@ type FilteredTransactions = {
   filteredCategories: string[] | undefined;
 };
 
+// TODO: Add offset and limitPage on the query
 type QueryTransType = {
   userId: string;
   date: { $gte: string; $lte: string };
@@ -76,6 +77,7 @@ export const getFilteredTransactions = async ({
   // to search by the ID.
   // TODO: Verify that getCategoriesId returns the array of cat IDs of the correct categories
   // name provided, discarding any worng category name
+  // TODO: Add a mothafocking offset and limitPage to paginate
   if (filteredCategories) {
     query.categories = {
       $in: filteredCategories.map(

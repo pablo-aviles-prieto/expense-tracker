@@ -68,7 +68,8 @@ export const TransactionsTable = <TData, TValue>({
   const per_page = searchParams?.get("limit") ?? "10";
   const perPageAsNumber = Number(per_page);
   const fallbackPerPage = isNaN(perPageAsNumber) ? 10 : perPageAsNumber;
-
+  console.log("fallbackPage", fallbackPage);
+  console.log("fallbackPerPage", fallbackPerPage);
   /* this can be used to get the selectedrows 
   console.log("value", table.getFilteredSelectedRowModel()); */
 
@@ -128,34 +129,8 @@ export const TransactionsTable = <TData, TValue>({
 
   const searchValue = table.getColumn(searchKey)?.getFilterValue() as string;
 
-  // React.useEffect(() => {
-  //   if (debounceValue.length > 0) {
-  //     router.push(
-  //       `${pathname}?${createQueryString({
-  //         [selectedOption.value]: `${debounceValue}${
-  //           debounceValue.length > 0 ? `.${filterVariety}` : ""
-  //         }`,
-  //       })}`,
-  //       {
-  //         scroll: false,
-  //       }
-  //     )
-  //   }
-
-  //   if (debounceValue.length === 0) {
-  //     router.push(
-  //       `${pathname}?${createQueryString({
-  //         [selectedOption.value]: null,
-  //       })}`,
-  //       {
-  //         scroll: false,
-  //       }
-  //     )
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [debounceValue, filterVariety, selectedOption.value])
-
   React.useEffect(() => {
+    // TODO: This gets rendered twice and reset the page on first renders
     if (searchValue?.length > 0) {
       router.push(
         `${pathname}?${createQueryString({
