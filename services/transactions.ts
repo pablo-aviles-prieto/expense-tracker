@@ -9,17 +9,10 @@ import CategoriesModel from "@/models/categories/categories-model";
 import type { Categories } from "@/types";
 
 import "@/models/categories/categories-model";
+import { z } from "zod";
+import { FilteredTransactionsSchema } from "@/schemas/filtered-transactions-schema";
 
-type FilteredTransactions = {
-  userId: string;
-  startDate: string;
-  endDate: string;
-  transType: string | null;
-  filterType: string | null;
-  filterOperator: string | null;
-  filterValue: string | null;
-  filteredCategories: string[] | undefined;
-};
+type FilteredTransactions = z.infer<typeof FilteredTransactionsSchema>;
 
 // TODO: Add offset and limitPage on the query
 type QueryTransType = {
@@ -46,8 +39,6 @@ export const getAllTransactionsPerUser = cache(async (userId: string) => {
   return { ok: true, transactions: parsedTransactions };
 });
 
-// TODO: Use zod schema to validate the properties since they gonna come from queryParams
-// also, check if filterOperator is gt or lt, not other options
 // TODO: Add a mothafocking offset and limitPage to paginate
 export const getFilteredTransactions = async ({
   userId,
@@ -59,6 +50,17 @@ export const getFilteredTransactions = async ({
   filterValue,
   filteredCategories,
 }: FilteredTransactions) => {
+  FilteredTransactionsSchema.parse({
+    userId,
+    startDate,
+    endDate,
+    transType,
+    filterType,
+    filterOperator,
+    filterValue,
+    filteredCategories,
+  });
+
   if (isInvalidUserId(userId)) {
     throw new Error(errorMessages.invalidUserId);
   }
@@ -111,5 +113,5 @@ export const getFilteredTransactions = async ({
   const parsedTransactions = JSON.parse(
     JSON.stringify(transactions),
   ) as TransactionObjBack[];
-  return { ok: true, transactions: parsedTransactions };
+  return { ok: true, data: parsedTransactions, error: null };
 };

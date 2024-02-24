@@ -6,13 +6,16 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { authOptions } from "@/lib/auth-options";
 import { cn } from "@/lib/utils";
+import { FilteredTransactionsSchema } from "@/schemas/filtered-transactions-schema";
 import { getFilteredTransactions } from "@/services/transactions";
 import type { CustomSessionI } from "@/types";
-import { dateFormat } from "@/utils/const";
+import { dateFormat, errorMessages } from "@/utils/const";
+import { parseZodErrors } from "@/utils/parse-zod-errors";
 import { format, subYears } from "date-fns";
 import { Plus } from "lucide-react";
 import { type NextAuthOptions, getServerSession } from "next-auth";
 import Link from "next/link";
+import { z } from "zod";
 
 const breadcrumbItems = [
   { title: "Transactions", link: "/dashboard/transactions" },
@@ -25,21 +28,62 @@ type paramsProps = {
   };
 };
 
+type TransactionsProps = {
+  userId: string;
+  startDate: string;
+  endDate: string;
+  transType: string | null;
+  filterType: string | null;
+  filterOperator: string | null;
+  filterValue: string | null;
+  filteredCategories: string | string[] | undefined;
+};
+
+const getTransactions = async ({
+  userId,
+  startDate,
+  endDate,
+  transType,
+  filterType,
+  filterOperator,
+  filterValue,
+  filteredCategories,
+}: TransactionsProps) => {
+  try {
+    const parsedParams = FilteredTransactionsSchema.parse({
+      userId,
+      startDate,
+      endDate,
+      transType,
+      filterType,
+      filterOperator,
+      filterValue,
+      filteredCategories,
+    });
+
+    return getFilteredTransactions(parsedParams);
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return { ok: false, error: parseZodErrors({ error: err }), data: null };
+    }
+    return { ok: false, error: errorMessages.generic, data: null };
+  }
+};
+
 export default async function ListTransactions({ searchParams }: paramsProps) {
   const page = Number(searchParams.page) || 2;
   const pageLimit = Number(searchParams.limit) || 10;
   const country = searchParams.search || null;
   const offset = (page - 1) * pageLimit;
 
-  // TODO: Sanitize the queryParams to avoid crashing
   const {
     startDate: startDateParam,
     endDate: endDateParam,
-    transType, // incomes / expenses
-    filterType, // Amount / Name (also looking in notes)
-    filterOperator, // gt / lt (used along Amount as filterType)
-    filterValue, // used along with the filterType, number (Amount) or string (Name)
-    categories, // string[] of category names
+    transType,
+    filterType,
+    filterOperator,
+    filterValue,
+    categories,
   } = searchParams;
 
   const startDate =
@@ -54,10 +98,10 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
   const session = (await getServerSession(
     authOptions as NextAuthOptions,
   )) as CustomSessionI;
-  const { ok, transactions } = await getFilteredTransactions({
+  const transResult = await getTransactions({
     userId: session?.user?.id ?? "",
-    startDate: startDate,
-    endDate: endDate,
+    startDate,
+    endDate,
     transType: transType ? String(transType) : null,
     filterType: filterType ? String(filterType) : null,
     filterOperator: filterOperator ? String(filterOperator) : null,
@@ -71,8 +115,9 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
   //   `https://api.slingacademy.com/v1/sample-data/users?offset=${offset}&limit=${pageLimit}` +
   //     (country ? `&search=${country}` : ""),
   // );
-  const totalUsers = transactions.length; //1000
-  const pageCount = Math.ceil(totalUsers / pageLimit);
+
+  const totalTrans = transResult?.data?.length ?? 0;
+  const pageCount = Math.ceil(totalTrans / pageLimit);
   return (
     <>
       <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
@@ -80,7 +125,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Transactions (${transactions.length})`}
+            title={`Transactions (${totalTrans})`}
             description="Manage your transactions! (show the filters active)"
           />
 
@@ -93,14 +138,21 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
         </div>
         <Separator />
 
-        <TransactionsTable
-          searchKey="name"
-          pageNo={page}
-          columns={columns}
-          totalUsers={totalUsers}
-          data={transactions}
-          pageCount={pageCount}
-        />
+        {transResult.data ? (
+          <TransactionsTable
+            searchKey="name"
+            pageNo={page}
+            columns={columns}
+            totalUsers={totalTrans}
+            data={transResult.data}
+            pageCount={pageCount}
+          />
+        ) : (
+          <div>
+            <p>There was an error retrieving the transactions</p>
+            <p>Message: {transResult.error}</p>
+          </div>
+        )}
       </div>
     </>
   );

@@ -1,9 +1,12 @@
+import { FilteredTransactionsSchema } from "@/schemas/filtered-transactions-schema";
 import { getCategoriesId } from "@/services/categories";
 import { getFilteredTransactions } from "@/services/transactions";
 import { errorMessages } from "@/utils/const";
+import { parseZodErrors } from "@/utils/parse-zod-errors";
 import mongoose from "mongoose";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -33,24 +36,40 @@ export const GET = async (req: NextRequest) => {
     const filterValue = searchParams.get("filterValue");
     const filteredCategories = searchParams.get("categories")?.split(",");
 
-    return NextResponse.json(
-      await getFilteredTransactions({
-        userId: tokenNext.id,
-        startDate: startDate ?? "",
-        endDate: endDate ?? "",
-        transType,
-        filterType,
-        filterOperator,
-        filterValue,
-        filteredCategories: filteredCategories,
-      }),
-      { status: 200 },
-    );
+    const parsedParams = FilteredTransactionsSchema.safeParse({
+      userId: tokenNext.id,
+      startDate,
+      endDate,
+      transType,
+      filterType,
+      filterOperator,
+      filterValue,
+      filteredCategories,
+    });
+
+    if (!parsedParams.success) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: parseZodErrors({ error: parsedParams.error }),
+          data: null,
+        },
+        { status: 400 },
+      );
+    }
+
+    return NextResponse.json(await getFilteredTransactions(parsedParams.data), {
+      status: 200,
+    });
   } catch (error) {
-    // TODO: Improve error message, using the error
-    console.error("ERROR", error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { ok: false, error: parseZodErrors({ error }), data: null },
+        { status: 400 },
+      );
+    }
     return NextResponse.json(
-      { ok: false, error: errorMessages.generic },
+      { ok: false, error: errorMessages.generic, data: null },
       { status: 500 },
     );
   }
