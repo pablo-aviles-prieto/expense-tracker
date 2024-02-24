@@ -29,7 +29,7 @@ type Props = {
 
 type ResponseFilteredData = {
   ok: boolean;
-  transactions?: TransactionObjBack[];
+  data?: TransactionObjBack[];
   error?: string;
 };
 
@@ -50,7 +50,7 @@ export const Dashboard = ({ session }: Props) => {
     if (!response.ok) {
       throw new Error(response.error ?? "Network response was not ok");
     }
-    return response.transactions;
+    return response.data;
   };
 
   const {
