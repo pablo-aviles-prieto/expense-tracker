@@ -6,6 +6,7 @@ import { SessionProvider, SessionProviderProps } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DateFormatProvider } from "@/contexts/date-format-provider";
+import { CurrencyProvider } from "@/contexts/currency-provider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,7 +29,9 @@ export default function Providers({
         <SessionProvider session={session}>
           <QueryClientProvider client={queryClient}>
             <DateFormatProvider>
-              <TooltipProvider>{children}</TooltipProvider>
+              <CurrencyProvider>
+                <TooltipProvider>{children}</TooltipProvider>
+              </CurrencyProvider>
             </DateFormatProvider>
           </QueryClientProvider>
         </SessionProvider>

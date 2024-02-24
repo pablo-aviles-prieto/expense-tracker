@@ -1,3 +1,5 @@
+"use client";
+
 import { dateFormat } from "@/utils/const";
 import React, { createContext, useState } from "react";
 
@@ -13,7 +15,7 @@ type DateFormatType =
 interface DateFormatContextType {
   dateFormat: DateFormatType;
   availableDateFormatTypes: typeof availableDateFormatTypes;
-  setDateFormat: (format: DateFormatType) => void;
+  setDateFormat: (dateFormat: DateFormatType) => void;
 }
 
 export const DateFormatContext = createContext<

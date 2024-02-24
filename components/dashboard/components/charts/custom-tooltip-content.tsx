@@ -1,5 +1,6 @@
 "use client";
 
+import { useCurrency } from "@/hooks/use-currency";
 import { useDateFormat } from "@/hooks/use-date-format";
 import { format } from "date-fns";
 import { useTheme } from "next-themes";
@@ -22,6 +23,7 @@ export const CustomTooltipContent = ({
 }: CustomTooltipProps) => {
   const { resolvedTheme } = useTheme();
   const { dateFormat } = useDateFormat();
+  const { currency } = useCurrency();
 
   if (active && payload && payload.length) {
     return (
@@ -42,7 +44,10 @@ export const CustomTooltipContent = ({
         {payload.map((entry, index) => (
           <p style={{ color: entry.color }} key={index}>
             {entry.dataKey}:{" "}
-            <span className="font-semibold">{entry.value}€</span>
+            <span className="font-semibold">
+              {entry.value}
+              {currency}
+            </span>
           </p>
         ))}
       </div>

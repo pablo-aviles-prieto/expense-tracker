@@ -1,3 +1,5 @@
+"use client";
+
 import { Icons } from "@/components/icons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -6,6 +8,7 @@ import { calculateTotalTypeTrans } from "../../utils/calculate-total-type-trans"
 import { getEllipsed } from "@/utils/const";
 import { differenceInCalendarDays } from "date-fns";
 import { DateRange } from "react-day-picker";
+import { useCurrency } from "@/hooks/use-currency";
 
 type Props = {
   filteredData: TransactionObjBack[] | undefined;
@@ -18,6 +21,8 @@ const formatterUS = new Intl.NumberFormat("en-US", {
 });
 
 export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
+  const { currency } = useCurrency();
+
   const incomes = filteredData
     ? calculateTotalTypeTrans({ transactions: filteredData })
     : 0;
@@ -60,6 +65,7 @@ export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
             <>
               <div className="text-2xl font-bold text-green-600">
                 +{formatterUS.format(incomes)}
+                {currency}
               </div>
               <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
                 <span className="font-bold">
@@ -92,6 +98,7 @@ export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
             <>
               <div className="text-2xl font-bold text-red-700">
                 {formatterUS.format(expenses)}
+                {currency}
               </div>
               <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
                 <span className="font-bold">
@@ -129,6 +136,7 @@ export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
               >
                 {netSavingSymbol}
                 {formatterUS.format(netSavings)}
+                {currency}
               </div>
               <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
                 <span className="font-bold">

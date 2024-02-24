@@ -11,6 +11,7 @@ import {
 import { getEllipsed } from "@/utils/const";
 import { Button } from "@/components/ui/button";
 import { DateCell } from "./date-cell";
+import { AmountCell } from "./amount-cell";
 
 export const columns: ColumnDef<TransactionObjBack>[] = [
   {
@@ -39,6 +40,7 @@ export const columns: ColumnDef<TransactionObjBack>[] = [
   {
     accessorKey: "amount",
     header: "AMOUNT",
+    cell: ({ getValue }) => <AmountCell amount={getValue() as string} />,
   },
   {
     accessorKey: "date",

@@ -19,11 +19,16 @@ import {
 import { useDateFormat } from "@/hooks/use-date-format";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Icons } from "../icons";
+import { useCurrency } from "@/hooks/use-currency";
+
 export function UserNav() {
   const { data: session } = useSession();
   const { dateFormat, availableDateFormatTypes, setDateFormat } =
     useDateFormat();
+  const { currency, setCurrency, availableCurrency } = useCurrency();
   const router = useRouter();
+
   if (session) {
     return (
       <DropdownMenu>
@@ -53,7 +58,9 @@ export function UserNav() {
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => router.push("/dashboard/profile")}>
               Profile
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+              <DropdownMenuShortcut>
+                <Icons.profile className="w-4 h-4" />
+              </DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem>
               Billing
@@ -82,6 +89,24 @@ export function UserNav() {
                       </DropdownMenuCheckboxItem>
                     ),
                   )}
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Currency</DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  {Object.entries(availableCurrency).map(([key, value]) => (
+                    <DropdownMenuCheckboxItem
+                      key={key}
+                      onClick={() => setCurrency(value)}
+                      checked={currency === value}
+                    >
+                      <p>
+                        {key} <span className="text-xs">({value})</span>
+                      </p>
+                    </DropdownMenuCheckboxItem>
+                  ))}
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>

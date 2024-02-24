@@ -3,15 +3,26 @@
 import { PieChart, Pie, ResponsiveContainer, Sector } from "recharts";
 import type { PieChartData } from "../../types/pie-chart";
 import { useState } from "react";
+import { useCurrency } from "@/hooks/use-currency";
 
-type Props = {
+type PieChartBlockProps = {
   data: PieChartData;
   pieColor: string;
 };
 
+type RenderActiveShapeProps = {
+  props: any;
+  pieColor: string;
+  currency: string;
+};
+
 const RADIAN = Math.PI / 180;
 
-const renderActiveShape = (props: any, pieColor: string) => {
+const renderActiveShape = ({
+  props,
+  pieColor,
+  currency,
+}: RenderActiveShapeProps) => {
   const {
     cx,
     cy,
@@ -69,7 +80,7 @@ const renderActiveShape = (props: any, pieColor: string) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#727272"
-      >{`${value}€`}</text>
+      >{`${value}${currency}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -83,8 +94,9 @@ const renderActiveShape = (props: any, pieColor: string) => {
   );
 };
 
-export const PieChartBlock = ({ data, pieColor }: Props) => {
+export const PieChartBlock = ({ data, pieColor }: PieChartBlockProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { currency } = useCurrency();
 
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
@@ -95,7 +107,9 @@ export const PieChartBlock = ({ data, pieColor }: Props) => {
       <PieChart>
         <Pie
           activeIndex={activeIndex}
-          activeShape={(props: any) => renderActiveShape(props, pieColor)}
+          activeShape={(props: any) =>
+            renderActiveShape({ props, pieColor, currency })
+          }
           data={data}
           cx="50%"
           cy="50%"
