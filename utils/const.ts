@@ -65,3 +65,6 @@ export const monthOrder = {
 } as const;
 
 export const URL_POST_TRANSACTION = `/api/transactions/filtered`;
+
+export const DEFAULT_PAGE = 1;
+export const DEFAULT_PAGE_LIMIT = 10;

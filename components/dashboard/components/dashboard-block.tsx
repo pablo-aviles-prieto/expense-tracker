@@ -29,7 +29,7 @@ type Props = {
 
 type ResponseFilteredData = {
   ok: boolean;
-  data?: TransactionObjBack[];
+  data?: { list: TransactionObjBack[]; totalCount: number };
   error?: string;
 };
 
@@ -50,7 +50,7 @@ export const Dashboard = ({ session }: Props) => {
     if (!response.ok) {
       throw new Error(response.error ?? "Network response was not ok");
     }
-    return response.data;
+    return response.data?.list;
   };
 
   const {

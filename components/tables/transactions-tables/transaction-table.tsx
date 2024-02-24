@@ -34,13 +34,13 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { DEFAULT_PAGE, DEFAULT_PAGE_LIMIT } from "@/utils/const";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
   pageNo: number;
-  totalUsers: number;
   pageSizeOptions?: number[];
   pageCount: number;
   searchParams?: {
@@ -48,12 +48,12 @@ interface DataTableProps<TData, TValue> {
   };
 }
 
+// TODO: Use the dates from this component and pass into the params along with the page
 export const TransactionsTable = <TData, TValue>({
   columns,
   data,
   pageNo,
   searchKey,
-  totalUsers,
   pageCount,
   pageSizeOptions = [10, 20, 30, 40, 50],
 }: DataTableProps<TData, TValue>) => {
@@ -61,11 +61,11 @@ export const TransactionsTable = <TData, TValue>({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   // Search params
-  const page = searchParams?.get("page") ?? "1";
+  const page = searchParams?.get("page") ?? String(DEFAULT_PAGE);
   const pageAsNumber = Number(page);
   const fallbackPage =
     isNaN(pageAsNumber) || pageAsNumber < 1 ? 1 : pageAsNumber;
-  const per_page = searchParams?.get("limit") ?? "10";
+  const per_page = searchParams?.get("limit") ?? String(DEFAULT_PAGE_LIMIT);
   const perPageAsNumber = Number(per_page);
   const fallbackPerPage = isNaN(perPageAsNumber) ? 10 : perPageAsNumber;
   console.log("fallbackPage", fallbackPage);

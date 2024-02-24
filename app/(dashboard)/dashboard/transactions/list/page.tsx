@@ -9,7 +9,12 @@ import { cn } from "@/lib/utils";
 import { FilteredTransactionsSchema } from "@/schemas/filtered-transactions-schema";
 import { getFilteredTransactions } from "@/services/transactions";
 import type { CustomSessionI } from "@/types";
-import { dateFormat, errorMessages } from "@/utils/const";
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_LIMIT,
+  dateFormat,
+  errorMessages,
+} from "@/utils/const";
 import { parseZodErrors } from "@/utils/parse-zod-errors";
 import { format, subYears } from "date-fns";
 import { Plus } from "lucide-react";
@@ -37,6 +42,8 @@ type TransactionsProps = {
   filterOperator: string | null;
   filterValue: string | null;
   filteredCategories: string | string[] | undefined;
+  offset?: number;
+  limit?: number;
 };
 
 const getTransactions = async ({
@@ -48,6 +55,8 @@ const getTransactions = async ({
   filterOperator,
   filterValue,
   filteredCategories,
+  offset,
+  limit,
 }: TransactionsProps) => {
   try {
     const parsedParams = FilteredTransactionsSchema.parse({
@@ -59,6 +68,8 @@ const getTransactions = async ({
       filterOperator,
       filterValue,
       filteredCategories,
+      offset,
+      limit,
     });
 
     return getFilteredTransactions(parsedParams);
@@ -71,10 +82,12 @@ const getTransactions = async ({
 };
 
 export default async function ListTransactions({ searchParams }: paramsProps) {
-  const page = Number(searchParams.page) || 2;
-  const pageLimit = Number(searchParams.limit) || 10;
+  const page = Number(searchParams.page) || DEFAULT_PAGE;
+  const pageLimit = Number(searchParams.limit) || DEFAULT_PAGE_LIMIT;
   const country = searchParams.search || null;
   const offset = (page - 1) * pageLimit;
+  console.log("page", page);
+  console.log("pageLimit", pageLimit);
 
   const {
     startDate: startDateParam,
@@ -108,6 +121,8 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
     filterValue: filterValue ? String(filterValue) : null,
     filteredCategories:
       typeof categories === "string" ? [categories] : categories,
+    offset,
+    limit: pageLimit,
   });
   // console.log("transactions", transactions);
 
@@ -116,7 +131,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
   //     (country ? `&search=${country}` : ""),
   // );
 
-  const totalTrans = transResult?.data?.length ?? 0;
+  const totalTrans = transResult?.data?.totalCount ?? 0;
   const pageCount = Math.ceil(totalTrans / pageLimit);
   return (
     <>
@@ -143,8 +158,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
             searchKey="name"
             pageNo={page}
             columns={columns}
-            totalUsers={totalTrans}
-            data={transResult.data}
+            data={transResult.data.list}
             pageCount={pageCount}
           />
         ) : (

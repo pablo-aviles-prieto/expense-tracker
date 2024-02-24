@@ -49,6 +49,8 @@ export const getFilteredTransactions = async ({
   filterOperator,
   filterValue,
   filteredCategories,
+  offset,
+  limit,
 }: FilteredTransactions) => {
   FilteredTransactionsSchema.parse({
     userId,
@@ -106,12 +108,25 @@ export const getFilteredTransactions = async ({
     ];
   }
 
-  const transactions = await TransactionModel.find(query)
-    .sort({ date: -1 })
-    .populate("categories");
+  const totalCount = await TransactionModel.countDocuments(query);
+
+  const transactions =
+    offset !== undefined && limit !== undefined
+      ? await TransactionModel.find(query)
+          .sort({ date: -1 })
+          .skip(offset)
+          .limit(limit)
+          .populate("categories")
+      : await TransactionModel.find(query)
+          .sort({ date: -1 })
+          .populate("categories");
 
   const parsedTransactions = JSON.parse(
     JSON.stringify(transactions),
   ) as TransactionObjBack[];
-  return { ok: true, data: parsedTransactions, error: null };
+  return {
+    ok: true,
+    data: { list: parsedTransactions, totalCount },
+    error: null,
+  };
 };

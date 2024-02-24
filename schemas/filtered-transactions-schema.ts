@@ -12,5 +12,7 @@ export const FilteredTransactionsSchema = z.object({
   filterType: FilterTypeEnum.nullable(),
   filterOperator: FilterOperatorEnum.nullable(),
   filterValue: z.string().nullable(),
-  filteredCategories: z.array(z.string()).optional(), // can be undefined
+  filteredCategories: z.array(z.string()).optional(),
+  offset: z.number().optional(),
+  limit: z.number().optional(),
 });
