@@ -4,9 +4,9 @@ import { dateFormat } from "@/utils/const";
 import React, { createContext, useState } from "react";
 
 const availableDateFormatTypes = {
-  ISO: dateFormat.ISO,
-  US: dateFormat.US,
   EU: dateFormat.EU,
+  US: dateFormat.US,
+  ISO: dateFormat.ISO,
 } as const;
 
 type DateFormatType =
@@ -25,6 +25,7 @@ export const DateFormatContext = createContext<
 export const DateFormatProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  // TODO: Retrieve it from user details or localStorage
   const [dateFormat, setDateFormat] = useState<DateFormatType>(
     availableDateFormatTypes.EU,
   );

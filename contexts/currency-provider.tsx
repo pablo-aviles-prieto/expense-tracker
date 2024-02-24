@@ -3,8 +3,8 @@
 import React, { createContext, useState } from "react";
 
 const availableCurrency = {
-  USD: "$",
   EUR: "€",
+  USD: "$",
   GBP: "£",
   JPY: "¥",
   INR: "₹",
@@ -25,6 +25,7 @@ export const CurrencyContext = createContext<CurrencyContextType | undefined>(
 export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  // TODO: Retrieve it from user details or localStorage
   const [currency, setCurrency] = useState<CurrencyType>(availableCurrency.EUR);
 
   const value = { currency, setCurrency, availableCurrency };
