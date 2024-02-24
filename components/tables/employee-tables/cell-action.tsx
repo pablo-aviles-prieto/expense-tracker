@@ -32,11 +32,11 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         onConfirm={onConfirm}
         loading={loading}
       />
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button variant="ghost" className="w-8 h-8 p-0">
             <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
+            <MoreHorizontal className="w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -45,10 +45,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuItem
             onClick={() => router.push(`/dashboard/user/${data.id}`)}
           >
-            <Edit className="mr-2 h-4 w-4" /> Update
+            <Edit className="w-4 h-4 mr-2" /> Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" /> Delete
+            <Trash className="w-4 h-4 mr-2" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -4,7 +4,6 @@ import { TransactionsTable } from "@/components/tables/transactions-tables/trans
 import { buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { Employee } from "@/constants/data";
 import { authOptions } from "@/lib/auth-options";
 import { cn } from "@/lib/utils";
 import { getFilteredTransactions } from "@/services/transactions";

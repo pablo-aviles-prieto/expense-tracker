@@ -21,7 +21,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  console.log("open", open);
+  // console.log("open", open);
   const onConfirm = async () => {
     setOpen(false);
   };
@@ -34,7 +34,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         onConfirm={onConfirm}
         loading={loading}
       />
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="w-8 h-8 p-0">
             <span className="sr-only">Open menu</span>
