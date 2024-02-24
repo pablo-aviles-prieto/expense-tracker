@@ -33,15 +33,6 @@ export const GET = async (req: NextRequest) => {
     const filterValue = searchParams.get("filterValue");
     const filteredCategories = searchParams.get("categories")?.split(",");
 
-    // TODO: This should be done inside getFilteredTransactions
-    const categoriesId =
-      filteredCategories && filteredCategories.length > 0
-        ? await getCategoriesId({
-            userId: tokenNext.id,
-            categoriesNames: filteredCategories ?? [],
-          })
-        : undefined;
-
     return NextResponse.json(
       await getFilteredTransactions({
         userId: tokenNext.id,
@@ -51,11 +42,12 @@ export const GET = async (req: NextRequest) => {
         filterType,
         filterOperator,
         filterValue,
-        filteredCategories: categoriesId?.categories,
+        filteredCategories: filteredCategories,
       }),
       { status: 200 },
     );
   } catch (error) {
+    // TODO: Improve error message, using the error
     console.error("ERROR", error);
     return NextResponse.json(
       { ok: false, error: errorMessages.generic },

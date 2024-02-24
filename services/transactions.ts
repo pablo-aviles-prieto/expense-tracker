@@ -1,12 +1,14 @@
+import mongoose from "mongoose";
+import { cache } from "react";
 import connectDb from "@/lib/mongoose-config";
 import { TransactionObjBack } from "@/types/transaction";
 import TransactionModel from "@/models/transaction/transaction-model";
 import { errorMessages } from "@/utils/const";
 import { isInvalidUserId } from "@/utils/is-invalid-user-id";
-import { cache } from "react";
+import CategoriesModel from "@/models/categories/categories-model";
+import type { Categories } from "@/types";
 
 import "@/models/categories/categories-model";
-import mongoose from "mongoose";
 
 type FilteredTransactions = {
   userId: string;
@@ -46,6 +48,7 @@ export const getAllTransactionsPerUser = cache(async (userId: string) => {
 
 // TODO: Use zod schema to validate the properties since they gonna come from queryParams
 // also, check if filterOperator is gt or lt, not other options
+// TODO: Add a mothafocking offset and limitPage to paginate
 export const getFilteredTransactions = async ({
   userId,
   startDate,
@@ -73,14 +76,18 @@ export const getFilteredTransactions = async ({
     query.amount = { $lt: 0 };
   }
 
-  // TODO: Should recieve an array of names and get his mongo id's using getCategoriesId
-  // to search by the ID.
-  // TODO: Verify that getCategoriesId returns the array of cat IDs of the correct categories
-  // name provided, discarding any worng category name
-  // TODO: Add a mothafocking offset and limitPage to paginate
   if (filteredCategories) {
+    // Retrieving the categories ID list
+    const categories = await CategoriesModel.find({
+      name: { $in: filteredCategories },
+    });
+    const parsedCategories = JSON.parse(
+      JSON.stringify(categories),
+    ) as Categories[];
+    const categoriesIdList = parsedCategories.map((cat) => cat.id);
+
     query.categories = {
-      $in: filteredCategories.map(
+      $in: categoriesIdList.map(
         (id: string) => new mongoose.Types.ObjectId(id),
       ),
     };
