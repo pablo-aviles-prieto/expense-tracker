@@ -10,6 +10,10 @@ export interface IUser extends Document {
   password: string;
   signupDate: string;
   categories: ObjectId[];
+  transactionsDate?: {
+    from: string; // Date in format yyyy-MM-dd
+    to: string; // Date in format yyyy-MM-dd
+  };
 }
 
 const UserSchema: Schema = new Schema({
@@ -25,6 +29,10 @@ const UserSchema: Schema = new Schema({
   password: { type: String, required: true },
   signupDate: { type: String, required: true },
   categories: [{ type: Schema.Types.ObjectId, ref: "categories" }],
+  transactionsDate: {
+    from: { type: String },
+    to: { type: String },
+  },
 });
 
 UserSchema.set("toJSON", {

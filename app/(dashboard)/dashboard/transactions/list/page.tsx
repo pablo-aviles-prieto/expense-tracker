@@ -82,35 +82,37 @@ const getTransactions = async ({
 };
 
 export default async function ListTransactions({ searchParams }: paramsProps) {
-  const page = Number(searchParams.page) || DEFAULT_PAGE;
-  const pageLimit = Number(searchParams.limit) || DEFAULT_PAGE_LIMIT;
-  const country = searchParams.search || null;
-  const offset = (page - 1) * pageLimit;
-  console.log("page", page);
-  console.log("pageLimit", pageLimit);
-
   const {
     startDate: startDateParam,
     endDate: endDateParam,
+    page: pageParam,
+    limit: pageLimitParam,
     transType,
     filterType,
     filterOperator,
     filterValue,
     categories,
   } = searchParams;
-
-  const startDate =
-    typeof startDateParam === "string"
-      ? startDateParam
-      : format(subYears(new Date(), 1), dateFormat.ISO);
-  const endDate =
-    typeof endDateParam === "string"
-      ? endDateParam
-      : format(new Date(), dateFormat.ISO);
+  const page = Number(pageParam) || DEFAULT_PAGE;
+  const pageLimit = Number(pageLimitParam) || DEFAULT_PAGE_LIMIT;
+  const offset = (page - 1) * pageLimit;
+  const searchValue = searchParams.search || null;
 
   const session = (await getServerSession(
     authOptions as NextAuthOptions,
   )) as CustomSessionI;
+
+  const startDate =
+    typeof startDateParam === "string"
+      ? startDateParam
+      : session?.user?.transactionsDate?.from ??
+        format(subYears(new Date(), 1), dateFormat.ISO);
+  const endDate =
+    typeof endDateParam === "string"
+      ? endDateParam
+      : session?.user?.transactionsDate?.to ??
+        format(new Date(), dateFormat.ISO);
+
   const transResult = await getTransactions({
     userId: session?.user?.id ?? "",
     startDate,
@@ -125,11 +127,6 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
     limit: pageLimit,
   });
   // console.log("transactions", transactions);
-
-  // const res = await fetch(
-  //   `https://api.slingacademy.com/v1/sample-data/users?offset=${offset}&limit=${pageLimit}` +
-  //     (country ? `&search=${country}` : ""),
-  // );
 
   const totalTrans = transResult?.data?.totalCount ?? 0;
   const pageCount = Math.ceil(totalTrans / pageLimit);
@@ -156,10 +153,10 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
         {transResult.data ? (
           <TransactionsTable
             searchKey="name"
-            pageNo={page}
             columns={columns}
             data={transResult.data.list}
             pageCount={pageCount}
+            userStoredDates={session.user?.transactionsDate}
           />
         ) : (
           <div>

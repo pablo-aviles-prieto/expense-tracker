@@ -1,5 +1,4 @@
 import { FilteredTransactionsSchema } from "@/schemas/filtered-transactions-schema";
-import { getCategoriesId } from "@/services/categories";
 import { getFilteredTransactions } from "@/services/transactions";
 import { errorMessages } from "@/utils/const";
 import { parseZodErrors } from "@/utils/parse-zod-errors";

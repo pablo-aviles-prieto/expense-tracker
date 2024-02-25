@@ -9,7 +9,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React from "react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -34,29 +33,42 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { DEFAULT_PAGE, DEFAULT_PAGE_LIMIT } from "@/utils/const";
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_LIMIT,
+  PAGE_SIZE_OPTIONS,
+  URL_UPDATE_USER_TRANS_DATES,
+  dateFormat,
+} from "@/utils/const";
+import { DateRange } from "react-day-picker";
+import { format, subYears } from "date-fns";
+import { CalendarDateRangePicker } from "@/components/date-range-picker";
+import { useFetch } from "@/hooks/use-fetch";
+import { TransactionsDateObj } from "@/types";
+import { useSession } from "next-auth/react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
-  pageNo: number;
   pageSizeOptions?: number[];
   pageCount: number;
-  searchParams?: {
-    [key: string]: string | string[] | undefined;
-  };
+  userStoredDates?: TransactionsDateObj | null;
 }
 
-// TODO: Use the dates from this component and pass into the params along with the page
+// TODO: Improve to not make a request in the useEffect of the page
+// and then it makes another request in the dates useEffect
 export const TransactionsTable = <TData, TValue>({
   columns,
   data,
-  pageNo,
   searchKey,
   pageCount,
-  pageSizeOptions = [10, 20, 30, 40, 50],
+  userStoredDates = null,
+  pageSizeOptions = PAGE_SIZE_OPTIONS,
 }: DataTableProps<TData, TValue>) => {
+  const [date, setDate] = React.useState<DateRange | undefined>(undefined);
+  const { fetchPetition } = useFetch();
+  const { update: sessionUpdate } = useSession();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -65,11 +77,10 @@ export const TransactionsTable = <TData, TValue>({
   const pageAsNumber = Number(page);
   const fallbackPage =
     isNaN(pageAsNumber) || pageAsNumber < 1 ? 1 : pageAsNumber;
-  const per_page = searchParams?.get("limit") ?? String(DEFAULT_PAGE_LIMIT);
-  const perPageAsNumber = Number(per_page);
+  const perPage = searchParams?.get("limit") ?? String(DEFAULT_PAGE_LIMIT);
+  const perPageAsNumber = Number(perPage);
   const fallbackPerPage = isNaN(perPageAsNumber) ? 10 : perPageAsNumber;
-  console.log("fallbackPage", fallbackPage);
-  console.log("fallbackPerPage", fallbackPerPage);
+
   /* this can be used to get the selectedrows 
   console.log("value", table.getFilteredSelectedRowModel()); */
 
@@ -85,7 +96,6 @@ export const TransactionsTable = <TData, TValue>({
           newSearchParams.set(key, String(value));
         }
       }
-
       return newSearchParams.toString();
     },
     [searchParams],
@@ -97,20 +107,6 @@ export const TransactionsTable = <TData, TValue>({
       pageIndex: fallbackPage - 1,
       pageSize: fallbackPerPage,
     });
-
-  React.useEffect(() => {
-    router.push(
-      `${pathname}?${createQueryString({
-        page: pageIndex + 1,
-        limit: pageSize,
-      })}`,
-      {
-        scroll: false,
-      },
-    );
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageIndex, pageSize]);
 
   const table = useReactTable({
     data,
@@ -130,47 +126,109 @@ export const TransactionsTable = <TData, TValue>({
   const searchValue = table.getColumn(searchKey)?.getFilterValue() as string;
 
   React.useEffect(() => {
-    // TODO: This gets rendered twice and reset the page on first renders
-    if (searchValue?.length > 0) {
-      router.push(
-        `${pathname}?${createQueryString({
-          page: null,
-          limit: null,
-          search: searchValue,
-        })}`,
-        {
-          scroll: false,
-        },
-      );
-    }
-    if (searchValue?.length === 0 || searchValue === undefined) {
-      router.push(
-        `${pathname}?${createQueryString({
-          page: null,
-          limit: null,
-          search: null,
-        })}`,
-        {
-          scroll: false,
-        },
-      );
-    }
+    const bothDatesExist = Boolean(date?.from && date.to);
+    const formatedStartDate = bothDatesExist
+      ? format(new Date(date!.from!), dateFormat.ISO)
+      : undefined;
+    const formatedEndDate = bothDatesExist
+      ? format(new Date(date!.to!), dateFormat.ISO)
+      : undefined;
+    const dates = { startDate: formatedStartDate, endDate: formatedEndDate };
 
-    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-
+    router.push(
+      `${pathname}?${createQueryString({
+        page: pageIndex + 1,
+        limit: pageSize,
+        ...(bothDatesExist ? dates : {}),
+        search: searchValue ?? null,
+      })}`,
+      {
+        scroll: false,
+      },
+    );
+    // refresh the page to get the correct dates from session/DB
+    // Doing it in this useEffect to avoid a tiny flick of the data
+    router.refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchValue]);
+  }, [pageIndex, pageSize]);
+
+  // TODO: IMPORTANT I should try to remove this useEffect!!
+  // This useEffects is only used to change the queryparams and add the dates
+  // to the date picker for the first fetch
+  React.useEffect(() => {
+    const startDateParam = searchParams?.get("startDate");
+    const endDateParam = searchParams?.get("endDate");
+
+    if (startDateParam && endDateParam) {
+      onSetDate({
+        from: new Date(startDateParam),
+        to: new Date(endDateParam),
+      });
+    } else if (userStoredDates) {
+      onSetDate({
+        from: new Date(userStoredDates.from),
+        to: new Date(userStoredDates.to),
+      });
+    } else {
+      onSetDate({
+        from: subYears(new Date(), 1),
+        to: new Date(),
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSetDate = async (dateRange: DateRange | undefined) => {
+    setDate(dateRange);
+    if (dateRange?.from && dateRange?.to) {
+      const from = format(new Date(dateRange.from), dateFormat.ISO);
+      const to = format(new Date(dateRange.to), dateFormat.ISO);
+
+      // Need to push the query params and not rely on the change of page since
+      // it can be the same page and not make a change at all
+      router.push(
+        `${pathname}?${createQueryString({
+          page: DEFAULT_PAGE,
+          limit: pageSize,
+          startDate: from,
+          endDate: to,
+        })}`,
+        {
+          scroll: false,
+        },
+      );
+      await fetchPetition({
+        url: URL_UPDATE_USER_TRANS_DATES,
+        method: "POST",
+        body: { dates: { from, to } },
+      });
+      setPagination((prev) => ({ ...prev, pageIndex: DEFAULT_PAGE - 1 }));
+      await sessionUpdate({ transDates: { from, to } });
+    }
+  };
 
   return (
     <>
-      <Input
-        placeholder={`Search ${searchKey}...`}
-        value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-        onChange={(event) =>
-          table.getColumn(searchKey)?.setFilterValue(event.target.value)
-        }
-        className="w-full md:max-w-sm"
-      />
+      <div className="flex items-center justify-between">
+        <Input
+          placeholder={`Search ${searchKey}...`}
+          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
+          onChange={(event) => {
+            table.getColumn(searchKey)?.setFilterValue(event.target.value);
+            router.push(
+              `${pathname}?${createQueryString({
+                search: event.target.value || null,
+              })}`,
+              {
+                scroll: false,
+              },
+            );
+            setPagination((prev) => ({ ...prev, pageIndex: DEFAULT_PAGE - 1 }));
+          }}
+          className="max-w-[200px]"
+        />
+        <CalendarDateRangePicker date={date} setDate={onSetDate} />
+      </div>
       <ScrollArea className="rounded-md border h-[calc(80vh-220px)]">
         <Table className="relative">
           <TableHeader>

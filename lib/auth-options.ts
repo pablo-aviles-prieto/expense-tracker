@@ -10,7 +10,7 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb-config";
 import { ICategories, IUser } from "@/models";
 import { JWT, encode } from "next-auth/jwt";
-import { CustomSessionI } from "@/types";
+import { CustomSessionI, TransactionsDateObj } from "@/types";
 import { compare } from "bcryptjs";
 import { isAuthProvider } from "@/utils/is-auth-provider";
 
@@ -61,8 +61,17 @@ export const authOptions = {
     secret: process.env.JWT_SECRET,
   },
   callbacks: {
-    // eslint-disable-next-line @typescript-eslint/require-await
-    async jwt({ token, user }: { token: JWT; user?: NextAuthUser }) {
+    async jwt({
+      token,
+      trigger,
+      user,
+      session,
+    }: {
+      token: JWT;
+      trigger: string;
+      user?: CustomSessionI["user"];
+      session: any;
+    }) {
       // This callback is called whenever a JWT is created or updated.
       // When signing in, `user` will contain the user data returned by the `authorize` function.
       if (user) {
@@ -70,6 +79,10 @@ export const authOptions = {
         token.name = user.name;
         token.email = user.email;
         token.image = user.image;
+        token.transactionsDate = user.transactionsDate;
+      }
+      if (trigger === "update" && session?.transDates) {
+        token.transactionsDate = session.transDates;
       }
       return token;
     },
@@ -91,6 +104,7 @@ export const authOptions = {
             name: token.name,
             email: token.email,
             image: token.image as string,
+            transactionsDate: token.transactionsDate as TransactionsDateObj,
           },
         };
         return customSession;
