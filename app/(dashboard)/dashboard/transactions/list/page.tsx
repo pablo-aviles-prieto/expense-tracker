@@ -126,7 +126,6 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
     offset,
     limit: pageLimit,
   });
-  // console.log("transactions", transactions);
 
   const totalTrans = transResult?.data?.totalCount ?? 0;
   const pageCount = Math.ceil(totalTrans / pageLimit);

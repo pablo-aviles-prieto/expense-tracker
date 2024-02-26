@@ -68,5 +68,5 @@ export const URL_POST_TRANSACTION = `/api/transactions/filtered`;
 export const URL_UPDATE_USER_TRANS_DATES = `/api/user/update-trans-dates`;
 
 export const DEFAULT_PAGE = 1;
-export const DEFAULT_PAGE_LIMIT = 10;
+export const DEFAULT_PAGE_LIMIT = 20;
 export const PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50];

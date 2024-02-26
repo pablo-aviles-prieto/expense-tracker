@@ -46,6 +46,7 @@ import { CalendarDateRangePicker } from "@/components/date-range-picker";
 import { useFetch } from "@/hooks/use-fetch";
 import { TransactionsDateObj } from "@/types";
 import { useSession } from "next-auth/react";
+import { FilterInputs } from "./filter-inputs";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -142,9 +143,7 @@ export const TransactionsTable = <TData, TValue>({
         ...(bothDatesExist ? dates : {}),
         search: searchValue ?? null,
       })}`,
-      {
-        scroll: false,
-      },
+      { scroll: false },
     );
     // refresh the page to get the correct dates from session/DB
     // Doing it in this useEffect to avoid a tiny flick of the data
@@ -193,9 +192,7 @@ export const TransactionsTable = <TData, TValue>({
           startDate: from,
           endDate: to,
         })}`,
-        {
-          scroll: false,
-        },
+        { scroll: false },
       );
       await fetchPetition({
         url: URL_UPDATE_USER_TRANS_DATES,
@@ -209,26 +206,14 @@ export const TransactionsTable = <TData, TValue>({
 
   return (
     <>
-      <div className="flex items-center justify-between">
-        <Input
-          placeholder={`Search ${searchKey}...`}
-          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-          onChange={(event) => {
-            table.getColumn(searchKey)?.setFilterValue(event.target.value);
-            router.push(
-              `${pathname}?${createQueryString({
-                search: event.target.value || null,
-              })}`,
-              {
-                scroll: false,
-              },
-            );
-            setPagination((prev) => ({ ...prev, pageIndex: DEFAULT_PAGE - 1 }));
-          }}
-          className="max-w-[200px]"
-        />
-        <CalendarDateRangePicker date={date} setDate={onSetDate} />
-      </div>
+      <FilterInputs
+        searchKey={searchKey}
+        table={table}
+        setPagination={setPagination}
+        date={date}
+        createQueryString={createQueryString}
+        onSetDate={onSetDate}
+      />
       <ScrollArea className="rounded-md border h-[calc(80vh-220px)]">
         <Table className="relative">
           <TableHeader>
