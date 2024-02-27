@@ -1,4 +1,5 @@
 import { Input } from "@/components/ui/input";
+import { FilterTypeSelect } from "./inputs/filter-type-select";
 import { TransTypeSelect } from "./inputs/trans-type-select";
 import { PaginationState, type Table } from "@tanstack/react-table";
 import { usePathname, useRouter } from "next/navigation";
@@ -16,6 +17,13 @@ type FilterInputsProps<TData> = {
   createQueryString: (params: Record<string, string | number | null>) => string;
 };
 
+// TODO: Add a button on the input text to clear the data (Maybe in the Input itself,
+// but it might be too hard to handle the setler, since i need to set null the query param)
+// TODO: Add a select input when the filterType === 'Amount' to select > or <
+// (this input could be inside the input type number of filterValue)
+// TODO: Add a multiple select to filter by categories
+// Remove the search name and move the filterValue to the left
+// TODO: Style for mobile (tiny width)
 export const FilterInputs = <TData,>({
   searchKey,
   table,
@@ -26,12 +34,39 @@ export const FilterInputs = <TData,>({
 }: FilterInputsProps<TData>) => {
   const [filterType, setFilterType] = useState<string | undefined>(undefined);
   const [filterValue, setFilterValue] = useState("");
+  const [transType, setTransType] = useState("both");
   const router = useRouter();
   const pathname = usePathname();
 
-  const onTransTypeChange = (filterType: string) => {
+  const onFilterTypeChange = (filterType: string) => {
     setFilterValue("");
     setFilterType(filterType);
+    router.push(
+      `${pathname}?${createQueryString({
+        filterType: filterType || null,
+        filterValue: null,
+      })}`,
+      { scroll: false },
+    );
+  };
+
+  const onTransTypeChange = (transType: string) => {
+    const resetFilterTypeAndValue =
+      transType !== "both" && filterType === "Amount";
+    if (resetFilterTypeAndValue) {
+      setFilterValue("");
+      setFilterType(undefined);
+    }
+
+    setTransType(transType);
+    router.push(
+      `${pathname}?${createQueryString({
+        transType: transType === "both" ? null : transType,
+        ...(resetFilterTypeAndValue ? { filterType: null } : {}),
+        ...(resetFilterTypeAndValue ? { filterValue: null } : {}),
+      })}`,
+      { scroll: false },
+    );
   };
 
   return (
@@ -60,10 +95,15 @@ export const FilterInputs = <TData,>({
             type={filterType === "Amount" ? "number" : "text"}
             value={filterValue}
             onChange={(e) => {
+              const resetTransType = filterType === "Amount" && e.target.value;
+              if (resetTransType) {
+                setTransType("both");
+              }
               setFilterValue(e.target.value);
               router.push(
                 `${pathname}?${createQueryString({
                   filterValue: e.target.value || null,
+                  ...(resetTransType ? { transType: null } : {}),
                 })}`,
                 { scroll: false },
               );
@@ -71,9 +111,13 @@ export const FilterInputs = <TData,>({
             className="max-w-[200px]"
           />
         )}
+        <FilterTypeSelect
+          filterType={filterType}
+          onFilterTypeChange={onFilterTypeChange}
+        />
         <TransTypeSelect
-          setFilterType={onTransTypeChange}
-          createQueryString={createQueryString}
+          transType={transType}
+          onTransTypeChange={onTransTypeChange}
         />
         <CalendarDateRangePicker date={date} setDate={onSetDate} />
       </div>

@@ -7,40 +7,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { usePathname, useRouter } from "next/navigation";
 
 type TransTypeSelectProps = {
-  createQueryString: (params: Record<string, string | number | null>) => string;
-  setFilterType: (filterType: string) => void;
+  transType: string;
+  onTransTypeChange: (transType: string) => void;
 };
 
 export const TransTypeSelect = ({
-  createQueryString,
-  setFilterType,
+  transType,
+  onTransTypeChange,
 }: TransTypeSelectProps) => {
-  const pathname = usePathname();
-  const router = useRouter();
-
   return (
     <Select
-      onValueChange={(filterType) => {
-        setFilterType(filterType);
-        router.push(
-          `${pathname}?${createQueryString({
-            filterType: filterType || null,
-            filterValue: null,
-          })}`,
-          { scroll: false },
-        );
-      }}
+      defaultValue="both"
+      value={transType}
+      onValueChange={onTransTypeChange}
     >
-      <SelectTrigger className="w-[140px]">
-        <SelectValue placeholder="Filter type" />
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Filter the transactions" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="Name">Name</SelectItem>
-          <SelectItem value="Amount">Amount</SelectItem>
+          <SelectItem value="both">Incomes & Expenses</SelectItem>
+          <SelectItem value="incomes">Incomes</SelectItem>
+          <SelectItem value="expenses">Expenses</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

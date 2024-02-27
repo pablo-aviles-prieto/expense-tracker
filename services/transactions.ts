@@ -14,7 +14,6 @@ import { FilteredTransactionsSchema } from "@/schemas/filtered-transactions-sche
 
 type FilteredTransactions = z.infer<typeof FilteredTransactionsSchema>;
 
-// TODO: Add offset and limitPage on the query
 type QueryTransType = {
   userId: string;
   date: { $gte: string; $lte: string };
@@ -39,7 +38,6 @@ export const getAllTransactionsPerUser = cache(async (userId: string) => {
   return { ok: true, transactions: parsedTransactions };
 });
 
-// TODO: Add a mothafocking offset and limitPage to paginate
 export const getFilteredTransactions = async ({
   userId,
   startDate,
