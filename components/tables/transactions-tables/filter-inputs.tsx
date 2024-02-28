@@ -7,6 +7,7 @@ import { CalendarDateRangePicker } from "@/components/date-range-picker";
 import { DateRange } from "react-day-picker";
 import { DEFAULT_PAGE } from "@/utils/const";
 import { useState } from "react";
+import { FilterOperatorSelect } from "./inputs/filter-operator-select";
 
 type FilterInputsProps<TData> = {
   searchKey: string;
@@ -35,6 +36,7 @@ export const FilterInputs = <TData,>({
   const [filterType, setFilterType] = useState<string | undefined>(undefined);
   const [filterValue, setFilterValue] = useState("");
   const [transType, setTransType] = useState("both");
+  const [filterOperator, setFilterOperator] = useState("gt");
   const router = useRouter();
   const pathname = usePathname();
 
@@ -69,6 +71,18 @@ export const FilterInputs = <TData,>({
     );
   };
 
+  const onFilterOperatorChange = (filterOperator: string) => {
+    setFilterOperator(filterOperator);
+    router.push(
+      `${pathname}?${createQueryString({
+        filterOperator,
+        // ...(resetFilterTypeAndValue ? { filterType: null } : {}),
+        // ...(resetFilterTypeAndValue ? { filterValue: null } : {}),
+      })}`,
+      { scroll: false },
+    );
+  };
+
   return (
     <div className="flex items-center justify-between gap-x-2">
       <div className="flex items-center gap-x-2">
@@ -81,28 +95,41 @@ export const FilterInputs = <TData,>({
           onFilterTypeChange={onFilterTypeChange}
         />
         {filterType && (
-          <Input
-            placeholder={
-              filterType === "Amount" ? "Filter by amount" : "Filter by name"
-            }
-            type={filterType === "Amount" ? "number" : "text"}
-            value={filterValue}
-            onChange={(e) => {
-              const resetTransType = filterType === "Amount" && e.target.value;
-              if (resetTransType) {
-                setTransType("both");
+          <div className="relative">
+            <Input
+              placeholder={
+                filterType === "Amount" ? "Filter by amount" : "Filter by name"
               }
-              setFilterValue(e.target.value);
-              router.push(
-                `${pathname}?${createQueryString({
-                  filterValue: e.target.value || null,
-                  ...(resetTransType ? { transType: null } : {}),
-                })}`,
-                { scroll: false },
-              );
-            }}
-            className="max-w-[200px]"
-          />
+              type={filterType === "Amount" ? "number" : "text"}
+              value={filterValue}
+              onChange={(e) => {
+                const resetTransType =
+                  filterType === "Amount" && e.target.value;
+                if (resetTransType) {
+                  setTransType("both");
+                }
+                setFilterValue(e.target.value);
+                router.push(
+                  `${pathname}?${createQueryString({
+                    filterValue: e.target.value || null,
+                    ...(resetTransType ? { transType: null } : {}),
+                  })}`,
+                  { scroll: false },
+                );
+              }}
+              className={`max-w-[200px] ${
+                filterType === "Amount" ? "pl-11" : ""
+              }`}
+            />
+            {filterType === "Amount" && (
+              <div className="absolute top-0 left-0 w-[37px]">
+                <FilterOperatorSelect
+                  filterOperator={filterOperator}
+                  onFilterOperatorChange={onFilterOperatorChange}
+                />
+              </div>
+            )}
+          </div>
         )}
       </div>
       <CalendarDateRangePicker date={date} setDate={onSetDate} />
