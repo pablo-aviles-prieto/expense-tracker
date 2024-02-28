@@ -8,6 +8,8 @@ import { DateRange } from "react-day-picker";
 import { DEFAULT_PAGE } from "@/utils/const";
 import { useState } from "react";
 import { FilterOperatorSelect } from "./inputs/filter-operator-select";
+import { Button } from "@/components/ui/button";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 type FilterInputsProps<TData> = {
   searchKey: string;
@@ -43,10 +45,12 @@ export const FilterInputs = <TData,>({
   const onFilterTypeChange = (filterType: string) => {
     setFilterValue("");
     setFilterType(filterType);
+
     router.push(
       `${pathname}?${createQueryString({
         filterType: filterType || null,
         filterValue: null,
+        filterOperator: filterType === "Amount" ? filterOperator : null,
       })}`,
       { scroll: false },
     );
@@ -64,6 +68,7 @@ export const FilterInputs = <TData,>({
     router.push(
       `${pathname}?${createQueryString({
         transType: transType === "both" ? null : transType,
+        filterOperator: null,
         ...(resetFilterTypeAndValue ? { filterType: null } : {}),
         ...(resetFilterTypeAndValue ? { filterValue: null } : {}),
       })}`,
@@ -73,66 +78,92 @@ export const FilterInputs = <TData,>({
 
   const onFilterOperatorChange = (filterOperator: string) => {
     setFilterOperator(filterOperator);
+    router.push(`${pathname}?${createQueryString({ filterOperator })}`, {
+      scroll: false,
+    });
+  };
+
+  const onResetFilters = () => {
+    // TODO: Clear the categories
+    setFilterValue("");
+    setFilterType(undefined);
+    setTransType("both");
+
     router.push(
       `${pathname}?${createQueryString({
-        filterOperator,
-        // ...(resetFilterTypeAndValue ? { filterType: null } : {}),
-        // ...(resetFilterTypeAndValue ? { filterValue: null } : {}),
+        filterType: null,
+        filterValue: null,
+        filterOperator: null,
+        transType: null,
       })}`,
       { scroll: false },
     );
   };
 
   return (
-    <div className="flex items-center justify-between gap-x-2">
-      <div className="flex items-center gap-x-2">
-        <TransTypeSelect
-          transType={transType}
-          onTransTypeChange={onTransTypeChange}
-        />
-        <FilterTypeSelect
-          filterType={filterType}
-          onFilterTypeChange={onFilterTypeChange}
-        />
-        {filterType && (
-          <div className="relative">
-            <Input
-              placeholder={
-                filterType === "Amount" ? "Filter by amount" : "Filter by name"
-              }
-              type={filterType === "Amount" ? "number" : "text"}
-              value={filterValue}
-              onChange={(e) => {
-                const resetTransType =
-                  filterType === "Amount" && e.target.value;
-                if (resetTransType) {
-                  setTransType("both");
+    <ScrollArea className="pb-3 overflow-y-hidden">
+      <div className="flex items-center justify-between gap-x-2 min-h-[40px]">
+        <div className="flex items-center gap-x-2">
+          {(filterType || filterValue || transType !== "both") && (
+            <Button
+              variant="destructive"
+              className="text-[13px]"
+              onClick={onResetFilters}
+            >
+              Remove filters
+            </Button>
+          )}
+          <TransTypeSelect
+            transType={transType}
+            onTransTypeChange={onTransTypeChange}
+          />
+          <FilterTypeSelect
+            filterType={filterType}
+            onFilterTypeChange={onFilterTypeChange}
+          />
+          {filterType && (
+            <div className="relative">
+              <Input
+                placeholder={
+                  filterType === "Amount"
+                    ? "Filter by amount"
+                    : "Filter by name"
                 }
-                setFilterValue(e.target.value);
-                router.push(
-                  `${pathname}?${createQueryString({
-                    filterValue: e.target.value || null,
-                    ...(resetTransType ? { transType: null } : {}),
-                  })}`,
-                  { scroll: false },
-                );
-              }}
-              className={`max-w-[200px] ${
-                filterType === "Amount" ? "pl-11" : ""
-              }`}
-            />
-            {filterType === "Amount" && (
-              <div className="absolute top-0 left-0 w-[37px]">
-                <FilterOperatorSelect
-                  filterOperator={filterOperator}
-                  onFilterOperatorChange={onFilterOperatorChange}
-                />
-              </div>
-            )}
-          </div>
-        )}
+                type={filterType === "Amount" ? "number" : "text"}
+                value={filterValue}
+                onChange={(e) => {
+                  const resetTransType =
+                    filterType === "Amount" && e.target.value;
+                  if (resetTransType) {
+                    setTransType("both");
+                  }
+                  setFilterValue(e.target.value);
+                  router.push(
+                    `${pathname}?${createQueryString({
+                      filterValue: e.target.value || null,
+                      ...(resetTransType ? { transType: null } : {}),
+                    })}`,
+                    { scroll: false },
+                  );
+                }}
+                className={`max-w-[200px] ${
+                  filterType === "Amount" ? "pl-11" : ""
+                }`}
+              />
+              {filterType === "Amount" && (
+                <div className="absolute top-0 left-0 w-[37px]">
+                  <FilterOperatorSelect
+                    filterOperator={filterOperator}
+                    onFilterOperatorChange={onFilterOperatorChange}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <CalendarDateRangePicker date={date} setDate={onSetDate} />
+        <ScrollBar orientation="horizontal" />
       </div>
-      <CalendarDateRangePicker date={date} setDate={onSetDate} />
-    </div>
+    </ScrollArea>
   );
 };
