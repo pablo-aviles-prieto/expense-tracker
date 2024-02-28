@@ -23,7 +23,7 @@ type FilterInputsProps<TData> = {
 // (this input could be inside the input type number of filterValue)
 // TODO: Add a multiple select to filter by categories
 // Remove the search name and move the filterValue to the left
-// TODO: Style for mobile (tiny width)
+// TODO: Style for mobile (tiny width)!
 export const FilterInputs = <TData,>({
   searchKey,
   table,
@@ -71,22 +71,15 @@ export const FilterInputs = <TData,>({
 
   return (
     <div className="flex items-center justify-between gap-x-2">
-      <Input
-        placeholder={`Search ${searchKey}...`}
-        value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-        onChange={(event) => {
-          table.getColumn(searchKey)?.setFilterValue(event.target.value);
-          router.push(
-            `${pathname}?${createQueryString({
-              search: event.target.value || null,
-            })}`,
-            { scroll: false },
-          );
-          setPagination((prev) => ({ ...prev, pageIndex: DEFAULT_PAGE - 1 }));
-        }}
-        className="max-w-[200px]"
-      />
       <div className="flex items-center gap-x-2">
+        <TransTypeSelect
+          transType={transType}
+          onTransTypeChange={onTransTypeChange}
+        />
+        <FilterTypeSelect
+          filterType={filterType}
+          onFilterTypeChange={onFilterTypeChange}
+        />
         {filterType && (
           <Input
             placeholder={
@@ -111,16 +104,8 @@ export const FilterInputs = <TData,>({
             className="max-w-[200px]"
           />
         )}
-        <FilterTypeSelect
-          filterType={filterType}
-          onFilterTypeChange={onFilterTypeChange}
-        />
-        <TransTypeSelect
-          transType={transType}
-          onTransTypeChange={onTransTypeChange}
-        />
-        <CalendarDateRangePicker date={date} setDate={onSetDate} />
       </div>
+      <CalendarDateRangePicker date={date} setDate={onSetDate} />
     </div>
   );
 };
