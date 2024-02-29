@@ -134,6 +134,9 @@ export const TransactionsTable = <TData, TValue>({
       : undefined;
     const dates = { startDate: formatedStartDate, endDate: formatedEndDate };
 
+    // Avoiding unnecessary execution when the component is mounted the first time
+    if (!bothDatesExist) return;
+
     router.push(
       `${pathname}?${createQueryString({
         page: pageIndex + 1,
@@ -148,33 +151,42 @@ export const TransactionsTable = <TData, TValue>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageIndex, pageSize]);
 
-  // TODO: IMPORTANT I should try to remove this useEffect!!
-  // This useEffects is only used to change the queryparams and add the dates
-  // to the date picker for the first fetch
   React.useEffect(() => {
     const startDateParam = searchParams?.get("startDate");
     const endDateParam = searchParams?.get("endDate");
 
     if (startDateParam && endDateParam) {
-      onSetDate({
-        from: new Date(startDateParam),
-        to: new Date(endDateParam),
-      });
+      onSetDate(
+        {
+          from: new Date(startDateParam),
+          to: new Date(endDateParam),
+        },
+        fallbackPage,
+      );
     } else if (userStoredDates) {
-      onSetDate({
-        from: new Date(userStoredDates.from),
-        to: new Date(userStoredDates.to),
-      });
+      onSetDate(
+        {
+          from: new Date(userStoredDates.from),
+          to: new Date(userStoredDates.to),
+        },
+        fallbackPage,
+      );
     } else {
-      onSetDate({
-        from: subYears(new Date(), 1),
-        to: new Date(),
-      });
+      onSetDate(
+        {
+          from: subYears(new Date(), 1),
+          to: new Date(),
+        },
+        fallbackPage,
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSetDate = async (dateRange: DateRange | undefined) => {
+  const onSetDate = async (
+    dateRange: DateRange | undefined,
+    initPage?: number, // recieving this param for when the component is first mounted
+  ) => {
     setDate(dateRange);
     if (dateRange?.from && dateRange?.to) {
       const from = format(new Date(dateRange.from), dateFormat.ISO);
@@ -184,7 +196,7 @@ export const TransactionsTable = <TData, TValue>({
       // it can be the same page and not make a change at all
       router.push(
         `${pathname}?${createQueryString({
-          page: DEFAULT_PAGE,
+          page: initPage ?? DEFAULT_PAGE,
           limit: pageSize,
           startDate: from,
           endDate: to,
@@ -196,7 +208,10 @@ export const TransactionsTable = <TData, TValue>({
         method: "POST",
         body: { dates: { from, to } },
       });
-      setPagination((prev) => ({ ...prev, pageIndex: DEFAULT_PAGE - 1 }));
+      setPagination((prev) => ({
+        ...prev,
+        pageIndex: initPage ? initPage - 1 : DEFAULT_PAGE - 1,
+      }));
       await sessionUpdate({ transDates: { from, to } });
     }
   };
