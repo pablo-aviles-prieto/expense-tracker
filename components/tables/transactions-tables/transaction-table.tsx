@@ -10,7 +10,6 @@ import {
 } from "@tanstack/react-table";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -42,7 +41,6 @@ import {
 } from "@/utils/const";
 import { DateRange } from "react-day-picker";
 import { format, subYears } from "date-fns";
-import { CalendarDateRangePicker } from "@/components/date-range-picker";
 import { useFetch } from "@/hooks/use-fetch";
 import { TransactionsDateObj } from "@/types";
 import { useSession } from "next-auth/react";
@@ -51,7 +49,6 @@ import { FilterInputs } from "./filter-inputs";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  searchKey: string;
   pageSizeOptions?: number[];
   pageCount: number;
   userStoredDates?: TransactionsDateObj | null;
@@ -62,7 +59,6 @@ interface DataTableProps<TData, TValue> {
 export const TransactionsTable = <TData, TValue>({
   columns,
   data,
-  searchKey,
   pageCount,
   userStoredDates = null,
   pageSizeOptions = PAGE_SIZE_OPTIONS,
@@ -124,7 +120,9 @@ export const TransactionsTable = <TData, TValue>({
     manualFiltering: true,
   });
 
-  const searchValue = table.getColumn(searchKey)?.getFilterValue() as string;
+  React.useEffect(() => {
+    setPagination((prev) => ({ ...prev, pageIndex: fallbackPage - 1 }));
+  }, [fallbackPage]);
 
   React.useEffect(() => {
     const bothDatesExist = Boolean(date?.from && date.to);
@@ -141,7 +139,6 @@ export const TransactionsTable = <TData, TValue>({
         page: pageIndex + 1,
         limit: pageSize,
         ...(bothDatesExist ? dates : {}),
-        search: searchValue ?? null,
       })}`,
       { scroll: false },
     );
@@ -207,9 +204,6 @@ export const TransactionsTable = <TData, TValue>({
   return (
     <>
       <FilterInputs
-        searchKey={searchKey}
-        table={table}
-        setPagination={setPagination}
         date={date}
         createQueryString={createQueryString}
         onSetDate={onSetDate}

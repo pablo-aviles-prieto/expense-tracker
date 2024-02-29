@@ -96,7 +96,6 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
   const page = Number(pageParam) || DEFAULT_PAGE;
   const pageLimit = Number(pageLimitParam) || DEFAULT_PAGE_LIMIT;
   const offset = (page - 1) * pageLimit;
-  const searchValue = searchParams.search || null;
 
   const session = (await getServerSession(
     authOptions as NextAuthOptions,
@@ -151,7 +150,6 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
         {transResult.data ? (
           <TransactionsTable
-            searchKey="name"
             columns={columns}
             data={transResult.data.list}
             pageCount={pageCount}
