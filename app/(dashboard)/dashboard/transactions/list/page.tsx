@@ -8,6 +8,7 @@ import { authOptions } from "@/lib/auth-options";
 import { cn } from "@/lib/utils";
 import { FilteredTransactionsSchema } from "@/schemas/filtered-transactions-schema";
 import { getFilteredTransactions } from "@/services/transactions";
+import { getUserCategories } from "@/services/user";
 import type { CustomSessionI } from "@/types";
 import {
   DEFAULT_PAGE,
@@ -100,6 +101,10 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
   const session = (await getServerSession(
     authOptions as NextAuthOptions,
   )) as CustomSessionI;
+
+  const userCategories = await getUserCategories(session?.user?.id ?? "");
+  console.log("userCategories", userCategories);
+  console.log("userCategories total", userCategories.length);
 
   const startDate =
     typeof startDateParam === "string"

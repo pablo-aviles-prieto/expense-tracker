@@ -275,7 +275,7 @@ export const TransactionsTable = <TData, TValue>({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <div className="flex flex-col items-center justify-end gap-2 py-4 space-x-2 sm:flex-row">
+      <div className="flex flex-col items-center justify-end gap-2 py-4 space-x-2 sm:!flex-row">
         <div className="flex items-center justify-between w-full">
           <div className="flex-1 text-sm text-muted-foreground">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}

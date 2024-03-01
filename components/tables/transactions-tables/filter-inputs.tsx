@@ -16,9 +16,8 @@ type FilterInputsProps = {
   createQueryString: (params: Record<string, string | number | null>) => string;
 };
 
-// TODO: Cant reset the pagination without bugging it. Its gonna need to be changed
-// in a useEffect probably (maybe in the parent in a useEffect reading the page
-// param and setting the logic of the table pagination based on it?)
+// TODO: Look at the searchParams to initiate the states so the filters might be
+// populated from queryParams if proceed
 // TODO: Add a multiple select to filter by categories
 // Remove the search name and move the filterValue to the left
 export const FilterInputs = ({

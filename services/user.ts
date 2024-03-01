@@ -2,6 +2,7 @@ import { isInvalidUserId } from "@/utils/is-invalid-user-id";
 import UserModel from "@/models/user/user-model";
 import { errorMessages } from "@/utils/const";
 import connectDb from "@/lib/mongoose-config";
+import { ICategories } from "@/models";
 
 type UpdateUserTransactionsDateProps = {
   userId: string;
@@ -51,4 +52,37 @@ export const getUserTransactionsDate = async (userId: string) => {
   }
 
   return user.transactionsDate;
+};
+
+/**
+ * Retrieves the categories associated with a specific user.
+ *
+ * @param {string} userId - The ID of the user whose categories are to be retrieved.
+ * @returns {Promise<Array<{id: string, name: string, common: boolean}>>} An array of category objects, each containing the category's ID, name, and common status, or an empty array if the user has no categories.
+ * @throws {Error} If the userId is invalid or if there's an error during database connection or query execution.
+ */
+export const getUserCategories = async (userId: string) => {
+  if (isInvalidUserId(userId)) {
+    throw new Error(errorMessages.invalidUserId);
+  }
+
+  await connectDb();
+
+  const userWithCategories = await UserModel.findById(userId)
+    .populate("categories")
+    .exec();
+
+  if (!userWithCategories) {
+    throw new Error(errorMessages.generic);
+  }
+
+  const categories = (
+    userWithCategories.categories as unknown as ICategories[]
+  ).map((category) => ({
+    id: category._id.toString(), // Convert ObjectId to string
+    name: category.name,
+    common: category.common,
+  }));
+
+  return categories;
 };
