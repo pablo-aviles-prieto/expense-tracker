@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getEllipsed } from "@/utils/const";
 
 type TransTypeSelectProps = {
   transType: string;
@@ -23,7 +24,7 @@ export const TransTypeSelect = ({
       value={transType}
       onValueChange={onTransTypeChange}
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className={`${getEllipsed} w-[180px]`}>
         <SelectValue placeholder="Filter the transactions" />
       </SelectTrigger>
       <SelectContent>

@@ -15,6 +15,7 @@ import {
   DEFAULT_PAGE_LIMIT,
   dateFormat,
   errorMessages,
+  getEllipsed,
 } from "@/utils/const";
 import { parseZodErrors } from "@/utils/parse-zod-errors";
 import { format, subYears } from "date-fns";
@@ -133,7 +134,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
   const pageCount = Math.ceil(totalTrans / pageLimit);
   return (
     <>
-      <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
+      <div className="flex-1 p-4 pt-6 space-y-2 sm:space-y-4 md:p-8">
         <BreadCrumb items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
@@ -144,7 +145,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
           <Link
             href={"/dashboard/transactions/add"}
-            className={cn(buttonVariants({ variant: "default" }))}
+            className={cn(buttonVariants({ variant: "default" }), getEllipsed)}
           >
             <Plus className="w-4 h-4 mr-2" /> Add transaction
           </Link>

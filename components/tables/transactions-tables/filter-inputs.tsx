@@ -141,87 +141,82 @@ export const FilterInputs = ({
   };
 
   return (
-    <ScrollArea className="pb-3 overflow-y-hidden">
-      <div className="flex items-center justify-between gap-x-2 min-h-[40px]">
-        <div className="flex items-center gap-x-2">
-          {(filterType ||
-            filterValue ||
-            transType !== "both" ||
-            selectedCategories.length > 0) && (
-            <Tooltip>
-              <TooltipTrigger>
-                <div
-                  onClick={onResetFilters}
-                  className={cn(
-                    buttonVariants({ variant: "destructive", size: "icon" }),
-                  )}
-                >
-                  <X className="w-5 h-5" />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-sm font-bold">Reset all filters</p>
-              </TooltipContent>
-            </Tooltip>
-          )}
-          <TransTypeSelect
-            transType={transType}
-            onTransTypeChange={onTransTypeChange}
-          />
-          <FilterTypeSelect
-            filterType={filterType}
-            onFilterTypeChange={onFilterTypeChange}
-          />
-          {filterType && (
-            <div className="relative">
-              <Input
-                placeholder={
-                  filterType === "Amount"
-                    ? "Filter by amount"
-                    : "Filter by name"
+    <div className="flex items-center justify-between gap-x-2 min-h-[40px]">
+      <div className="flex items-center gap-x-2">
+        {(filterType ||
+          filterValue ||
+          transType !== "both" ||
+          selectedCategories.length > 0) && (
+          <Tooltip>
+            <TooltipTrigger>
+              <div
+                onClick={onResetFilters}
+                className={cn(
+                  buttonVariants({ variant: "destructive", size: "icon" }),
+                )}
+              >
+                <X className="w-5 h-5" />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-sm font-bold">Reset all filters</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
+        <TransTypeSelect
+          transType={transType}
+          onTransTypeChange={onTransTypeChange}
+        />
+        <FilterTypeSelect
+          filterType={filterType}
+          onFilterTypeChange={onFilterTypeChange}
+        />
+        {filterType && (
+          <div className="relative">
+            <Input
+              placeholder={
+                filterType === "Amount" ? "Filter by amount" : "Filter by name"
+              }
+              type={filterType === "Amount" ? "number" : "text"}
+              value={filterValue}
+              onChange={(e) => {
+                const resetTransType =
+                  filterType === "Amount" && e.target.value;
+                if (resetTransType) {
+                  setTransType("both");
                 }
-                type={filterType === "Amount" ? "number" : "text"}
-                value={filterValue}
-                onChange={(e) => {
-                  const resetTransType =
-                    filterType === "Amount" && e.target.value;
-                  if (resetTransType) {
-                    setTransType("both");
-                  }
-                  setFilterValue(e.target.value);
-                  router.push(
-                    `${pathname}?${createQueryString({
-                      page: DEFAULT_PAGE,
-                      filterValue: e.target.value || null,
-                      ...(resetTransType ? { transType: null } : {}),
-                    })}`,
-                    { scroll: false },
-                  );
-                }}
-                className={`max-w-[200px] ${
-                  filterType === "Amount" ? "pl-11" : ""
-                }`}
-              />
-              {filterType === "Amount" && (
-                <div className="absolute top-0 left-0 w-[37px]">
-                  <FilterOperatorSelect
-                    filterOperator={filterOperator}
-                    onFilterOperatorChange={onFilterOperatorChange}
-                  />
-                </div>
-              )}
-            </div>
-          )}
-          <MultiSelectSearch
-            label={{ singular: "category", plural: "categories" }}
-            selectedOptions={selectedCategories}
-            setSelectedOptions={onCategoryChange}
-            options={parsedCategories}
-          />
-        </div>
-        <CalendarDateRangePicker date={date} setDate={onSetDate} />
-        <ScrollBar orientation="horizontal" />
+                setFilterValue(e.target.value);
+                router.push(
+                  `${pathname}?${createQueryString({
+                    page: DEFAULT_PAGE,
+                    filterValue: e.target.value || null,
+                    ...(resetTransType ? { transType: null } : {}),
+                  })}`,
+                  { scroll: false },
+                );
+              }}
+              className={`max-w-[200px] ${
+                filterType === "Amount" ? "pl-11" : ""
+              }`}
+            />
+            {filterType === "Amount" && (
+              <div className="absolute top-0 left-0 w-[37px]">
+                <FilterOperatorSelect
+                  filterOperator={filterOperator}
+                  onFilterOperatorChange={onFilterOperatorChange}
+                />
+              </div>
+            )}
+          </div>
+        )}
+        <MultiSelectSearch
+          label={{ singular: "category", plural: "categories" }}
+          selectedOptions={selectedCategories}
+          setSelectedOptions={onCategoryChange}
+          options={parsedCategories}
+        />
       </div>
-    </ScrollArea>
+      <CalendarDateRangePicker date={date} setDate={onSetDate} />
+    </div>
   );
 };

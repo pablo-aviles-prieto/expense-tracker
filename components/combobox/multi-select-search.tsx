@@ -17,6 +17,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "../ui/scroll-area";
+import { getEllipsed } from "@/utils/const";
 
 type LabelsObj = { singular: string; plural: string };
 
@@ -51,7 +52,7 @@ export const MultiSelectSearch = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={`${WIDTH} justify-between`}
+          className={`${WIDTH} justify-between ${getEllipsed}`}
         >
           {selectedOptions.length === 1
             ? `${selectedOptions[0]} selected`

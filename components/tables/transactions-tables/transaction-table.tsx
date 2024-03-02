@@ -55,8 +55,6 @@ interface DataTableProps<TData, TValue> {
   userStoredDates?: TransactionsDateObj | null;
 }
 
-// TODO: Improve to not make a request in the useEffect of the page
-// and then it makes another request in the dates useEffect
 export const TransactionsTable = <TData, TValue>({
   columns,
   data,
@@ -187,7 +185,7 @@ export const TransactionsTable = <TData, TValue>({
 
   const onSetDate = async (
     dateRange: DateRange | undefined,
-    initPage?: number, // recieving this param for when the component is first mounted
+    initPage?: number, // receiving this param for when the component is first mounted
   ) => {
     setDate(dateRange);
     if (dateRange?.from && dateRange?.to) {
@@ -220,13 +218,16 @@ export const TransactionsTable = <TData, TValue>({
 
   return (
     <>
-      <FilterInputs
-        date={date}
-        userCategories={userCategories}
-        createQueryString={createQueryString}
-        onSetDate={onSetDate}
-      />
-      <ScrollArea className="rounded-md border h-[calc(80vh-220px)]">
+      <ScrollArea className="pb-3 overflow-y-hidden">
+        <FilterInputs
+          date={date}
+          userCategories={userCategories}
+          createQueryString={createQueryString}
+          onSetDate={onSetDate}
+        />
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+      <ScrollArea className="rounded-md border h-[calc(80vh-240px)]">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
