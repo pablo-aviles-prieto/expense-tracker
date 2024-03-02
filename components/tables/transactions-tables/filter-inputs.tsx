@@ -1,13 +1,13 @@
 import { Input } from "@/components/ui/input";
 import { FilterTypeSelect } from "./inputs/filter-type-select";
 import { TransTypeSelect } from "./inputs/trans-type-select";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CalendarDateRangePicker } from "@/components/date-range-picker";
 import { DateRange } from "react-day-picker";
 import { DEFAULT_PAGE } from "@/utils/const";
 import { useMemo, useState } from "react";
 import { FilterOperatorSelect } from "./inputs/filter-operator-select";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { MultiSelectSearch } from "@/components/combobox/multi-select-search";
 import type { Categories } from "@/types";
@@ -34,11 +34,23 @@ export const FilterInputs = ({
   createQueryString,
   onSetDate,
 }: FilterInputsProps) => {
-  const [filterType, setFilterType] = useState<string | undefined>(undefined);
-  const [filterValue, setFilterValue] = useState("");
-  const [transType, setTransType] = useState("both");
-  const [filterOperator, setFilterOperator] = useState("gt");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const categoriesParam = searchParams.get("categories");
+  const [filterType, setFilterType] = useState<string | undefined>(
+    searchParams.get("filterType") ?? undefined,
+  );
+  const [filterValue, setFilterValue] = useState(
+    searchParams.get("filterValue") ?? "",
+  );
+  const [transType, setTransType] = useState(
+    searchParams.get("transType") ?? "both",
+  );
+  const [filterOperator, setFilterOperator] = useState(
+    searchParams.get("filterOperator") ?? "gt",
+  );
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    categoriesParam ? categoriesParam.split(",") : [],
+  );
   const router = useRouter();
   const pathname = usePathname();
 
