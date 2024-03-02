@@ -21,7 +21,6 @@ type FilterInputsProps = {
 
 // TODO: Look at the searchParams to initiate the states so the filters might be
 // populated from queryParams if proceed
-// TODO: Add a multiple select to filter by categories!
 export const FilterInputs = ({
   date,
   userCategories,
@@ -32,6 +31,7 @@ export const FilterInputs = ({
   const [filterValue, setFilterValue] = useState("");
   const [transType, setTransType] = useState("both");
   const [filterOperator, setFilterOperator] = useState("gt");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -76,9 +76,8 @@ export const FilterInputs = ({
     );
   };
 
-  const onFilterOperatorChange = async (filterOperator: string) => {
+  const onFilterOperatorChange = (filterOperator: string) => {
     setFilterOperator(filterOperator);
-    // setPagination({ pageIndex: 0, pageSize: 20 });
     router.push(
       `${pathname}?${createQueryString({
         filterOperator,
@@ -88,15 +87,26 @@ export const FilterInputs = ({
         scroll: false,
       },
     );
-    // setPagination((prev) => ({ ...prev, pageIndex: DEFAULT_PAGE - 1 }));
-    // resetPagination();
+  };
+
+  const onCategoryChange = (categories: string[]) => {
+    setSelectedCategories(categories);
+    router.push(
+      `${pathname}?${createQueryString({
+        page: DEFAULT_PAGE,
+        categories: categories.length > 0 ? categories.join(",") : null,
+      })}`,
+      {
+        scroll: false,
+      },
+    );
   };
 
   const onResetFilters = () => {
-    // TODO: Clear the categories!
     setFilterValue("");
     setFilterType(undefined);
     setTransType("both");
+    setSelectedCategories([]);
 
     router.push(
       `${pathname}?${createQueryString({
@@ -105,6 +115,7 @@ export const FilterInputs = ({
         filterValue: null,
         filterOperator: null,
         transType: null,
+        categories: null,
       })}`,
       { scroll: false },
     );
@@ -114,13 +125,16 @@ export const FilterInputs = ({
     <ScrollArea className="pb-3 overflow-y-hidden">
       <div className="flex items-center justify-between gap-x-2 min-h-[40px]">
         <div className="flex items-center gap-x-2">
-          {(filterType || filterValue || transType !== "both") && (
+          {(filterType ||
+            filterValue ||
+            transType !== "both" ||
+            selectedCategories.length > 0) && (
             <Button
               variant="destructive"
               className="text-[13px]"
               onClick={onResetFilters}
             >
-              Remove filters
+              X
             </Button>
           )}
           <TransTypeSelect
@@ -173,6 +187,8 @@ export const FilterInputs = ({
           )}
           <MultiSelectSearch
             label={{ singular: "category", plural: "categories" }}
+            selectedOptions={selectedCategories}
+            setSelectedOptions={onCategoryChange}
             options={parsedCategories}
           />
         </div>

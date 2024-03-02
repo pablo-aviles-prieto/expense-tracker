@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +22,8 @@ type LabelsObj = { singular: string; plural: string };
 
 type MultiSelectSearchProps = {
   options: { value: string; label: string }[];
+  selectedOptions: string[];
+  setSelectedOptions: (selectedOptions: string[]) => void;
   label?: LabelsObj;
 };
 
@@ -29,17 +31,17 @@ const WIDTH = "w-[225px]";
 
 export const MultiSelectSearch = ({
   options,
+  selectedOptions,
+  setSelectedOptions,
   label,
 }: MultiSelectSearchProps) => {
   const [open, setOpen] = React.useState(false);
-  const [selectedValues, setSelectedValues] = React.useState<string[]>([]);
 
   const handleSelect = (value: string) => {
-    setSelectedValues((currentValues) =>
-      currentValues.includes(value)
-        ? currentValues.filter((currentValue) => currentValue !== value)
-        : [...currentValues, value],
-    );
+    const newSelectedOptions = selectedOptions.includes(value)
+      ? selectedOptions.filter((option) => option !== value)
+      : [...selectedOptions, value];
+    setSelectedOptions(newSelectedOptions);
   };
 
   return (
@@ -51,10 +53,10 @@ export const MultiSelectSearch = ({
           aria-expanded={open}
           className={`${WIDTH} justify-between`}
         >
-          {selectedValues.length === 1
-            ? `${selectedValues[0]} selected`
-            : selectedValues.length > 1
-            ? `${selectedValues.length} ${label?.plural ?? "options"} selecteds`
+          {selectedOptions.length === 1
+            ? `${selectedOptions[0]} selected`
+            : selectedOptions.length > 1
+            ? `${selectedOptions.length} ${label?.plural ?? "options"}`
             : `Select ${label?.plural ?? "options"}...`}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
@@ -64,6 +66,20 @@ export const MultiSelectSearch = ({
           <CommandInput
             placeholder={`Search a ${label?.singular ?? "option"}...`}
           />
+          {selectedOptions.length > 0 && (
+            <CommandGroup className="border-b">
+              <CommandItem
+                onSelect={() => setSelectedOptions([])}
+                className="text-red-500 aria-selected:text-destructive-foreground aria-selected:bg-destructive"
+              >
+                <X className={cn("mr-2 h-4 w-4")} />
+                Clear{" "}
+                {selectedOptions.length > 1
+                  ? label?.plural ?? "options"
+                  : label?.singular ?? "option"}
+              </CommandItem>
+            </CommandGroup>
+          )}
           <ScrollArea maxHeight={225}>
             <CommandEmpty>No {label?.plural ?? "options"} found.</CommandEmpty>
             <CommandGroup>
@@ -76,7 +92,7 @@ export const MultiSelectSearch = ({
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      selectedValues.includes(option.value)
+                      selectedOptions.includes(option.value)
                         ? "opacity-100"
                         : "opacity-0",
                     )}

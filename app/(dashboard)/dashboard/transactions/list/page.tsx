@@ -30,7 +30,7 @@ const breadcrumbItems = [
 
 type paramsProps = {
   searchParams: {
-    [key: string]: string | string[] | undefined;
+    [key: string]: string | undefined;
   };
 };
 
@@ -42,7 +42,7 @@ type TransactionsProps = {
   filterType: string | null;
   filterOperator: string | null;
   filterValue: string | null;
-  filteredCategories: string | string[] | undefined;
+  filteredCategories: string[] | undefined;
   offset?: number;
   limit?: number;
 };
@@ -97,6 +97,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
   const page = Number(pageParam) || DEFAULT_PAGE;
   const pageLimit = Number(pageLimitParam) || DEFAULT_PAGE_LIMIT;
   const offset = (page - 1) * pageLimit;
+  const parsedCategories = categories?.split(",");
 
   const session = (await getServerSession(
     authOptions as NextAuthOptions,
@@ -119,12 +120,11 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
     userId: session?.user?.id ?? "",
     startDate,
     endDate,
-    transType: transType ? String(transType) : null,
-    filterType: filterType ? String(filterType) : null,
-    filterOperator: filterOperator ? String(filterOperator) : null,
-    filterValue: filterValue ? String(filterValue) : null,
-    filteredCategories:
-      typeof categories === "string" ? [categories] : categories,
+    transType: transType ?? null,
+    filterType: filterType ?? null,
+    filterOperator: filterOperator ?? null,
+    filterValue: filterValue ?? null,
+    filteredCategories: parsedCategories,
     offset,
     limit: pageLimit,
   });
