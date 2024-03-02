@@ -1,6 +1,7 @@
 import BreadCrumb from "@/components/breadcrumb";
 import { columns } from "@/components/tables/transactions-tables/columns";
 import { TransactionsTable } from "@/components/tables/transactions-tables/transaction-table";
+import { getActiveFilters } from "@/components/tables/transactions-tables/utils/get-active-filters";
 import { buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
@@ -130,6 +131,16 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
     limit: pageLimit,
   });
 
+  const filteredTrans = getActiveFilters({
+    startDate,
+    endDate,
+    transType,
+    filterOperator,
+    filterType,
+    filterValue,
+    categories: parsedCategories,
+  });
+
   const totalTrans = transResult?.data?.totalCount ?? 0;
   const pageCount = Math.ceil(totalTrans / pageLimit);
   return (
@@ -139,8 +150,9 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
         <div className="flex items-start justify-between">
           <Heading
+            maxWidthClass="max-w-[calc(100%-170px)]"
             title={`Transactions (${totalTrans})`}
-            description="Manage your transactions! (show the filters active)"
+            description={filteredTrans}
           />
 
           <Link
