@@ -7,10 +7,17 @@ import { DateRange } from "react-day-picker";
 import { DEFAULT_PAGE } from "@/utils/const";
 import { useMemo, useState } from "react";
 import { FilterOperatorSelect } from "./inputs/filter-operator-select";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { MultiSelectSearch } from "@/components/combobox/multi-select-search";
 import type { Categories } from "@/types";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type FilterInputsProps = {
   date: DateRange | undefined;
@@ -129,13 +136,21 @@ export const FilterInputs = ({
             filterValue ||
             transType !== "both" ||
             selectedCategories.length > 0) && (
-            <Button
-              variant="destructive"
-              className="text-[13px]"
-              onClick={onResetFilters}
-            >
-              X
-            </Button>
+            <Tooltip>
+              <TooltipTrigger>
+                <div
+                  onClick={onResetFilters}
+                  className={cn(
+                    buttonVariants({ variant: "destructive", size: "icon" }),
+                  )}
+                >
+                  <X className="w-5 h-5" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-sm font-bold">Reset all filters</p>
+              </TooltipContent>
+            </Tooltip>
           )}
           <TransTypeSelect
             transType={transType}
