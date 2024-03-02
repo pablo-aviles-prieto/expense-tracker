@@ -159,6 +159,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
             data={transResult.data.list}
             pageCount={pageCount}
             userStoredDates={session.user?.transactionsDate}
+            userCategories={userCategories}
           />
         ) : (
           <div>

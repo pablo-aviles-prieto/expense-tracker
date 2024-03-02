@@ -5,13 +5,16 @@ import { usePathname, useRouter } from "next/navigation";
 import { CalendarDateRangePicker } from "@/components/date-range-picker";
 import { DateRange } from "react-day-picker";
 import { DEFAULT_PAGE } from "@/utils/const";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FilterOperatorSelect } from "./inputs/filter-operator-select";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { MultiSelectSearch } from "@/components/combobox/multi-select-search";
+import type { Categories } from "@/types";
 
 type FilterInputsProps = {
   date: DateRange | undefined;
+  userCategories: Categories[];
   onSetDate: (dateRange: DateRange | undefined) => Promise<void>;
   createQueryString: (params: Record<string, string | number | null>) => string;
 };
@@ -22,6 +25,7 @@ type FilterInputsProps = {
 // Remove the search name and move the filterValue to the left
 export const FilterInputs = ({
   date,
+  userCategories,
   createQueryString,
   onSetDate,
 }: FilterInputsProps) => {
@@ -31,6 +35,11 @@ export const FilterInputs = ({
   const [filterOperator, setFilterOperator] = useState("gt");
   const router = useRouter();
   const pathname = usePathname();
+
+  const parsedCategories = useMemo(
+    () => userCategories.map((cat) => ({ value: cat.name, label: cat.name })),
+    [userCategories],
+  );
 
   const onFilterTypeChange = (filterType: string) => {
     setFilterValue("");
@@ -163,6 +172,7 @@ export const FilterInputs = ({
               )}
             </div>
           )}
+          <MultiSelectSearch label="category" options={parsedCategories} />
         </div>
         <CalendarDateRangePicker date={date} setDate={onSetDate} />
         <ScrollBar orientation="horizontal" />

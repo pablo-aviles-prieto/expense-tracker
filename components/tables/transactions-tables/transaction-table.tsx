@@ -42,15 +42,16 @@ import {
 import { DateRange } from "react-day-picker";
 import { format, subYears } from "date-fns";
 import { useFetch } from "@/hooks/use-fetch";
-import { TransactionsDateObj } from "@/types";
+import type { Categories, TransactionsDateObj } from "@/types";
 import { useSession } from "next-auth/react";
 import { FilterInputs } from "./filter-inputs";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  pageSizeOptions?: number[];
   pageCount: number;
+  userCategories: Categories[];
+  pageSizeOptions?: number[];
   userStoredDates?: TransactionsDateObj | null;
 }
 
@@ -60,6 +61,7 @@ export const TransactionsTable = <TData, TValue>({
   columns,
   data,
   pageCount,
+  userCategories,
   userStoredDates = null,
   pageSizeOptions = PAGE_SIZE_OPTIONS,
 }: DataTableProps<TData, TValue>) => {
@@ -220,6 +222,7 @@ export const TransactionsTable = <TData, TValue>({
     <>
       <FilterInputs
         date={date}
+        userCategories={userCategories}
         createQueryString={createQueryString}
         onSetDate={onSetDate}
       />

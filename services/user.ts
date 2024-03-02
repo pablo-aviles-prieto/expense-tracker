@@ -2,7 +2,7 @@ import { isInvalidUserId } from "@/utils/is-invalid-user-id";
 import UserModel from "@/models/user/user-model";
 import { errorMessages } from "@/utils/const";
 import connectDb from "@/lib/mongoose-config";
-import { ICategories } from "@/models";
+import type { ICategories } from "@/models";
 
 type UpdateUserTransactionsDateProps = {
   userId: string;
