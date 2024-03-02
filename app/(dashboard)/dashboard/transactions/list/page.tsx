@@ -103,8 +103,6 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
   )) as CustomSessionI;
 
   const userCategories = await getUserCategories(session?.user?.id ?? "");
-  console.log("userCategories", userCategories);
-  console.log("userCategories total", userCategories.length);
 
   const startDate =
     typeof startDateParam === "string"

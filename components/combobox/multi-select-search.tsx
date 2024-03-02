@@ -18,9 +18,11 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "../ui/scroll-area";
 
+type LabelsObj = { singular: string; plural: string };
+
 type MultiSelectSearchProps = {
   options: { value: string; label: string }[];
-  label?: string;
+  label?: LabelsObj;
 };
 
 const WIDTH = "w-[225px]";
@@ -52,16 +54,18 @@ export const MultiSelectSearch = ({
           {selectedValues.length === 1
             ? `${selectedValues[0]} selected`
             : selectedValues.length > 1
-            ? `${selectedValues.length} ${label ?? "options"} selecteds`
-            : `Select a ${label ?? "option"}...`}
+            ? `${selectedValues.length} ${label?.plural ?? "options"} selecteds`
+            : `Select ${label?.plural ?? "options"}...`}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className={`${WIDTH} p-0`}>
         <Command>
-          <CommandInput placeholder={`Search a ${label ?? "option"}...`} />
-          <ScrollArea className="h-[200px]">
-            <CommandEmpty>No {label ?? "option"} found.</CommandEmpty>
+          <CommandInput
+            placeholder={`Search a ${label?.singular ?? "option"}...`}
+          />
+          <ScrollArea maxHeight={225}>
+            <CommandEmpty>No {label?.plural ?? "options"} found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem

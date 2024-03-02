@@ -21,8 +21,7 @@ type FilterInputsProps = {
 
 // TODO: Look at the searchParams to initiate the states so the filters might be
 // populated from queryParams if proceed
-// TODO: Add a multiple select to filter by categories
-// Remove the search name and move the filterValue to the left
+// TODO: Add a multiple select to filter by categories!
 export const FilterInputs = ({
   date,
   userCategories,
@@ -172,7 +171,10 @@ export const FilterInputs = ({
               )}
             </div>
           )}
-          <MultiSelectSearch label="category" options={parsedCategories} />
+          <MultiSelectSearch
+            label={{ singular: "category", plural: "categories" }}
+            options={parsedCategories}
+          />
         </div>
         <CalendarDateRangePicker date={date} setDate={onSetDate} />
         <ScrollBar orientation="horizontal" />
