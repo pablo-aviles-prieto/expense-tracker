@@ -312,7 +312,7 @@ export const TransactionsTable = <TData, TValue>({
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-between w-full gap-2 sm:justify-end">
+        <div className="flex items-center justify-between w-full sm:w-[calc(100%-300px)] gap-2 sm:justify-end">
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
             Page {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount()}

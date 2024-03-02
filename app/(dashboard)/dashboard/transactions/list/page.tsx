@@ -150,7 +150,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
         <div className="flex items-start justify-between">
           <Heading
-            maxWidthClass="max-w-[calc(100%-170px)]"
+            maxWidthClass="max-w-[calc(100%-167px)]"
             title={`Transactions (${totalTrans})`}
             description={filteredTrans}
           />
