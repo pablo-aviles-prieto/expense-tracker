@@ -66,7 +66,19 @@ export const monthOrder = {
 
 export const URL_POST_TRANSACTION = `/api/transactions/filtered`;
 export const URL_UPDATE_USER_TRANS_DATES = `/api/user/update-trans-dates`;
+export const URL_UPLOAD_TRANSACTION_FILE = `/api/transactions/upload`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;
 export const PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50];
+
+export const DATES_CSV_FORMAT_OPTIONS = [
+  "dd-MM-yyyy",
+  "MM-dd-yyyy",
+  "yyyy-MM-dd",
+  "dd/MM/yyyy",
+  "MM/dd/yyyy",
+  "yyyy/MM/dd",
+];
+
+export const FIELDS_FROM_CSV = ["Date", "Concept", "Amount", "Notes"];

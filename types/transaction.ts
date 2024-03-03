@@ -34,3 +34,16 @@ export interface ResponseTransactionBulk {
   insertedTransactions?: number;
   updatedUser?: User[];
 }
+
+export interface TransactionBulk {
+  Date: string;
+  Concept: string;
+  Amount: string;
+  Notes?: string;
+}
+
+export interface ResponseFile {
+  ok: boolean;
+  data?: TransactionBulk[];
+  error?: string;
+}

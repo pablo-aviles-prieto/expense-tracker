@@ -4,6 +4,7 @@ import "@uploadthing/react/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "filepond/dist/filepond.min.css";
 import { getServerSession } from "next-auth";
 
 const inter = Inter({ subsets: ["latin"] });

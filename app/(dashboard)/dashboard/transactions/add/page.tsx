@@ -7,6 +7,7 @@ import { getEllipsed } from "@/utils/const";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Undo2 } from "lucide-react";
+import { AddTransFileInput } from "@/components/file-input/add-trans-file-input";
 
 const breadcrumbItems = [
   { title: "Transactions", link: "/dashboard/transactions" },
@@ -15,7 +16,7 @@ const breadcrumbItems = [
 
 const tabsClasses = `w-full ${getEllipsed} tracking-tighter sm:tracking-normal`;
 
-export default async function AddTransaction() {
+export default function AddTransaction() {
   return (
     <div className="flex-1 p-4 pt-6 space-y-2 sm:space-y-4 md:p-8">
       <BreadCrumb items={breadcrumbItems} />
@@ -40,7 +41,7 @@ export default async function AddTransaction() {
       <Separator />
 
       <Tabs defaultValue="multiple">
-        <TabsList className="flex mx-auto justify-center w-[345px] sm:w-[500px] md:w-[700px]">
+        <TabsList className="flex mx-auto justify-center w-[345px] sm:w-[500px]">
           <TabsTrigger className={tabsClasses} value="multiple">
             Add transactions via CSV
           </TabsTrigger>
@@ -49,7 +50,9 @@ export default async function AddTransaction() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="multiple">
-          Add multiple transactions via CSV
+          <div className="max-w-[400px] mx-auto mt-3">
+            <AddTransFileInput />
+          </div>
         </TabsContent>
         <TabsContent value="manual">
           Add multiple transactions manually
