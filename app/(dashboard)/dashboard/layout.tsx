@@ -1,6 +1,5 @@
 import Header from "@/components/layout/header";
 import Sidebar from "@/components/layout/sidebar";
-import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,7 +14,6 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <Toaster />
       <Header />
       <div className="flex h-screen overflow-hidden">
         <Sidebar />

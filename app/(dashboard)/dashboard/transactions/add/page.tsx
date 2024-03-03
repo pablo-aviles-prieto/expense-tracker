@@ -16,7 +16,7 @@ const breadcrumbItems = [
 
 const tabsClasses = `w-full ${getEllipsed} tracking-tighter sm:tracking-normal`;
 
-export default function AddTransaction() {
+export default function AddTransactions() {
   return (
     <div className="flex-1 p-4 pt-6 space-y-2 sm:space-y-4 md:p-8">
       <BreadCrumb items={breadcrumbItems} />
@@ -50,9 +50,7 @@ export default function AddTransaction() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="multiple">
-          <div className="max-w-[400px] mx-auto mt-3">
-            <AddTransFileInput />
-          </div>
+          <AddTransFileInput />
         </TabsContent>
         <TabsContent value="manual">
           Add multiple transactions manually
