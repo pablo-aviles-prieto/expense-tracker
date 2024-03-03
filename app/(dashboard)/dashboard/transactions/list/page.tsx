@@ -1,5 +1,6 @@
 import BreadCrumb from "@/components/breadcrumb";
 import { columns } from "@/components/tables/transactions-tables/columns";
+import { ErrorBlock } from "@/components/tables/transactions-tables/error-block";
 import { TransactionsTable } from "@/components/tables/transactions-tables/transaction-table";
 import { getActiveFilters } from "@/components/tables/transactions-tables/utils/get-active-filters";
 import { buttonVariants } from "@/components/ui/button";
@@ -151,16 +152,25 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
         <div className="flex items-start justify-between">
           <Heading
             maxWidthClass="max-w-[calc(100%-167px)]"
-            title={`Transactions (${totalTrans})`}
-            description={filteredTrans}
+            title={
+              transResult.error
+                ? "Error retrieving the transactions"
+                : `Transactions (${totalTrans})`
+            }
+            description={transResult.error ? "" : filteredTrans}
           />
 
-          <Link
-            href={"/dashboard/transactions/add"}
-            className={cn(buttonVariants({ variant: "default" }), getEllipsed)}
-          >
-            <Plus className="w-4 h-4 mr-2" /> Add transaction
-          </Link>
+          {!transResult.error && (
+            <Link
+              href={"/dashboard/transactions/add"}
+              className={cn(
+                buttonVariants({ variant: "default" }),
+                getEllipsed,
+              )}
+            >
+              <Plus className="w-4 h-4 mr-2" /> Add transaction
+            </Link>
+          )}
         </div>
         <Separator />
 
@@ -173,10 +183,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
             userCategories={userCategories}
           />
         ) : (
-          <div>
-            <p>There was an error retrieving the transactions</p>
-            <p>Message: {transResult.error}</p>
-          </div>
+          <ErrorBlock transError={transResult.error} />
         )}
       </div>
     </>
