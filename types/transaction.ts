@@ -36,10 +36,12 @@ export interface ResponseTransactionBulk {
 }
 
 export interface TransactionBulk {
+  id: number;
   Date: string;
   Concept: string;
   Amount: string;
   Notes?: string;
+  selectedCategories?: string[];
 }
 
 export interface ResponseFile {

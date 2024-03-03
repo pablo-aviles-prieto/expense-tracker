@@ -8,7 +8,6 @@ import { DEFAULT_PAGE } from "@/utils/const";
 import { useMemo, useState } from "react";
 import { FilterOperatorSelect } from "./inputs/filter-operator-select";
 import { buttonVariants } from "@/components/ui/button";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { MultiSelectSearch } from "@/components/combobox/multi-select-search";
 import type { Categories } from "@/types";
 import {
@@ -26,8 +25,6 @@ type FilterInputsProps = {
   createQueryString: (params: Record<string, string | number | null>) => string;
 };
 
-// TODO: Look at the searchParams to initiate the states so the filters might be
-// populated from queryParams if proceed
 export const FilterInputs = ({
   date,
   userCategories,

@@ -7,13 +7,20 @@ import {
   DATES_CSV_FORMAT_OPTIONS,
   URL_UPLOAD_TRANSACTION_FILE,
 } from "@/utils/const";
-import type { ResponseFile, TransactionBulk } from "@/types";
+import type { Categories, ResponseFile } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 import { AddTransactionsTable } from "../tables/add-transactions-tables/add-transaction-table";
 import { columns } from "../tables/add-transactions-tables/columns";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { ScrollArea } from "../ui/scroll-area";
+import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
 
-export const AddTransFileInput = () => {
+type AddTransactionsBlockProps = {
+  userCategories: Categories[];
+};
+
+export const AddTransactionsBlock = ({
+  userCategories,
+}: AddTransactionsBlockProps) => {
   const [files, setFiles] = useState<Array<FilePondInitialFile | File | Blob>>(
     [],
   );
@@ -21,16 +28,17 @@ export const AddTransFileInput = () => {
     DATES_CSV_FORMAT_OPTIONS[0],
   );
   const [isReady, setIsReady] = useState(false);
-  const [bulkTransactions, setBulkTransactions] = useState<TransactionBulk[]>(
-    [],
-  );
   const { toast } = useToast();
+  const { addTransactions, setAddTransactions, setUserCategories } =
+    useAddTransactionTable();
 
   useEffect(() => {
     setIsReady(true);
   }, []);
 
-  console.log("bulkTransactions", bulkTransactions);
+  useEffect(() => {
+    setUserCategories(userCategories);
+  }, [userCategories]);
 
   const handleUpdateFiles = (fileItems: FilePondFile[]) => {
     const updatedFiles: Array<FilePondInitialFile | File | Blob> =
@@ -41,7 +49,8 @@ export const AddTransFileInput = () => {
   const handleFileProcessed = (response: any) => {
     const { ok: responseOk, data }: ResponseFile = JSON.parse(response);
     if (responseOk && data) {
-      setBulkTransactions((prevState) => [...prevState, ...data]);
+      const parsedTrans = data.map((trans, i) => ({ ...trans, id: i }));
+      setAddTransactions((prevState) => [...prevState, ...parsedTrans]);
       return "success";
     }
     return "failure";
@@ -95,13 +104,11 @@ export const AddTransFileInput = () => {
           />
         </div>
       </ScrollArea>
-      {bulkTransactions.length > 0 && (
+      {addTransactions.length > 0 && (
         <AddTransactionsTable
           columns={columns}
-          data={bulkTransactions}
-          dataLength={bulkTransactions.length}
-          userCategories={[]}
-          // userCategories={userCategories}
+          data={addTransactions}
+          dataLength={addTransactions.length}
         />
       )}
     </>

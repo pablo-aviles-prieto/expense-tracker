@@ -36,13 +36,12 @@ import {
   DEFAULT_PAGE_LIMIT,
   PAGE_SIZE_OPTIONS,
 } from "@/utils/const";
-import type { Categories, TransactionsDateObj } from "@/types";
+import type { TransactionsDateObj } from "@/types";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   dataLength: number;
-  userCategories: Categories[];
   pageSizeOptions?: number[];
   userStoredDates?: TransactionsDateObj | null;
 }
@@ -51,7 +50,6 @@ export const AddTransactionsTable = <TData, TValue>({
   columns,
   data,
   dataLength,
-  userCategories,
   pageSizeOptions = PAGE_SIZE_OPTIONS,
 }: DataTableProps<TData, TValue>) => {
   const pageAsNumber = DEFAULT_PAGE;
@@ -83,6 +81,9 @@ export const AddTransactionsTable = <TData, TValue>({
     manualFiltering: true,
   });
 
+  console.log("data", data);
+
+  // TODO: Fix the pagination or just remove it
   return (
     <>
       <ScrollArea className="rounded-md border h-[calc(80vh-335px)]">

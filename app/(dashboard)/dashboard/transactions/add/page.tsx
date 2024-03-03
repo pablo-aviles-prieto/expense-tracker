@@ -7,7 +7,12 @@ import { getEllipsed } from "@/utils/const";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Undo2 } from "lucide-react";
-import { AddTransFileInput } from "@/components/file-input/add-trans-file-input";
+import { AddTransactionsBlock } from "@/components/add-transactions/add-transactions-block";
+import { type NextAuthOptions, getServerSession } from "next-auth";
+import type { CustomSessionI } from "@/types";
+import { authOptions } from "@/lib/auth-options";
+import { getUserCategories } from "@/services/user";
+import { AddTransactionsTableProvider } from "@/contexts/add-transactions-table-provider";
 
 const breadcrumbItems = [
   { title: "Transactions", link: "/dashboard/transactions" },
@@ -16,7 +21,13 @@ const breadcrumbItems = [
 
 const tabsClasses = `w-full ${getEllipsed} tracking-tighter sm:tracking-normal`;
 
-export default function AddTransactions() {
+export default async function AddTransactions() {
+  const session = (await getServerSession(
+    authOptions as NextAuthOptions,
+  )) as CustomSessionI;
+
+  const userCategories = await getUserCategories(session?.user?.id ?? "");
+
   return (
     <div className="flex-1 p-4 pt-6 space-y-2 sm:space-y-4 md:p-8">
       <BreadCrumb items={breadcrumbItems} />
@@ -50,7 +61,9 @@ export default function AddTransactions() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="multiple">
-          <AddTransFileInput />
+          <AddTransactionsTableProvider>
+            <AddTransactionsBlock userCategories={userCategories} />
+          </AddTransactionsTableProvider>
         </TabsContent>
         <TabsContent value="manual">
           Add multiple transactions manually
