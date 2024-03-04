@@ -55,9 +55,6 @@ export const AddTransactionsTable = <TData, TValue>({
   const pageAsNumber = DEFAULT_PAGE;
   const perPageAsNumber = DEFAULT_PAGE_LIMIT;
 
-  /* this can be used to get the selectedrows 
-  console.log("value", table.getFilteredSelectedRowModel()); */
-
   const [{ pageIndex, pageSize }, setPagination] =
     React.useState<PaginationState>({
       pageIndex: pageAsNumber - 1,
@@ -83,7 +80,13 @@ export const AddTransactionsTable = <TData, TValue>({
 
   console.log("data", data);
 
-  // TODO: Fix the pagination or just remove it
+  // TODO: Add a dropdown so the user can select the CSV format date to parse it correctly
+  // TODO: Add a button to save the transactions after the user added the categories
+  // TODO: Add a tooltip with instructions of the format date dropdown and tell him
+  // to add categories, if not, all the transactions without a specific category
+  // gonna have a 'generic' category assigned!
+  // TODO: Fix the pagination or just remove it (in case of fix it and use it in the client
+  // remove the rows selected in this table)
   return (
     <>
       <ScrollArea className="rounded-md border h-[calc(80vh-335px)]">

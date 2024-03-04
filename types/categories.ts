@@ -3,3 +3,7 @@ export interface Categories {
   name: string;
   common?: boolean;
 }
+
+export interface EnhancedCategory extends Categories {
+  newEntry?: boolean;
+}

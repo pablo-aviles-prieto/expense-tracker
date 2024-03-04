@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import type { TransactionBulk } from "@/types";
 import { AmountCell } from "../amount-cell";
-import { ComboboxField } from "@/components/add-transactions/combobox-field";
+import { CategoriesComboboxInput } from "@/components/add-transactions/categories-combobox-input";
 
 export const columns: ColumnDef<TransactionBulk>[] = [
   {
@@ -23,9 +23,9 @@ export const columns: ColumnDef<TransactionBulk>[] = [
     accessorKey: "Categories",
     header: "CATEGORIES",
     cell: ({ row }) => (
-      <ComboboxField
+      <CategoriesComboboxInput
+        selectedOptions={row.original.selectedCategories ?? []}
         selectedRow={row.index}
-        selectedCategories={row.original.selectedCategories}
       />
     ),
   },

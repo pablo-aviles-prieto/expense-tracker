@@ -1,11 +1,11 @@
 "use client";
 
-import type { Categories, TransactionBulk } from "@/types";
-import React, { createContext, useState, ReactNode } from "react";
+import type { EnhancedCategory, TransactionBulk } from "@/types";
+import React, { createContext, useState, ReactNode, useCallback } from "react";
 
 interface TableContextType {
-  userCategories: Categories[];
-  setUserCategories: React.Dispatch<React.SetStateAction<Categories[]>>;
+  userCategories: EnhancedCategory[];
+  setUserCategories: React.Dispatch<React.SetStateAction<EnhancedCategory[]>>;
   updateTransactionCategories: (
     transactionId: number,
     selectedCategories: string[],
@@ -25,22 +25,22 @@ interface TableProviderProps {
 export const AddTransactionsTableProvider: React.FC<TableProviderProps> = ({
   children,
 }) => {
-  const [userCategories, setUserCategories] = useState<Categories[]>([]);
+  const [userCategories, setUserCategories] = useState<EnhancedCategory[]>([]);
   const [addTransactions, setAddTransactions] = useState<TransactionBulk[]>([]);
 
-  const updateTransactionCategories = (
-    transactionId: number,
-    selectedCategories: string[],
-  ) => {
-    setAddTransactions(
-      addTransactions.map((transaction) => {
-        if (transaction.id === transactionId) {
-          return { ...transaction, selectedCategories };
-        }
-        return transaction;
-      }),
-    );
-  };
+  const updateTransactionCategories = useCallback(
+    (transactionId: number, selectedCategories: string[]) => {
+      setAddTransactions(
+        addTransactions.map((transaction) => {
+          if (transaction.id === transactionId) {
+            return { ...transaction, selectedCategories };
+          }
+          return transaction;
+        }),
+      );
+    },
+    [addTransactions, setAddTransactions],
+  );
 
   const value = {
     userCategories,
