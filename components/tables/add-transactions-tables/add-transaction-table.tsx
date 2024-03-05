@@ -86,7 +86,7 @@ export const AddTransactionsTable = <TData, TValue>({
   // to add categories, if not, all the transactions without a specific category
   // gonna have a 'generic' category assigned!
   // TODO: Fix the pagination or just remove it (in case of fix it and use it in the client
-  // remove the rows selected in this table)
+  // remove the rows selected in this table)!
   return (
     <>
       <ScrollArea className="rounded-md border h-[calc(80vh-335px)]">

@@ -1,4 +1,5 @@
-import { User } from "./user";
+import type { EnhancedCategory } from "./categories";
+import type { User } from "./user";
 
 export interface Category {
   id: number | string;
@@ -41,7 +42,7 @@ export interface TransactionBulk {
   Concept: string;
   Amount: string;
   Notes?: string;
-  selectedCategories?: string[];
+  selectedCategories?: EnhancedCategory[];
 }
 
 export interface ResponseFile {

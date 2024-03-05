@@ -24,7 +24,7 @@ export const columns: ColumnDef<TransactionBulk>[] = [
     header: "CATEGORIES",
     cell: ({ row }) => (
       <CategoriesComboboxInput
-        selectedOptions={row.original.selectedCategories ?? []}
+        selectedCategories={row.original.selectedCategories ?? []}
         selectedRow={row.index}
       />
     ),

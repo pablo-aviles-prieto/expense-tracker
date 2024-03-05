@@ -21,14 +21,14 @@ import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
 import type { EnhancedCategory } from "@/types";
 
 type CategoriesComboboxInputProps = {
-  selectedOptions: string[];
+  selectedCategories: EnhancedCategory[];
   selectedRow: number;
 };
 
 const WIDTH = "w-[225px]";
 
 export const CategoriesComboboxInput = ({
-  selectedOptions,
+  selectedCategories,
   selectedRow,
 }: CategoriesComboboxInputProps) => {
   const [currentInput, setCurrentInput] = React.useState("");
@@ -53,43 +53,76 @@ export const CategoriesComboboxInput = ({
   );
 
   const handleSelect = React.useCallback(
-    (value: string) => {
-      const newSelectedOptions = selectedOptions.includes(value)
-        ? selectedOptions.filter((option) => option !== value)
-        : [...selectedOptions, value];
-      updateTransactionCategories(selectedRow, newSelectedOptions);
+    (catObj: { value: string; label: string }) => {
+      const isAlreadySelected = selectedCategories.some(
+        (cat) => cat.id === catObj.value,
+      );
+
+      let newSelectedCategories: EnhancedCategory[];
+      if (isAlreadySelected) {
+        newSelectedCategories = selectedCategories.filter(
+          (cat) => cat.id !== catObj.value,
+        );
+      } else {
+        const categoryToAdd = userCategories.find(
+          (cat) => cat.id === catObj.value,
+        );
+        if (categoryToAdd) {
+          newSelectedCategories = [...selectedCategories, categoryToAdd];
+        } else {
+          newSelectedCategories = [
+            ...selectedCategories,
+            { id: catObj.value, name: catObj.label },
+          ];
+        }
+      }
+
+      updateTransactionCategories(selectedRow, newSelectedCategories);
     },
-    [selectedOptions, updateTransactionCategories, selectedRow],
+    [
+      selectedCategories,
+      updateTransactionCategories,
+      selectedRow,
+      userCategories,
+    ],
   );
 
-  const renderCreateInput = React.useMemo(
-    () =>
-      !!currentInput &&
-      !categories.some(
-        (cat) => cat.label.toLowerCase() === currentInput.toLowerCase(),
-      ),
-    [currentInput, categories],
-  );
-
-  // The user will be able to create always the category and will have to check if
-  // that category already exists. In that case, select the existed one instead of
-  // creating a new one in the updateUserCategories, since there is a bug that whenever
-  // I type an existing category, it wont appear again until I remove the whole searched
-  // value, the possibility of create the category
-  const onAddNewCategory = () => {
+  const onAddNewCategory = React.useCallback(() => {
     const newValue = currentInput.trim();
-    if (newValue) {
-      const newCat = {
-        name: newValue,
+    if (!newValue) return;
+
+    const existingCategory = userCategories.find(
+      (cat) => cat.name.toLowerCase() === newValue.toLowerCase(),
+    );
+
+    if (existingCategory) {
+      // Handle as if this existing category was selected
+      handleSelect({
+        value: existingCategory.id,
+        label: existingCategory.name,
+      });
+    } else {
+      // Create a new category and add it
+      const newCat: EnhancedCategory = {
         id: String(userCategories.length + 1),
+        name: newValue,
         newEntry: true,
       };
-      updateTransactionCategories(selectedRow, [...selectedOptions, newValue]);
+
       updateUserCategories(newCat);
-      setCurrentInput("");
+      updateTransactionCategories(selectedRow, [...selectedCategories, newCat]);
     }
-  };
-  // console.log("userCategories", userCategories);
+
+    setCurrentInput("");
+  }, [
+    currentInput,
+    userCategories,
+    selectedRow,
+    updateUserCategories,
+    updateTransactionCategories,
+    setCurrentInput,
+    handleSelect,
+  ]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -100,10 +133,10 @@ export const CategoriesComboboxInput = ({
           aria-expanded={open}
           className={`${WIDTH} justify-between ${getEllipsed}`}
         >
-          {selectedOptions.length === 1
-            ? `${selectedOptions[0]} selected`
-            : selectedOptions.length > 1
-            ? `${selectedOptions.length} categories`
+          {selectedCategories.length === 1
+            ? `${selectedCategories[0].name} selected`
+            : selectedCategories.length > 1
+            ? `${selectedCategories.length} categories`
             : `Select categories...`}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
@@ -121,12 +154,14 @@ export const CategoriesComboboxInput = ({
                 <CommandItem
                   key={cat.value}
                   value={cat.label}
-                  onSelect={() => handleSelect(cat.label)}
+                  onSelect={() => handleSelect(cat)}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      selectedOptions.includes(cat.label)
+                      selectedCategories.find(
+                        (category) => category.id === cat.value,
+                      )
                         ? "opacity-100"
                         : "opacity-0",
                     )}
@@ -135,17 +170,15 @@ export const CategoriesComboboxInput = ({
                 </CommandItem>
               ))}
             </CommandGroup>
-            {renderCreateInput && (
-              <CommandGroup className="border-t">
-                <CommandItem
-                  onSelect={onAddNewCategory}
-                  className="text-green-500"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add &apos;{currentInput}&apos;
-                </CommandItem>
-              </CommandGroup>
-            )}
+            <CommandGroup className="border-t">
+              <CommandItem
+                onSelect={onAddNewCategory}
+                className="text-green-500"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add &apos;{currentInput}&apos;
+              </CommandItem>
+            </CommandGroup>
           </ScrollArea>
         </Command>
       </PopoverContent>

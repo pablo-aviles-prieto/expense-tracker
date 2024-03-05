@@ -8,7 +8,7 @@ interface TableContextType {
   setUserCategories: React.Dispatch<React.SetStateAction<EnhancedCategory[]>>;
   updateTransactionCategories: (
     transactionId: number,
-    selectedCategories: string[],
+    selectedCategories: EnhancedCategory[],
   ) => void;
   addTransactions: TransactionBulk[];
   setAddTransactions: React.Dispatch<React.SetStateAction<TransactionBulk[]>>;
@@ -29,7 +29,7 @@ export const AddTransactionsTableProvider: React.FC<TableProviderProps> = ({
   const [addTransactions, setAddTransactions] = useState<TransactionBulk[]>([]);
 
   const updateTransactionCategories = useCallback(
-    (transactionId: number, selectedCategories: string[]) => {
+    (transactionId: number, selectedCategories: EnhancedCategory[]) => {
       setAddTransactions(
         addTransactions.map((transaction) => {
           if (transaction.id === transactionId) {
