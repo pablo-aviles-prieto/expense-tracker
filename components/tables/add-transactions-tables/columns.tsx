@@ -18,6 +18,9 @@ export const columns: ColumnDef<TransactionBulk>[] = [
   {
     accessorKey: "Date",
     header: "DATE",
+    cell: ({ getValue }) => (
+      <div className="min-w-[90px]">{getValue() as string}</div>
+    ),
   },
   {
     accessorKey: "Categories",

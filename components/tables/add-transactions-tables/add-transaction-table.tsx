@@ -86,7 +86,7 @@ export const AddTransactionsTable = <TData, TValue>({
   // to add categories, if not, all the transactions without a specific category
   // gonna have a 'generic' category assigned!
   // TODO: Fix the pagination or just remove it (in case of fix it and use it in the client
-  // remove the rows selected in this table)!
+  // remove the rows selected in this table)
   return (
     <>
       <ScrollArea className="rounded-md border h-[calc(80vh-335px)]">
@@ -143,10 +143,6 @@ export const AddTransactionsTable = <TData, TValue>({
 
       <div className="flex flex-col items-center justify-end gap-2 py-4 space-x-2 sm:!flex-row">
         <div className="flex items-center justify-between w-full">
-          <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
             <div className="flex items-center space-x-2">
               <p className="text-sm font-medium whitespace-nowrap">
