@@ -49,8 +49,13 @@ export const AddTransactionsBlock = ({
   const handleFileProcessed = (response: any) => {
     const { ok: responseOk, data }: ResponseFile = JSON.parse(response);
     if (responseOk && data) {
-      const parsedTrans = data.map((trans, i) => ({ ...trans, id: i }));
-      setAddTransactions((prevState) => [...prevState, ...parsedTrans]);
+      setAddTransactions((prevState) => {
+        const parsedTrans = data.map((trans, i) => ({
+          ...trans,
+          id: prevState.length + i,
+        }));
+        return [...prevState, ...parsedTrans];
+      });
       return "success";
     }
     return "failure";
@@ -105,11 +110,13 @@ export const AddTransactionsBlock = ({
         </div>
       </ScrollArea>
       {addTransactions.length > 0 && (
-        <AddTransactionsTable
-          columns={columns}
-          data={addTransactions}
-          dataLength={addTransactions.length}
-        />
+        <div className="relative">
+          <AddTransactionsTable
+            columns={columns}
+            data={addTransactions}
+            dataLength={addTransactions.length}
+          />
+        </div>
       )}
     </>
   );
