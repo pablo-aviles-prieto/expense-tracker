@@ -52,7 +52,7 @@ export default async function AddTransactions() {
       <Separator />
 
       <Tabs defaultValue="multiple">
-        <TabsList className="flex mx-auto justify-center w-[345px] sm:w-[500px]">
+        <TabsList className="flex mx-auto justify-center w-[345px] sm:w-[500px] mb-8">
           <TabsTrigger className={tabsClasses} value="multiple">
             Add transactions via CSV
           </TabsTrigger>

@@ -34,12 +34,16 @@ export const POST = async (req: NextRequest) => {
           .on("data", (data) => results.push(data as TransactionBulk))
           .on("end", () => {
             const parsedResults = results.map((originalObject) => {
+              console.log("originalObject", originalObject);
               return (FIELDS_FROM_CSV as (keyof TransactionBulk)[]).reduce(
                 (
                   acc: Partial<TransactionBulk>,
                   field: keyof TransactionBulk,
                 ) => {
-                  acc[field] = originalObject[field];
+                  if (field in originalObject) {
+                    // @ts-ignore
+                    acc[field] = originalObject[field];
+                  }
                   return acc;
                 },
                 {},
