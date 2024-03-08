@@ -3,9 +3,12 @@
 import { useEffect, useState } from "react";
 import { FilePond } from "react-filepond";
 import type { FilePondFile, FilePondInitialFile } from "filepond";
-import { URL_UPLOAD_TRANSACTION_FILE } from "@/utils/const";
+import {
+  URL_GET_CSV_HEADERS,
+  URL_UPLOAD_TRANSACTION_FILE,
+} from "@/utils/const";
 import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
-import type { ResponseFile } from "@/types";
+import type { ResponseFile, ResponseFileHeaders } from "@/types";
 import { useToast } from "../ui/use-toast";
 
 type InputFileBlock = {
@@ -45,6 +48,16 @@ export const InputFileBlock = ({ files, setFiles }: InputFileBlock) => {
     return "failure";
   };
 
+  const handleFileProcessedForHeaders = (response: any) => {
+    const { ok: responseOk, headers }: ResponseFileHeaders =
+      JSON.parse(response);
+    if (responseOk && headers) {
+      console.log("headers", headers);
+      return "success";
+    }
+    return "failure";
+  };
+
   return (
     <div
       className="file-wrapper max-w-[400px] mx-auto my-4"
@@ -64,10 +77,11 @@ export const InputFileBlock = ({ files, setFiles }: InputFileBlock) => {
         name="files"
         server={{
           process: {
-            url: URL_UPLOAD_TRANSACTION_FILE,
+            url: URL_GET_CSV_HEADERS,
+            // url: URL_UPLOAD_TRANSACTION_FILE,
             method: "POST",
             withCredentials: false,
-            onload: handleFileProcessed,
+            onload: handleFileProcessedForHeaders,
             onerror: (response) => {
               try {
                 const parsedRes = JSON.parse(response);

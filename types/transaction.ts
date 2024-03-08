@@ -50,3 +50,9 @@ export interface ResponseFile {
   data?: TransactionBulk[];
   error?: string;
 }
+
+export interface ResponseFileHeaders {
+  ok: boolean;
+  headers?: string[];
+  error?: string;
+}

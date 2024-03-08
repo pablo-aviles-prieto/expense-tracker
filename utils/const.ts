@@ -30,6 +30,7 @@ export const errorMessages = {
   fileParsing: "File processing failed. Try again later",
   fileType: "Wrong file type. Only CSV is allowed",
   dateFormatCSV: "Please, select the correct date format used on your CSV file",
+  csvNoColumns: "Columns not found on the CSV",
 } as const;
 
 export const dateFormat = {
@@ -67,6 +68,7 @@ export const monthOrder = {
 export const URL_POST_TRANSACTION = `/api/transactions/filtered`;
 export const URL_UPDATE_USER_TRANS_DATES = `/api/user/update-trans-dates`;
 export const URL_UPLOAD_TRANSACTION_FILE = `/api/transactions/upload`;
+export const URL_GET_CSV_HEADERS = `/api/transactions/get-csv-headers`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;
