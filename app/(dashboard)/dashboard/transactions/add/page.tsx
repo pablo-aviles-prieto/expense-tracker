@@ -13,6 +13,7 @@ import type { CustomSessionI } from "@/types";
 import { authOptions } from "@/lib/auth-options";
 import { getUserCategories } from "@/services/user";
 import { AddTransactionsTableProvider } from "@/contexts/add-transactions-table-provider";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const breadcrumbItems = [
   { title: "Transactions", link: "/dashboard/transactions" },
@@ -29,6 +30,7 @@ export default async function AddTransactions() {
   const userCategories = await getUserCategories(session?.user?.id ?? "");
 
   return (
+    // <ScrollArea className="h-full">
     <div className="flex-1 p-4 pt-6 space-y-2 sm:space-y-4 md:p-8">
       <BreadCrumb items={breadcrumbItems} />
 
@@ -70,5 +72,6 @@ export default async function AddTransactions() {
         </TabsContent>
       </Tabs>
     </div>
+    // </ScrollArea>
   );
 }

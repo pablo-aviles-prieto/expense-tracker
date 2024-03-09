@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Readable } from "stream";
-import csv from "csv-parser";
 import { errorMessages } from "@/utils/const";
 
 export const POST = async (req: NextRequest) => {
@@ -16,45 +14,22 @@ export const POST = async (req: NextRequest) => {
     );
   }
 
-  return new Promise<NextResponse>((resolve) => {
-    const csvReadableStream = new Readable({
-      read() {},
-    });
-    let headers: string[] | null = null;
+  try {
+    const buffer = await csvFile.arrayBuffer();
+    const text = new TextDecoder().decode(buffer);
+    const headersLine = text.replaceAll("\r", "").split(/\r\n|\n|\r/)[0];
+    const headersArray = headersLine.split(";");
+    const uniqueHeaders = new Set(headersArray);
 
-    csvFile
-      .arrayBuffer()
-      .then((buffer) => {
-        csvReadableStream.push(Buffer.from(buffer));
-        csvReadableStream.push(null); // Indicates the end of the stream
-
-        csvReadableStream
-          .pipe(csv({ separator: ";" }))
-          .on("headers", (headersReceived) => {
-            headers = headersReceived; // Capture headers
-          })
-          .on("finish", () => {
-            if (headers) {
-              resolve(
-                NextResponse.json({ ok: true, headers }, { status: 200 }),
-              );
-            } else {
-              resolve(
-                NextResponse.json(
-                  { ok: false, error: errorMessages.csvNoColumns },
-                  { status: 400 },
-                ),
-              );
-            }
-          });
-      })
-      .catch((err) => {
-        resolve(
-          NextResponse.json(
-            { ok: false, error: errorMessages.fileParsing },
-            { status: 500 },
-          ),
-        );
-      });
-  });
+    return NextResponse.json(
+      { ok: true, headers: Array.from(uniqueHeaders) },
+      { status: 200 },
+    );
+  } catch (err) {
+    console.log("ERROR PARSING CSV HEADERS", err);
+    return NextResponse.json(
+      { ok: false, error: errorMessages.fileParsing },
+      { status: 500 },
+    );
+  }
 };

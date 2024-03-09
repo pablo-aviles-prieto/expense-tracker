@@ -15,6 +15,7 @@ import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
 import { Separator } from "../ui/separator";
 import { Stepper } from "./stepper";
 import { InputFileBlock } from "./input-file-block";
+import { CSVColumnsDropdown } from "./csv-columns-dropdown";
 
 type AddTransactionsBlockProps = {
   userCategories: Categories[];
@@ -27,6 +28,7 @@ export const AddTransactionsBlock = ({
   const [files, setFiles] = useState<Array<FilePondInitialFile | File | Blob>>(
     [],
   );
+  const [CSVHeaders, setCSVHeaders] = useState<string[]>([]);
   const [CSVDateFormat, setCSVDateFormat] = useState<string>(
     DATES_CSV_FORMAT_OPTIONS[0],
   );
@@ -39,13 +41,23 @@ export const AddTransactionsBlock = ({
 
   return (
     <>
-      {/* <ScrollArea maxHeight={154} className="my-2"> */}
       <Stepper currentStep={currentStep} />
       <Separator />
-      {currentStep === 0 && (
-        <InputFileBlock files={files} setFiles={setFiles} />
-      )}
-      {/* </ScrollArea> */}
+      <ScrollArea className="h-[calc(100vh-380px)]">
+        {/* <ScrollArea maxHeight={300} className="my-2"> */}
+        {currentStep === 0 && (
+          <>
+            <InputFileBlock
+              files={files}
+              setFiles={setFiles}
+              setCSVHeaders={setCSVHeaders}
+            />
+            {CSVHeaders.length > 0 && (
+              <CSVColumnsDropdown options={CSVHeaders} />
+            )}
+          </>
+        )}
+      </ScrollArea>
 
       {/* {addTransactions.length > 0 && (
         <div className="relative">
