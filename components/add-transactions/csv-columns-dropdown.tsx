@@ -67,8 +67,8 @@ export const CSVColumnsDropdown = ({ options }: CSVColumnsDropdownProps) => {
           - When uploading <span className="font-bold">multiple files</span>,
           ensure they{" "}
           <span className="font-bold">share identical columns/headers</span>.
-          The system only evaluates the first file&apos;s structure for import
-          accuracy.
+          The system only evaluates the last uploaded file&apos;s structure for
+          import accuracy.
         </FormDescription>
         <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
           {Object.keys(schemaObject).map((column) => (

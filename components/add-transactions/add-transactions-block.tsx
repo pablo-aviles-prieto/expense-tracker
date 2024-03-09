@@ -29,9 +29,9 @@ export const AddTransactionsBlock = ({
     [],
   );
   const [CSVHeaders, setCSVHeaders] = useState<string[]>([]);
-  const [CSVDateFormat, setCSVDateFormat] = useState<string>(
-    DATES_CSV_FORMAT_OPTIONS[0],
-  );
+  // const [CSVDateFormat, setCSVDateFormat] = useState<string>(
+  //   DATES_CSV_FORMAT_OPTIONS[0],
+  // );
   const { addTransactions, setAddTransactions, setUserCategories } =
     useAddTransactionTable();
 
@@ -44,7 +44,6 @@ export const AddTransactionsBlock = ({
       <Stepper currentStep={currentStep} />
       <Separator />
       <ScrollArea className="h-[calc(100vh-380px)]">
-        {/* <ScrollArea maxHeight={300} className="my-2"> */}
         {currentStep === 0 && (
           <>
             <InputFileBlock
