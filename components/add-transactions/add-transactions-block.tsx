@@ -63,9 +63,12 @@ export const AddTransactionsBlock = ({
       )}
 
       {addTransactions.length > 0 && currentStep === 1 && (
-        <div className="relative">
-          <AddTransactionsTable columns={columns} data={addTransactions} />
-        </div>
+        <AddTransactionsTable
+          columns={columns}
+          data={addTransactions}
+          CSVDateFormat={CSVDateFormat}
+          setCurrentStep={setCurrentStep}
+        />
       )}
     </>
   );

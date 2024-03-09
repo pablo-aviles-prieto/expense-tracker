@@ -17,15 +17,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { FileUp, Undo } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  CSVDateFormat: string;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const AddTransactionsTable = <TData, TValue>({
   columns,
   data,
+  CSVDateFormat,
+  setCurrentStep,
 }: DataTableProps<TData, TValue>) => {
   const table = useReactTable({
     data,
@@ -41,8 +46,16 @@ export const AddTransactionsTable = <TData, TValue>({
   // to add categories, if not, all the transactions without a specific category
   // gonna have a 'generic' category assigned!
   return (
-    <>
-      <ScrollArea className="border rounded-md h-[calc(100vh-385px)]">
+    <div>
+      <div className="flex items-center justify-between my-2">
+        <Button onClick={() => setCurrentStep(0)} variant="outline">
+          <Undo className="w-4 h-4 mr-2" /> Go to previous step
+        </Button>
+        <Button>
+          <FileUp className="w-4 h-4 mr-2" /> Upload transactions
+        </Button>
+      </div>
+      <ScrollArea className="h-[calc(100vh-435px)] border rounded-md">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -93,6 +106,6 @@ export const AddTransactionsTable = <TData, TValue>({
         </Table>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-    </>
+    </div>
   );
 };

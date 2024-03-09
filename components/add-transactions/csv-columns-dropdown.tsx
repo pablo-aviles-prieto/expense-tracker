@@ -32,7 +32,7 @@ import {
 } from "@/schemas/upload-csv-columns-schema";
 import { type FilePondInitialFile } from "filepond";
 import { ResponseFile } from "@/types";
-import { FileUp } from "lucide-react";
+import { ArrowBigRightDash, FileUp } from "lucide-react";
 import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
 
 type CSVColumnsDropdownProps = {
@@ -181,7 +181,7 @@ export const CSVColumnsDropdown = ({
         </div>
         <div className="flex w-full my-2 mt-6 sm:justify-center">
           <Button className="w-full sm:w-[200px]" type="submit">
-            <FileUp className="w-5 h-5 mr-2" /> Upload transactions
+            <ArrowBigRightDash className="w-4 h-4 mr-2" /> Go to next step
           </Button>
         </div>
       </form>

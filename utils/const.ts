@@ -84,3 +84,7 @@ export const DATES_CSV_FORMAT_OPTIONS = [
 ];
 
 export const FIELDS_FROM_CSV = ["Date", "Concept", "Amount", "Notes"];
+
+export const formatterUS = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+});
