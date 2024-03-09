@@ -54,7 +54,7 @@ export const CSVColumnsDropdown = ({ options }: CSVColumnsDropdownProps) => {
 
   return (
     <Form {...form}>
-      <form className="px-3 md:px-0" onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormDescription>
           - Please <span className="font-bold">identify the columns</span> in
           your CSV for{" "}
@@ -79,7 +79,11 @@ export const CSVColumnsDropdown = ({ options }: CSVColumnsDropdownProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    {column === "Concept" ? "Description/Concept" : column}
+                    {column === "Concept"
+                      ? "Description/Concept"
+                      : column === "DateFormat"
+                      ? "Date Format"
+                      : column}
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -90,7 +94,9 @@ export const CSVColumnsDropdown = ({ options }: CSVColumnsDropdownProps) => {
                         <SelectValue
                           placeholder={`Select your ${
                             column === "Concept"
-                              ? "Description/Concept"
+                              ? "Description"
+                              : column === "DateFormat"
+                              ? "Date Format"
                               : column
                           } column`}
                         />
