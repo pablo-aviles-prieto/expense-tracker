@@ -19,42 +19,53 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DATES_CSV_FORMAT_OPTIONS, FIELDS_FROM_CSV } from "@/utils/const";
+import { DATES_CSV_FORMAT_OPTIONS } from "@/utils/const";
 import { format } from "date-fns";
-
-const schemaObject = {
-  ...FIELDS_FROM_CSV.reduce(
-    (acc, field) => {
-      acc[field] = z.string({
-        required_error: `Need to select an option to parse the ${field}`,
-      });
-      return acc;
-    },
-    {} as Record<string, z.ZodString>,
-  ),
-  DateFormat: z.string({
-    required_error: "Need to select the date format on your CSV",
-  }),
-} as Record<string, z.ZodString>;
-
-const formSchema = z.object(schemaObject);
+import { useEffect } from "react";
+import { useToast } from "../ui/use-toast";
+import {
+  UploadCSVColumnsSchema,
+  uploadCSVColumnsObject,
+} from "@/schemas/upload-csv-columns-schema";
 
 type CSVColumnsDropdownProps = {
   options: string[];
 };
 
 export const CSVColumnsDropdown = ({ options }: CSVColumnsDropdownProps) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { toast } = useToast();
+  const form = useForm<z.infer<typeof UploadCSVColumnsSchema>>({
+    resolver: zodResolver(UploadCSVColumnsSchema),
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  useEffect(() => {
+    const errFields = Object.keys(form.formState.errors);
+    if (errFields.length > 0) {
+      const parsedErrFields = errFields.map((field) =>
+        field === "Concept"
+          ? "Description"
+          : field === "DateFormat"
+          ? "Date Format"
+          : field,
+      );
+      toast({
+        title: "Fill all the missing fields:",
+        description: parsedErrFields.join(", "),
+        variant: "destructive",
+      });
+    }
+  }, [form.formState.errors]);
+
+  const onSubmit = (values: z.infer<typeof UploadCSVColumnsSchema>) => {
     console.log("values", values);
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onError={(err) => console.log("error", err)}
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormDescription>
           - Please <span className="font-bold">identify the columns</span> in
           your CSV for{" "}
@@ -71,7 +82,7 @@ export const CSVColumnsDropdown = ({ options }: CSVColumnsDropdownProps) => {
           import accuracy.
         </FormDescription>
         <div className="grid gap-x-4 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
-          {Object.keys(schemaObject).map((column) => (
+          {Object.keys(uploadCSVColumnsObject).map((column) => (
             <FormField
               key={column}
               control={form.control}
