@@ -29,11 +29,10 @@ export const AddTransactionsBlock = ({
     [],
   );
   const [CSVHeaders, setCSVHeaders] = useState<string[]>([]);
-  // const [CSVDateFormat, setCSVDateFormat] = useState<string>(
-  //   DATES_CSV_FORMAT_OPTIONS[0],
-  // );
-  const { addTransactions, setAddTransactions, setUserCategories } =
-    useAddTransactionTable();
+  const [CSVDateFormat, setCSVDateFormat] = useState<string>(
+    DATES_CSV_FORMAT_OPTIONS[0],
+  );
+  const { addTransactions, setUserCategories } = useAddTransactionTable();
 
   useEffect(() => {
     setUserCategories(userCategories);
@@ -43,8 +42,8 @@ export const AddTransactionsBlock = ({
     <>
       <Stepper currentStep={currentStep} />
       <Separator />
-      <ScrollArea className="h-[calc(100vh-380px)]">
-        {currentStep === 0 && (
+      {currentStep === 0 && (
+        <ScrollArea className="h-[calc(100vh-380px)]">
           <div className="px-3">
             <InputFileBlock
               files={files}
@@ -52,21 +51,22 @@ export const AddTransactionsBlock = ({
               setCSVHeaders={setCSVHeaders}
             />
             {CSVHeaders.length > 0 && (
-              <CSVColumnsDropdown files={files} options={CSVHeaders} />
+              <CSVColumnsDropdown
+                files={files}
+                options={CSVHeaders}
+                setCurrentStep={setCurrentStep}
+                setCSVDateFormat={setCSVDateFormat}
+              />
             )}
           </div>
-        )}
-      </ScrollArea>
+        </ScrollArea>
+      )}
 
-      {/* {addTransactions.length > 0 && (
+      {addTransactions.length > 0 && currentStep === 1 && (
         <div className="relative">
-          <AddTransactionsTable
-            columns={columns}
-            data={addTransactions}
-            dataLength={addTransactions.length}
-          />
+          <AddTransactionsTable columns={columns} data={addTransactions} />
         </div>
-      )} */}
+      )}
     </>
   );
 };

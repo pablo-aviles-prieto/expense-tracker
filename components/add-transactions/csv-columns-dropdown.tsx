@@ -31,21 +31,25 @@ import {
   uploadCSVColumnsObject,
 } from "@/schemas/upload-csv-columns-schema";
 import { type FilePondInitialFile } from "filepond";
-import { useFetch } from "@/hooks/use-fetch";
-import { TransactionBulk } from "@/types";
+import { ResponseFile } from "@/types";
 import { FileUp } from "lucide-react";
+import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
 
 type CSVColumnsDropdownProps = {
   files: (Blob | FilePondInitialFile | File)[];
   options: string[];
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  setCSVDateFormat: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const CSVColumnsDropdown = ({
   files,
   options,
+  setCurrentStep,
+  setCSVDateFormat,
 }: CSVColumnsDropdownProps) => {
   const { toast } = useToast();
-  const { fetchPetition } = useFetch();
+  const { setAddTransactions } = useAddTransactionTable();
   const form = useForm<z.infer<typeof UploadCSVColumnsSchema>>({
     resolver: zodResolver(UploadCSVColumnsSchema),
   });
@@ -80,8 +84,24 @@ export const CSVColumnsDropdown = ({
       method: "POST",
       body: formData,
     });
-    const parsedRes = (await res.json()) as Partial<TransactionBulk>[];
-    console.log("parsedRes", parsedRes);
+    const parsedRes = (await res.json()) as ResponseFile;
+    if (parsedRes.error) {
+      toast({
+        title: "There was an error retrieving the transactions",
+        description: parsedRes.error,
+        variant: "destructive",
+      });
+      return;
+    }
+    if (parsedRes.data) {
+      const modifiedTrans = parsedRes.data.map((trans, i) => ({
+        ...trans,
+        id: i,
+      }));
+      setAddTransactions(modifiedTrans);
+      setCurrentStep(1);
+      setCSVDateFormat(values.DateFormat);
+    }
   };
 
   return (

@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { FilePond } from "react-filepond";
 import type { FilePondFile, FilePondInitialFile } from "filepond";
 import { URL_GET_CSV_HEADERS } from "@/utils/const";
-import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
-import type { ResponseFile, ResponseFileHeaders } from "@/types";
+import type { ResponseFileHeaders } from "@/types";
 import { useToast } from "../ui/use-toast";
 
 type InputFileBlock = {
@@ -23,7 +22,6 @@ export const InputFileBlock = ({
 }: InputFileBlock) => {
   const [isReady, setIsReady] = useState(false);
   const { toast } = useToast();
-  const { setAddTransactions } = useAddTransactionTable();
 
   useEffect(() => {
     setIsReady(true);
@@ -33,21 +31,6 @@ export const InputFileBlock = ({
     const updatedFiles: Array<FilePondInitialFile | File | Blob> =
       fileItems.map((fileItem) => fileItem.file);
     setFiles(updatedFiles);
-  };
-
-  const handleFileProcessed = (response: any) => {
-    const { ok: responseOk, data }: ResponseFile = JSON.parse(response);
-    if (responseOk && data) {
-      setAddTransactions((prevState) => {
-        const parsedTrans = data.map((trans, i) => ({
-          ...trans,
-          id: prevState.length + i,
-        }));
-        return [...prevState, ...parsedTrans];
-      });
-      return "success";
-    }
-    return "failure";
   };
 
   const handleFileProcessedForHeaders = (response: any) => {
