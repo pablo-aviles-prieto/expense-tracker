@@ -39,19 +39,18 @@ export const AddTransactionsTable = <TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  console.log("data", data);
+  const onUploadTrans = () => {
+    console.log("trans data", data);
+    console.log("csv dateFormat", CSVDateFormat);
+  };
 
-  // TODO: Add a button to save the transactions after the user added the categories
-  // TODO: Add a tooltip with instructions of the format date dropdown and tell him
-  // to add categories, if not, all the transactions without a specific category
-  // gonna have a 'generic' category assigned!
   return (
     <div>
       <div className="flex items-center justify-between my-2">
         <Button onClick={() => setCurrentStep(0)} variant="outline">
           <Undo className="w-4 h-4 mr-2" /> Go to previous step
         </Button>
-        <Button>
+        <Button onClick={onUploadTrans}>
           <FileUp className="w-4 h-4 mr-2" /> Upload transactions
         </Button>
       </div>

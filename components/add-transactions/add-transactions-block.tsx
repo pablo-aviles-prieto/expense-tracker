@@ -2,12 +2,8 @@
 
 import { useEffect, useState } from "react";
 import type { FilePondInitialFile } from "filepond";
-import {
-  DATES_CSV_FORMAT_OPTIONS,
-  URL_UPLOAD_TRANSACTION_FILE,
-} from "@/utils/const";
-import type { Categories, ResponseFile } from "@/types";
-import { useToast } from "@/components/ui/use-toast";
+import { DATES_CSV_FORMAT_OPTIONS } from "@/utils/const";
+import type { Categories } from "@/types";
 import { AddTransactionsTable } from "../tables/add-transactions-tables/add-transaction-table";
 import { columns } from "../tables/add-transactions-tables/columns";
 import { ScrollArea } from "../ui/scroll-area";
