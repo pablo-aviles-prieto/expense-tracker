@@ -45,14 +45,14 @@ export const AddTransactionsBlock = ({
       <Separator />
       <ScrollArea className="h-[calc(100vh-380px)]">
         {currentStep === 0 && (
-          <div className="px-3 lg:px-0">
+          <div className="px-3">
             <InputFileBlock
               files={files}
               setFiles={setFiles}
               setCSVHeaders={setCSVHeaders}
             />
             {CSVHeaders.length > 0 && (
-              <CSVColumnsDropdown options={CSVHeaders} />
+              <CSVColumnsDropdown files={files} options={CSVHeaders} />
             )}
           </div>
         )}

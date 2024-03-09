@@ -19,7 +19,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DATES_CSV_FORMAT_OPTIONS } from "@/utils/const";
+import {
+  DATES_CSV_FORMAT_OPTIONS,
+  URL_UPLOAD_TRANSACTION_FILE,
+} from "@/utils/const";
 import { format } from "date-fns";
 import { useEffect } from "react";
 import { useToast } from "../ui/use-toast";
@@ -27,13 +30,22 @@ import {
   UploadCSVColumnsSchema,
   uploadCSVColumnsObject,
 } from "@/schemas/upload-csv-columns-schema";
+import { type FilePondInitialFile } from "filepond";
+import { useFetch } from "@/hooks/use-fetch";
+import { TransactionBulk } from "@/types";
+import { FileUp } from "lucide-react";
 
 type CSVColumnsDropdownProps = {
+  files: (Blob | FilePondInitialFile | File)[];
   options: string[];
 };
 
-export const CSVColumnsDropdown = ({ options }: CSVColumnsDropdownProps) => {
+export const CSVColumnsDropdown = ({
+  files,
+  options,
+}: CSVColumnsDropdownProps) => {
   const { toast } = useToast();
+  const { fetchPetition } = useFetch();
   const form = useForm<z.infer<typeof UploadCSVColumnsSchema>>({
     resolver: zodResolver(UploadCSVColumnsSchema),
   });
@@ -56,8 +68,20 @@ export const CSVColumnsDropdown = ({ options }: CSVColumnsDropdownProps) => {
     }
   }, [form.formState.errors]);
 
-  const onSubmit = (values: z.infer<typeof UploadCSVColumnsSchema>) => {
-    console.log("values", values);
+  const onSubmit = async (values: z.infer<typeof UploadCSVColumnsSchema>) => {
+    const formData = new FormData();
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    (files as File[]).forEach((file) => {
+      formData.append("files", file);
+    });
+    const res = await fetch(URL_UPLOAD_TRANSACTION_FILE, {
+      method: "POST",
+      body: formData,
+    });
+    const parsedRes = (await res.json()) as Partial<TransactionBulk>[];
+    console.log("parsedRes", parsedRes);
   };
 
   return (
@@ -137,7 +161,7 @@ export const CSVColumnsDropdown = ({ options }: CSVColumnsDropdownProps) => {
         </div>
         <div className="flex w-full my-2 mt-6 sm:justify-center">
           <Button className="w-full sm:w-[200px]" type="submit">
-            Submit
+            <FileUp className="w-5 h-5 mr-2" /> Upload transactions
           </Button>
         </div>
       </form>
