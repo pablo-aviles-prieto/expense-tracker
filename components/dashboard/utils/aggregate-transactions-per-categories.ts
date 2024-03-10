@@ -1,5 +1,6 @@
 import type { TransactionObjBack } from "@/types";
 import { PieChartData } from "../types/pie-chart";
+import { formatterUS } from "@/utils/const";
 
 type Props = {
   transactions: TransactionObjBack[];
@@ -25,6 +26,6 @@ export const aggregateTransactionsPerCategories = ({
 
   return Object.entries(categoryTotals).map(([name, value]) => ({
     name,
-    value,
+    value: Number(value.toFixed(2)),
   }));
 };

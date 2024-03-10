@@ -25,7 +25,7 @@ export const aggregateTransactionsByDay = (
 
   return sortedDailyData.map((entry) => ({
     name: entry.date,
-    incomes: entry.incomes,
-    expenses: entry.expenses,
+    incomes: Number(entry.incomes.toFixed(2)),
+    expenses: Number(entry.expenses.toFixed(2)),
   }));
 };
