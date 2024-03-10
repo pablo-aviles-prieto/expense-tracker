@@ -12,5 +12,10 @@ export interface User {
   name: string;
   image: string;
   signupDate: string;
+  updatedAt: string;
   categories: Categories;
+  transactionsDate?: {
+    from: string; // Date in format yyyy-MM-dd
+    to: string; // Date in format yyyy-MM-dd
+  };
 }

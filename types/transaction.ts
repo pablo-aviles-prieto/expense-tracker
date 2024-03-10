@@ -29,13 +29,6 @@ export interface ResponseTransaction {
   updatedUser?: User[];
 }
 
-export interface ResponseTransactionBulk {
-  ok: boolean;
-  error?: string;
-  insertedTransactions?: number;
-  updatedUser?: User[];
-}
-
 export interface TransactionBulk {
   id: number;
   Date: string;
@@ -55,4 +48,19 @@ export interface ResponseFileHeaders {
   ok: boolean;
   headers?: string[];
   error?: string;
+}
+
+export interface TransactionEndpointBody {
+  name: string;
+  amount: number;
+  date: string;
+  selectedCategories: Category[];
+  notes?: string;
+}
+
+export interface TransactionBulkResponse {
+  ok: boolean;
+  error?: string;
+  insertedTransactions?: number;
+  updatedUser?: User;
 }

@@ -6,7 +6,7 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -18,6 +18,18 @@ import {
 } from "@/components/ui/table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { FileUp, Undo } from "lucide-react";
+import { UploadTransactionsModal } from "@/components/modal/upload-transactions";
+import type {
+  TransactionBulk,
+  TransactionBulkResponse,
+  TransactionEndpointBody,
+} from "@/types";
+import { parseToBackendDate } from "@/utils/parse-to-backend-date";
+import { parseAmount } from "@/utils/parse-amount";
+import { useFetch } from "@/hooks/use-fetch";
+import { URL_UPLOAD_BULK_TRANSACTION } from "@/utils/const";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -32,6 +44,12 @@ export const AddTransactionsTable = <TData, TValue>({
   CSVDateFormat,
   setCurrentStep,
 }: DataTableProps<TData, TValue>) => {
+  const [open, setOpen] = useState(false);
+  const [isUploadingTrans, setIsUploadingTrans] = useState(false);
+  const { fetchPetition } = useFetch();
+  const { toast } = useToast();
+  const router = useRouter();
+
   const table = useReactTable({
     data,
     columns,
@@ -39,18 +57,70 @@ export const AddTransactionsTable = <TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  const onUploadTrans = () => {
-    console.log("trans data", data);
-    console.log("csv dateFormat", CSVDateFormat);
+  const onUploadTrans = async () => {
+    setIsUploadingTrans(true);
+    const parsedTrans: TransactionEndpointBody[] = (
+      data as TransactionBulk[]
+    ).map((trans) => {
+      const parsedBackendDate = parseToBackendDate({
+        dateString: trans.Date,
+        dateFormatFromCSV: CSVDateFormat,
+      });
+      return {
+        name: trans.Concept,
+        amount: parseAmount(trans.Amount),
+        date: parsedBackendDate,
+        notes: trans.Notes,
+        selectedCategories: trans.selectedCategories
+          ? trans.selectedCategories
+          : [
+              {
+                id: process.env.GENERIC_ID ?? "",
+                name: "Generic",
+                common: true,
+              },
+            ],
+      };
+    });
+
+    const res = await fetchPetition<TransactionBulkResponse>({
+      url: URL_UPLOAD_BULK_TRANSACTION,
+      method: "POST",
+      body: { transactions: parsedTrans },
+    });
+    console.log("res", res);
+    if (res.error) {
+      toast({
+        variant: "destructive",
+        title: "Error uploading the transactions!",
+        description: res.error,
+      });
+    }
+    if (res.insertedTransactions && res.updatedUser) {
+      toast({
+        variant: "success",
+        title: "Transactions uploaded correctly!",
+        description: "There was a problem with your request.",
+      });
+      router.refresh();
+      router.push(`/dashboard/transactions/list`);
+    }
+    setIsUploadingTrans(false);
   };
 
   return (
-    <div>
+    <>
+      <UploadTransactionsModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onUploadTrans}
+        loading={isUploadingTrans}
+      />
       <div className="flex items-center justify-between my-2">
         <Button onClick={() => setCurrentStep(0)} variant="outline">
           <Undo className="w-4 h-4 mr-2" /> Go to previous step
         </Button>
-        <Button onClick={onUploadTrans}>
+        <Button onClick={() => setOpen(true)}>
           <FileUp className="w-4 h-4 mr-2" /> Upload transactions
         </Button>
       </div>
@@ -105,6 +175,6 @@ export const AddTransactionsTable = <TData, TValue>({
         </Table>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-    </div>
+    </>
   );
 };
