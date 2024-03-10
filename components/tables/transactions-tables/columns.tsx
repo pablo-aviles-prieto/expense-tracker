@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import { getEllipsed } from "@/utils/const";
 import { DateCell } from "./date-cell";
-import { AmountCell } from "./amount-cell";
+import { AmountCell } from "../amount-cell";
 
 export const columns: ColumnDef<TransactionObjBack>[] = [
   {

@@ -163,10 +163,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
           {!transResult.error && (
             <Link
               href={"/dashboard/transactions/add"}
-              className={cn(
-                buttonVariants({ variant: "default" }),
-                getEllipsed,
-              )}
+              className={cn(buttonVariants(), getEllipsed)}
             >
               <Plus className="w-4 h-4 mr-2" /> Add transaction
             </Link>

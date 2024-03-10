@@ -4,19 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { ClockLoader } from "../icons/clock-loader";
 
-interface AlertModalProps {
+interface UploadTransactionsModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  loading: boolean;
+  loading?: boolean;
 }
 
-export const AlertModal: React.FC<AlertModalProps> = ({
-  isOpen,
-  onClose,
-  onConfirm,
-  loading,
-}) => {
+export const UploadTransactionsModal: React.FC<
+  UploadTransactionsModalProps
+> = ({ isOpen, onClose, onConfirm, loading = false }) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -29,8 +26,8 @@ export const AlertModal: React.FC<AlertModalProps> = ({
 
   return (
     <Modal
-      title="Are you sure?"
-      description="This action cannot be undone."
+      title="Do you want to upload the transactions?"
+      description="Make sure you updated the categories in your transactions before upload them."
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -38,8 +35,8 @@ export const AlertModal: React.FC<AlertModalProps> = ({
         <Button disabled={loading} variant="outline" onClick={onClose}>
           Cancel
         </Button>
-        <Button disabled={loading} variant="destructive" onClick={onConfirm}>
-          {loading && <ClockLoader className="mr-2" />}Continue
+        <Button disabled={loading} variant="default" onClick={onConfirm}>
+          {loading && <ClockLoader className="mr-2" />}Upload
         </Button>
       </div>
     </Modal>

@@ -1,4 +1,5 @@
-import { User } from "./user";
+import type { EnhancedCategory } from "./categories";
+import type { User } from "./user";
 
 export interface Category {
   id: number | string;
@@ -28,9 +29,38 @@ export interface ResponseTransaction {
   updatedUser?: User[];
 }
 
-export interface ResponseTransactionBulk {
+export interface TransactionBulk {
+  id: number;
+  Date: string;
+  Concept: string;
+  Amount: string;
+  Notes?: string;
+  selectedCategories?: EnhancedCategory[];
+}
+
+export interface ResponseFile {
+  ok: boolean;
+  data?: TransactionBulk[];
+  error?: string;
+}
+
+export interface ResponseFileHeaders {
+  ok: boolean;
+  headers?: string[];
+  error?: string;
+}
+
+export interface TransactionEndpointBody {
+  name: string;
+  amount: number;
+  date: string;
+  selectedCategories: Category[];
+  notes?: string;
+}
+
+export interface TransactionBulkResponse {
   ok: boolean;
   error?: string;
   insertedTransactions?: number;
-  updatedUser?: User[];
+  updatedUser?: User;
 }

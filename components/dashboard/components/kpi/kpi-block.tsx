@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TransactionObjBack } from "@/types";
 import { calculateTotalTypeTrans } from "../../utils/calculate-total-type-trans";
-import { getEllipsed } from "@/utils/const";
+import { formatterUS, getEllipsed } from "@/utils/const";
 import { differenceInCalendarDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { useCurrency } from "@/hooks/use-currency";
@@ -15,10 +15,6 @@ type Props = {
   isLoading: boolean;
   dateBlock: DateRange | undefined;
 };
-
-const formatterUS = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 2,
-});
 
 export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
   const { currency } = useCurrency();

@@ -18,7 +18,6 @@ export const errorMessages = {
   authorizedResource: "Not Authorized for this resource",
   createUser: "Error creating the user",
   credentials: "Check the credentials provided",
-  emailRegistered: "Email already registered",
   generic: "Something went wrong. Try again later",
   invalidUserId: "Invalid user ID",
   methodAllowed: "Method Not Allowed",
@@ -30,6 +29,9 @@ export const errorMessages = {
   fileParsing: "File processing failed. Try again later",
   fileType: "Wrong file type. Only CSV is allowed",
   dateFormatCSV: "Please, select the correct date format used on your CSV file",
+  csvNoColumns: "Columns not found on the CSV",
+  incorrectTransactionsData:
+    "The transactions provided are not correct. Try again later",
 } as const;
 
 export const dateFormat = {
@@ -66,7 +68,25 @@ export const monthOrder = {
 
 export const URL_POST_TRANSACTION = `/api/transactions/filtered`;
 export const URL_UPDATE_USER_TRANS_DATES = `/api/user/update-trans-dates`;
+export const URL_UPLOAD_TRANSACTION_FILE = `/api/transactions/upload`;
+export const URL_GET_CSV_HEADERS = `/api/transactions/get-csv-headers`;
+export const URL_UPLOAD_BULK_TRANSACTION = `/api/transactions/add/bulk`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;
 export const PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50];
+
+export const DATES_CSV_FORMAT_OPTIONS = [
+  "dd-MM-yyyy",
+  "MM-dd-yyyy",
+  "yyyy-MM-dd",
+  "dd/MM/yyyy",
+  "MM/dd/yyyy",
+  "yyyy/MM/dd",
+];
+
+export const FIELDS_FROM_CSV = ["Date", "Concept", "Amount", "Notes"];
+
+export const formatterUS = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+});

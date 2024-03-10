@@ -28,8 +28,8 @@ export const aggregateTransactionsByMonth = (
   return Object.entries(monthlyTotals)
     .map(([month, totals]) => ({
       name: month,
-      incomes: totals.incomes,
-      expenses: Math.abs(totals.expenses),
+      incomes: Number(totals.incomes.toFixed(2)),
+      expenses: Math.abs(Number(totals.expenses.toFixed(2))),
     }))
     .sort((a, b) => {
       const yearA = a.name.split(" ")[1],
