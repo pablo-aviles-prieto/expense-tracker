@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import connectDb from "@/lib/mongoose-config";
-import TransactionModel from "@/models/transaction/transaction-model";
+import connectDb from "../lib/mongoose-config";
+import TransactionModel from "../models/transaction/transaction-model";
 
 async function clearCollection() {
   try {
