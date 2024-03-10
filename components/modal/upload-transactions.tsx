@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
+import { ClockLoader } from "../icons/clock-loader";
 
 interface UploadTransactionsModalProps {
   isOpen: boolean;
@@ -35,7 +36,7 @@ export const UploadTransactionsModal: React.FC<
           Cancel
         </Button>
         <Button disabled={loading} variant="default" onClick={onConfirm}>
-          Upload
+          {loading && <ClockLoader className="mr-2" />}Upload
         </Button>
       </div>
     </Modal>
