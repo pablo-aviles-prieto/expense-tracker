@@ -86,11 +86,10 @@ export const columns: ColumnDef<TransactionObjBack>[] = [
       const selectedTransactions = (selectedRows as unknown as ParsedRow[]).map(
         (row) => row.original,
       );
-      const isSelectedRow = row.getIsSelected();
 
-      return isSelectedRow ? (
-        <CellAction selectedTransactions={selectedTransactions} />
-      ) : null;
+      return (
+        <CellAction selectedTransactions={selectedTransactions} row={row} />
+      );
     },
   },
 ];

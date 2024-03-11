@@ -9,18 +9,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { TransactionObjBack } from "@/types";
+import { Row } from "@tanstack/react-table";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useState } from "react";
 
 interface CellActionProps {
   selectedTransactions: TransactionObjBack[];
+  row: Row<TransactionObjBack>;
 }
 
+// TODO: The update should open a modal with a form for the concrete row clicked
+// and the delete, should delete in bulk all the transactions selected
 export const CellAction: React.FC<CellActionProps> = ({
   selectedTransactions,
+  row,
 }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const isSelectedRow = row.getIsSelected();
+
+  // TODO: Delete the selected transactions
   const onConfirm = async () => {
     setLoading(true);
     console.log("selectedTransactions", selectedTransactions);
@@ -48,13 +56,15 @@ export const CellAction: React.FC<CellActionProps> = ({
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => console.log("update trans", selectedTransactions)}
+            onClick={() => console.log("update row", row.original)}
           >
             <Edit className="w-4 h-4 mr-2" /> Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="w-4 h-4 mr-2" /> Delete
-          </DropdownMenuItem>
+          {isSelectedRow && (
+            <DropdownMenuItem onClick={() => setOpen(true)}>
+              <Trash className="w-4 h-4 mr-2" /> Delete
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>
