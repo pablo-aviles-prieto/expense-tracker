@@ -1,5 +1,5 @@
 "use client";
-import { AlertModal } from "@/components/modal/alert-modal";
+import { DeleteTransactionsModal } from "@/components/modal/delete-transactions-modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,28 +10,32 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { TransactionObjBack } from "@/types";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface CellActionProps {
-  data: TransactionObjBack;
+  selectedTransactions: TransactionObjBack[];
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+export const CellAction: React.FC<CellActionProps> = ({
+  selectedTransactions,
+}) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const router = useRouter();
   const onConfirm = async () => {
+    setLoading(true);
+    console.log("selectedTransactions", selectedTransactions);
+    setLoading(false);
     setOpen(false);
   };
 
   return (
     <>
-      <AlertModal
+      <DeleteTransactionsModal
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
         loading={loading}
+        selectedTransactionsLength={selectedTransactions.length}
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
@@ -44,7 +48,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/user/${data.id}`)}
+            onClick={() => console.log("update trans", selectedTransactions)}
           >
             <Edit className="w-4 h-4 mr-2" /> Update
           </DropdownMenuItem>

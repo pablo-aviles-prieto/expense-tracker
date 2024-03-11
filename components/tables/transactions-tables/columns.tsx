@@ -12,6 +12,10 @@ import { getEllipsed } from "@/utils/const";
 import { DateCell } from "./date-cell";
 import { AmountCell } from "../amount-cell";
 
+interface ParsedRow {
+  original: TransactionObjBack;
+}
+
 export const columns: ColumnDef<TransactionObjBack>[] = [
   {
     id: "select",
@@ -77,6 +81,16 @@ export const columns: ColumnDef<TransactionObjBack>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ table, row }) => {
+      const selectedRows = table.getFilteredSelectedRowModel().rows;
+      const selectedTransactions = (selectedRows as unknown as ParsedRow[]).map(
+        (row) => row.original,
+      );
+      const isSelectedRow = row.getIsSelected();
+
+      return isSelectedRow ? (
+        <CellAction selectedTransactions={selectedTransactions} />
+      ) : null;
+    },
   },
 ];

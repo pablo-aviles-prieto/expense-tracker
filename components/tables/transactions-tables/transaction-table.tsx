@@ -42,9 +42,17 @@ import {
 import { DateRange } from "react-day-picker";
 import { format, subYears } from "date-fns";
 import { useFetch } from "@/hooks/use-fetch";
-import type { Categories, TransactionsDateObj } from "@/types";
+import type {
+  Categories,
+  TransactionObjBack,
+  TransactionsDateObj,
+} from "@/types";
 import { useSession } from "next-auth/react";
 import { FilterInputs } from "./filter-inputs";
+
+interface ParsedRow {
+  original: TransactionObjBack;
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -77,9 +85,6 @@ export const TransactionsTable = <TData, TValue>({
   const perPage = searchParams?.get("limit") ?? String(DEFAULT_PAGE_LIMIT);
   const perPageAsNumber = Number(perPage);
   const fallbackPerPage = isNaN(perPageAsNumber) ? 10 : perPageAsNumber;
-
-  /* this can be used to get the selectedrows 
-  console.log("value", table.getFilteredSelectedRowModel()); */
 
   // Create query string
   const createQueryString = React.useCallback(
