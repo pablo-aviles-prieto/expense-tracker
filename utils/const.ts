@@ -32,6 +32,7 @@ export const errorMessages = {
   csvNoColumns: "Columns not found on the CSV",
   incorrectTransactionsData:
     "The transactions provided are not correct. Try again later",
+  deletingTransactions: `Couldn't delete the selected transactions. Try again later`,
 } as const;
 
 export const dateFormat = {
@@ -71,6 +72,7 @@ export const URL_UPDATE_USER_TRANS_DATES = `/api/user/update-trans-dates`;
 export const URL_UPLOAD_TRANSACTION_FILE = `/api/transactions/upload`;
 export const URL_GET_CSV_HEADERS = `/api/transactions/get-csv-headers`;
 export const URL_UPLOAD_BULK_TRANSACTION = `/api/transactions/add/bulk`;
+export const URL_DELETE_TRANSACTIONS = `/api/transactions/delete`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;

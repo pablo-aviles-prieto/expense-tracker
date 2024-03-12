@@ -128,3 +128,19 @@ export const getFilteredTransactions = async ({
     error: null,
   };
 };
+
+/**
+ * Deletes transactions in bulk based on an array of stringified ObjectIds.
+ *
+ * @param {string[]} transactionIds - Array of stringified ObjectIds of the transactions to delete.
+ * @returns {Promise<Object>} - Returns a promise that resolves with the result of the bulk delete operation.
+ */
+export const deleteTransactionsInBulk = async (transactionIds: string[]) => {
+  await connectDb();
+  const objectIds = transactionIds.map((id) => new mongoose.Types.ObjectId(id));
+
+  const result = await TransactionModel.deleteMany({
+    _id: { $in: objectIds },
+  });
+  return { ok: true, result, deletedCount: result.deletedCount };
+};

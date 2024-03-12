@@ -86,9 +86,12 @@ export const columns: ColumnDef<TransactionObjBack>[] = [
       const selectedTransactions = (selectedRows as unknown as ParsedRow[]).map(
         (row) => row.original,
       );
-
       return (
-        <CellAction selectedTransactions={selectedTransactions} row={row} />
+        <CellAction
+          selectedTransactions={selectedTransactions}
+          row={row}
+          table={table}
+        />
       );
     },
   },

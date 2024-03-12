@@ -8,30 +8,61 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { TransactionObjBack } from "@/types";
-import { Row } from "@tanstack/react-table";
+import { useToast } from "@/components/ui/use-toast";
+import { useFetch } from "@/hooks/use-fetch";
+import type { TransactionDeleteReponse, TransactionObjBack } from "@/types";
+import { URL_DELETE_TRANSACTIONS } from "@/utils/const";
+import { Row, Table } from "@tanstack/react-table";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface CellActionProps {
   selectedTransactions: TransactionObjBack[];
   row: Row<TransactionObjBack>;
+  table: Table<TransactionObjBack>;
 }
 
 // TODO: The update should open a modal with a form for the concrete row clicked
-// and the delete, should delete in bulk all the transactions selected
 export const CellAction: React.FC<CellActionProps> = ({
   selectedTransactions,
   row,
+  table,
 }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const { fetchPetition } = useFetch();
+  const { toast } = useToast();
   const isSelectedRow = row.getIsSelected();
+  const router = useRouter();
 
-  // TODO: Delete the selected transactions
-  const onConfirm = async () => {
+  const onDeleteTransactions = async () => {
     setLoading(true);
-    console.log("selectedTransactions", selectedTransactions);
+    const transactionIds = selectedTransactions.map((trans) => trans.id);
+    const parsedRes = await fetchPetition<TransactionDeleteReponse>({
+      url: URL_DELETE_TRANSACTIONS,
+      method: "DELETE",
+      body: { transactionIds },
+      extraHeaders: { "Content-Type": "application/json" },
+    });
+    if (parsedRes.error) {
+      toast({
+        title: "There was an error deleting the transactions",
+        description: parsedRes.error,
+        variant: "destructive",
+      });
+    }
+    if (parsedRes.result && parsedRes.deletedCount) {
+      toast({
+        title: "Transactions succesfully deleted",
+        description: `Deleted ${parsedRes.deletedCount} ${
+          parsedRes.deletedCount === 1 ? "transaction" : "transactions"
+        }`,
+        variant: "success",
+      });
+      table.setRowSelection({}); // remove selected rows
+      router.refresh();
+    }
     setLoading(false);
     setOpen(false);
   };
@@ -41,7 +72,7 @@ export const CellAction: React.FC<CellActionProps> = ({
       <DeleteTransactionsModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={onConfirm}
+        onConfirm={onDeleteTransactions}
         loading={loading}
         selectedTransactionsLength={selectedTransactions.length}
       />
@@ -56,7 +87,10 @@ export const CellAction: React.FC<CellActionProps> = ({
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => console.log("update row", row.original)}
+            onClick={() => {
+              console.log("update row", row.original);
+              table.setRowSelection({});
+            }}
           >
             <Edit className="w-4 h-4 mr-2" /> Update
           </DropdownMenuItem>
