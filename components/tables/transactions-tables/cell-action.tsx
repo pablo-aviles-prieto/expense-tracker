@@ -1,5 +1,6 @@
 "use client";
 import { DeleteTransactionsModal } from "@/components/modal/delete-transactions-modal";
+import { UpdateTransactionsModal } from "@/components/modal/update-transactions-modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,7 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 import { useFetch } from "@/hooks/use-fetch";
-import type { TransactionDeleteReponse, TransactionObjBack } from "@/types";
+import type {
+  Categories,
+  TransactionDeleteReponse,
+  TransactionObjBack,
+} from "@/types";
 import { URL_DELETE_TRANSACTIONS } from "@/utils/const";
 import { Row, Table } from "@tanstack/react-table";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
@@ -21,23 +26,28 @@ interface CellActionProps {
   selectedTransactions: TransactionObjBack[];
   row: Row<TransactionObjBack>;
   table: Table<TransactionObjBack>;
+  userCategories: Categories[];
+  setUserCategories: React.Dispatch<React.SetStateAction<Categories[]>>;
 }
 
-// TODO: The update should open a modal with a form for the concrete row clicked
+// TODO: The update should open a modal with a form for the concrete row clicked!
 export const CellAction: React.FC<CellActionProps> = ({
   selectedTransactions,
   row,
   table,
+  userCategories,
+  setUserCategories,
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const { fetchPetition } = useFetch();
   const { toast } = useToast();
   const isSelectedRow = row.getIsSelected();
   const router = useRouter();
 
   const onDeleteTransactions = async () => {
-    setLoading(true);
+    setDeleteLoading(true);
     const transactionIds = selectedTransactions.map((trans) => trans.id);
     const parsedRes = await fetchPetition<TransactionDeleteReponse>({
       url: URL_DELETE_TRANSACTIONS,
@@ -63,18 +73,25 @@ export const CellAction: React.FC<CellActionProps> = ({
       table.setRowSelection({}); // remove selected rows
       router.refresh();
     }
-    setLoading(false);
-    setOpen(false);
+    setDeleteLoading(false);
+    setOpenDeleteModal(false);
   };
 
   return (
     <>
       <DeleteTransactionsModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
+        isOpen={openDeleteModal}
+        onClose={() => setOpenDeleteModal(false)}
         onConfirm={onDeleteTransactions}
-        loading={loading}
+        loading={deleteLoading}
         selectedTransactionsLength={selectedTransactions.length}
+      />
+      <UpdateTransactionsModal
+        isOpen={openUpdateModal}
+        onClose={() => setOpenUpdateModal(false)}
+        rowData={row.original}
+        userCategories={userCategories}
+        setUserCategories={setUserCategories}
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
@@ -86,16 +103,11 @@ export const CellAction: React.FC<CellActionProps> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem
-            onClick={() => {
-              console.log("update row", row.original);
-              table.setRowSelection({});
-            }}
-          >
+          <DropdownMenuItem onClick={() => setOpenUpdateModal(true)}>
             <Edit className="w-4 h-4 mr-2" /> Update
           </DropdownMenuItem>
           {isSelectedRow && (
-            <DropdownMenuItem onClick={() => setOpen(true)}>
+            <DropdownMenuItem onClick={() => setOpenDeleteModal(true)}>
               <Trash className="w-4 h-4 mr-2" /> Delete
             </DropdownMenuItem>
           )}

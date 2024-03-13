@@ -1,5 +1,4 @@
 import BreadCrumb from "@/components/breadcrumb";
-import { columns } from "@/components/tables/transactions-tables/columns";
 import { ErrorBlock } from "@/components/tables/transactions-tables/error-block";
 import { TransactionsTable } from "@/components/tables/transactions-tables/transaction-table";
 import { getActiveFilters } from "@/components/tables/transactions-tables/utils/get-active-filters";
@@ -173,11 +172,11 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
         {transResult.data ? (
           <TransactionsTable
-            columns={columns}
+            // columns={columns}
             data={transResult.data.list}
             pageCount={pageCount}
             userStoredDates={session.user?.transactionsDate}
-            userCategories={userCategories}
+            userCats={userCategories}
           />
         ) : (
           <ErrorBlock transError={transResult.error} />

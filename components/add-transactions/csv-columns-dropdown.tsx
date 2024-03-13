@@ -32,7 +32,7 @@ import {
 } from "@/schemas/upload-csv-columns-schema";
 import { type FilePondInitialFile } from "filepond";
 import { ResponseFile } from "@/types";
-import { ArrowBigRightDash, FileUp } from "lucide-react";
+import { ArrowBigRightDash } from "lucide-react";
 import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
 
 type CSVColumnsDropdownProps = {
