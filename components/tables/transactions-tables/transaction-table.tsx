@@ -65,24 +65,22 @@ interface ParsedRow {
   original: TransactionObjBack;
 }
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData> {
   data: TData[];
   pageCount: number;
-  userCats: Categories[];
+  userCategories: Categories[];
   pageSizeOptions?: number[];
   userStoredDates?: TransactionsDateObj | null;
 }
 
-export const TransactionsTable = <TData, TValue>({
+export const TransactionsTable = <TData,>({
   data,
   pageCount,
-  userCats,
+  userCategories,
   userStoredDates = null,
   pageSizeOptions = PAGE_SIZE_OPTIONS,
-}: DataTableProps<TData, TValue>) => {
+}: DataTableProps<TData>) => {
   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
-  const [userCategories, setUserCategories] =
-    React.useState<Categories[]>(userCats);
   const { fetchPetition } = useFetch();
   const { update: sessionUpdate } = useSession();
   const router = useRouter();
@@ -200,13 +198,12 @@ export const TransactionsTable = <TData, TValue>({
               row={row}
               table={table}
               userCategories={userCategories}
-              setUserCategories={setUserCategories}
             />
           );
         },
       },
     ],
-    [userCategories, setUserCategories],
+    [userCategories],
   );
 
   const table = useReactTable({

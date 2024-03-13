@@ -27,16 +27,13 @@ interface CellActionProps {
   row: Row<TransactionObjBack>;
   table: Table<TransactionObjBack>;
   userCategories: Categories[];
-  setUserCategories: React.Dispatch<React.SetStateAction<Categories[]>>;
 }
 
-// TODO: The update should open a modal with a form for the concrete row clicked!
 export const CellAction: React.FC<CellActionProps> = ({
   selectedTransactions,
   row,
   table,
   userCategories,
-  setUserCategories,
 }) => {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -91,7 +88,6 @@ export const CellAction: React.FC<CellActionProps> = ({
         onClose={() => setOpenUpdateModal(false)}
         rowData={row.original}
         userCategories={userCategories}
-        setUserCategories={setUserCategories}
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>

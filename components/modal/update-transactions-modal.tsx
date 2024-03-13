@@ -11,12 +11,11 @@ interface UpdateTransactionsModalProps {
   onClose: () => void;
   rowData: TransactionObjBack;
   userCategories: Categories[];
-  setUserCategories: React.Dispatch<React.SetStateAction<Categories[]>>;
 }
 
 export const UpdateTransactionsModal: React.FC<
   UpdateTransactionsModalProps
-> = ({ isOpen, onClose, rowData, userCategories, setUserCategories }) => {
+> = ({ isOpen, onClose, rowData, userCategories }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
 
@@ -48,7 +47,6 @@ export const UpdateTransactionsModal: React.FC<
           submitHandler={onSubmit}
           transData={rowData}
           userCategories={userCategories}
-          setUserCategories={setUserCategories}
         />
       </ScrollArea>
     </Modal>

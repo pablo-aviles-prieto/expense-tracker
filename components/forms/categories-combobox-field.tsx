@@ -21,20 +21,18 @@ import type { Categories, EnhancedCategory } from "@/types";
 
 type CategoriesComboboxFieldProps = {
   selectedCategories: Categories[];
-  userCategories: Categories[];
+  userCats: Categories[];
   updateSelectedCategories: (cat: Categories[]) => void;
-  setUserCategories: React.Dispatch<React.SetStateAction<Categories[]>>;
 };
-
-const WIDTH = "w-[225px]";
 
 export const CategoriesComboboxField = ({
   selectedCategories,
-  userCategories,
+  userCats,
   updateSelectedCategories,
-  setUserCategories,
 }: CategoriesComboboxFieldProps) => {
   const [currentInput, setCurrentInput] = React.useState("");
+  const [userCategories, setUserCategories] =
+    React.useState<Categories[]>(userCats);
   const [open, setOpen] = React.useState(false);
 
   const categories = React.useMemo(
@@ -107,7 +105,6 @@ export const CategoriesComboboxField = ({
 
       updateUserCategories(newCat);
       updateSelectedCategories([...selectedCategories, newCat]);
-      // updateTransactionCategories(selectedRow, [...selectedCategories, newCat]);
     }
 
     setCurrentInput("");

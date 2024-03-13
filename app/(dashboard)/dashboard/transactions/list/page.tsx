@@ -172,11 +172,10 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
         {transResult.data ? (
           <TransactionsTable
-            // columns={columns}
             data={transResult.data.list}
             pageCount={pageCount}
             userStoredDates={session.user?.transactionsDate}
-            userCats={userCategories}
+            userCategories={userCategories}
           />
         ) : (
           <ErrorBlock transError={transResult.error} />

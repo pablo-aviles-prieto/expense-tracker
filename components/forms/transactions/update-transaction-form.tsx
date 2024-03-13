@@ -26,7 +26,6 @@ type Props = {
   submitHandler: (data: TransactionFormValue) => void;
   onClose: () => void;
   userCategories: Categories[];
-  setUserCategories: React.Dispatch<React.SetStateAction<Categories[]>>;
 };
 
 export const UpdateTransactionForm = ({
@@ -35,7 +34,6 @@ export const UpdateTransactionForm = ({
   loading,
   transData,
   userCategories,
-  setUserCategories,
 }: Props) => {
   const defaultValues = {
     name: transData.name,
@@ -104,6 +102,27 @@ export const UpdateTransactionForm = ({
             </FormItem>
           )}
         />
+        <FormItem>
+          <FormLabel>Categories</FormLabel>
+          <FormControl>
+            <Controller
+              control={form.control}
+              name="categories"
+              render={({ field, fieldState: { error } }) => (
+                <>
+                  <CategoriesComboboxField
+                    selectedCategories={field.value as Categories[]}
+                    userCats={userCategories}
+                    updateSelectedCategories={(selected) =>
+                      field.onChange(selected)
+                    }
+                  />
+                  {error && <FormMessage>{error.message}</FormMessage>}
+                </>
+              )}
+            />
+          </FormControl>
+        </FormItem>
         <FormField
           control={form.control}
           name="date"
@@ -126,28 +145,6 @@ export const UpdateTransactionForm = ({
             </FormItem>
           )}
         />
-        <FormItem>
-          <FormLabel>Categories</FormLabel>
-          <FormControl>
-            <Controller
-              control={form.control}
-              name="categories"
-              render={({ field, fieldState: { error } }) => (
-                <>
-                  <CategoriesComboboxField
-                    selectedCategories={field.value as Categories[]}
-                    userCategories={userCategories}
-                    updateSelectedCategories={(selected) =>
-                      field.onChange(selected)
-                    }
-                    setUserCategories={setUserCategories}
-                  />
-                  {error && <FormMessage>{error.message}</FormMessage>}
-                </>
-              )}
-            />
-          </FormControl>
-        </FormItem>
         <FormField
           control={form.control}
           name="notes"
