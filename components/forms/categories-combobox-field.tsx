@@ -133,7 +133,7 @@ export const CategoriesComboboxField = ({
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={`p-0`}>
+      <PopoverContent className="p-0" align="start">
         <Command className="z-[99999]">
           <CommandInput
             placeholder={`Search a category...`}

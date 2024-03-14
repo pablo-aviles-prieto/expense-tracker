@@ -23,6 +23,8 @@ export const UpdateTransactionsModal: React.FC<
     setIsMounted(true);
   }, []);
 
+  // TODO: Make the update transaction when the data is correct (still missing the date input)
+  // and then render a loading toast, to indicate if it was ok or failed the update
   const onSubmit = (data: TransactionFormValue) => {
     setUpdateLoading(true);
     console.log("data", data);

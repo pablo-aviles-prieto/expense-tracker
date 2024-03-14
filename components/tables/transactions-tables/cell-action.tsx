@@ -98,7 +98,6 @@ export const CellAction: React.FC<CellActionProps> = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
           <DropdownMenuItem onClick={() => setOpenUpdateModal(true)}>
             <Edit className="w-4 h-4 mr-2" /> Update
           </DropdownMenuItem>
