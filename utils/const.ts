@@ -34,6 +34,7 @@ export const errorMessages = {
     "The transactions provided are not correct. Try again later",
   deletingTransactions: `Couldn't delete the selected transactions. Try again later`,
   retrieveCategories: "There was an error retrieving the categories",
+  updateCategory: "There was an error updating the category",
 } as const;
 
 export const dateFormat = {
@@ -75,6 +76,7 @@ export const URL_GET_CSV_HEADERS = `/api/transactions/get-csv-headers`;
 export const URL_UPLOAD_BULK_TRANSACTION = `/api/transactions/add/bulk`;
 export const URL_DELETE_TRANSACTIONS = `/api/transactions/delete`;
 export const URL_USER_CATEGORIES = `/api/user/categories`;
+export const URL_UPDATE_CATEGORY = `/api/transactions/update`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;

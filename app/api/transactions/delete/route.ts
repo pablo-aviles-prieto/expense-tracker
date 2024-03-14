@@ -6,6 +6,8 @@ interface ReqBody {
   transactionIds: string[];
 }
 
+// TODO: Need to check on the transactions deleted, the categories on those transactions, and in case
+// that are the only transactions using it, remove it from the user ??? But not from the categorty model
 export const DELETE = async (req: NextRequest) => {
   try {
     const { transactionIds } = (await req.json()) as ReqBody;

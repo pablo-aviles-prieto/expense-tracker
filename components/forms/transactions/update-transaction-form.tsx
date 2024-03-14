@@ -51,6 +51,7 @@ export const UpdateTransactionForm = ({
     date: transData.date,
     categories: transData.categories,
     notes: transData.notes ?? "",
+    id: transData.id,
   };
 
   const form = useForm<TransactionFormValue>({

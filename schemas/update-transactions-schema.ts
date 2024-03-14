@@ -21,6 +21,7 @@ export const UpdateTransSchema = z.object({
     .array(CategorySchema)
     .min(1, { message: "At least one category is required" }),
   notes: z.string().optional(),
+  id: z.string(),
 });
 
 export type TransactionFormValue = z.infer<typeof UpdateTransSchema>;

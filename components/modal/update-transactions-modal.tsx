@@ -4,7 +4,15 @@ import { Modal } from "@/components/ui/modal";
 import { UpdateTransactionForm } from "../forms/transactions/update-transaction-form";
 import { TransactionFormValue } from "@/schemas/update-transactions-schema";
 import { ScrollArea } from "../ui/scroll-area";
-import type { Categories, TransactionObjBack } from "@/types";
+import type {
+  Categories,
+  TransactionObjBack,
+  TransactionUpdateReponse,
+} from "@/types";
+import { useFetch } from "@/hooks/use-fetch";
+import { URL_UPDATE_CATEGORY } from "@/utils/const";
+import { useToast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface UpdateTransactionsModalProps {
   isOpen: boolean;
@@ -18,16 +26,45 @@ export const UpdateTransactionsModal: React.FC<
 > = ({ isOpen, onClose, rowData, userCategories }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
+  const { fetchPetition } = useFetch();
+  const { toast } = useToast();
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // TODO: Make the update transaction when the data is correct (still missing the date input)
-  // and then render a loading toast, to indicate if it was ok or failed the update
-  const onSubmit = (data: TransactionFormValue) => {
+  const onSubmit = async (data: TransactionFormValue) => {
+    const { update, id: toastId } = toast({
+      title: "Updating transaction...",
+      description: "Please wait while the update is being processed",
+      variant: "default",
+    });
     setUpdateLoading(true);
-    console.log("data", data);
+    const parsedRes = await fetchPetition<TransactionUpdateReponse>({
+      url: URL_UPDATE_CATEGORY,
+      method: "POST",
+      body: { transaction: data },
+    });
+
+    if (parsedRes.error) {
+      update({
+        id: toastId,
+        title: "Error updating...",
+        description: parsedRes.error,
+        variant: "destructive",
+      });
+    }
+    if (parsedRes.data) {
+      update({
+        id: toastId,
+        title: "Succesfully updated",
+        description: "The transaction has been succesfully updated",
+        variant: "success",
+      });
+      router.refresh();
+      onClose();
+    }
     setUpdateLoading(false);
   };
 

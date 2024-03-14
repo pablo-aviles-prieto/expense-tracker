@@ -72,3 +72,9 @@ export interface TransactionDeleteReponse {
   result?: mongoose.mongo.DeleteResult;
   deletedCount?: number;
 }
+
+export interface TransactionUpdateReponse {
+  ok: boolean;
+  error?: string;
+  data?: TransactionObjBack;
+}
