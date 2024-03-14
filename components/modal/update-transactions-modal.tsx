@@ -62,9 +62,9 @@ export const UpdateTransactionsModal: React.FC<
         description: "The transaction has been succesfully updated",
         variant: "success",
       });
-      router.refresh();
       onClose();
     }
+    router.refresh();
     setUpdateLoading(false);
   };
 
