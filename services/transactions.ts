@@ -7,10 +7,13 @@ import { errorMessages } from "@/utils/const";
 import { isInvalidUserId } from "@/utils/is-invalid-user-id";
 import CategoriesModel from "@/models/categories/categories-model";
 import type { Categories } from "@/types";
-
-import "@/models/categories/categories-model";
 import { z } from "zod";
 import { FilteredTransactionsSchema } from "@/schemas/filtered-transactions-schema";
+import { IUser } from "@/models";
+import { capitalizeFirstLetter } from "@/utils/capitalize-first-letter";
+import UserModel from "@/models/user/user-model";
+import { type EnhancedTransObj } from "@/app/api/transactions/update/route";
+import "@/models/categories/categories-model";
 
 type FilteredTransactions = z.infer<typeof FilteredTransactionsSchema>;
 
@@ -143,4 +146,57 @@ export const deleteTransactionsInBulk = async (transactionIds: string[]) => {
     _id: { $in: objectIds },
   });
   return { ok: true, result, deletedCount: result.deletedCount };
+};
+
+interface UpdateSingleTransactionParams {
+  transaction: EnhancedTransObj;
+}
+export const updateSingleTransaction = async ({
+  transaction,
+}: UpdateSingleTransactionParams) => {
+  const { id, categories, ...transactionData } = transaction;
+
+  // Retrieve the transaction and the user associated with it
+  const existingTransaction =
+    await TransactionModel.findById(id).populate("userId");
+  if (!existingTransaction)
+    throw new Error("Transaction not found. Please relog into your account");
+  const user = existingTransaction.userId as unknown as IUser;
+
+  // Process each category
+  const processedCategories = await Promise.all(
+    categories.map(async (category) => {
+      // Return existing category ID (parsed to ObjectId)
+      if (!category.newEntry) return new mongoose.Types.ObjectId(category.id);
+
+      // Check if the category already exists (case insensitive)
+      let existingCategory = await CategoriesModel.findOne({
+        name: { $regex: new RegExp("^" + category.name + "$", "i") },
+      });
+
+      if (!existingCategory) {
+        // Create new category
+        existingCategory = await new CategoriesModel({
+          name: capitalizeFirstLetter(category.name),
+        }).save();
+      }
+      // Update user's categories if the new category is not already associated
+      if (!user.categories.includes(existingCategory._id)) {
+        await UserModel.findByIdAndUpdate(user._id, {
+          $addToSet: { categories: existingCategory._id },
+        });
+      }
+      return existingCategory._id;
+    }),
+  );
+
+  const updated = await TransactionModel.findByIdAndUpdate(
+    id,
+    {
+      ...transactionData,
+      categories: processedCategories,
+    },
+    { new: true },
+  );
+  return updated;
 };
