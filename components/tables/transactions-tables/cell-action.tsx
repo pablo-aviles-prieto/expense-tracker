@@ -45,11 +45,15 @@ export const CellAction: React.FC<CellActionProps> = ({
 
   const onDeleteTransactions = async () => {
     setDeleteLoading(true);
-    const transactionIds = selectedTransactions.map((trans) => trans.id);
+    const transactions = selectedTransactions.map((trans) => ({
+      transactionIds: trans.id,
+      categoriesId: trans.categories,
+    }));
+
     const parsedRes = await fetchPetition<TransactionDeleteReponse>({
       url: URL_DELETE_TRANSACTIONS,
       method: "DELETE",
-      body: { transactionIds },
+      body: { transactions },
       extraHeaders: { "Content-Type": "application/json" },
     });
     if (parsedRes.error) {

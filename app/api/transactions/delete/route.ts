@@ -1,17 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import { errorMessages } from "@/utils/const";
 import { deleteTransactionsInBulk } from "@/services/transactions";
+import { getToken } from "next-auth/jwt";
+import connectDb from "@/lib/mongoose-config";
+import { Categories } from "@/types";
 
 interface ReqBody {
-  transactionIds: string[];
+  transactions: { transactionIds: string; categoriesId: Categories[] }[];
 }
 
-// TODO: Need to check on the transactions deleted, the categories on those transactions, and in case
-// that are the only transactions using it, remove it from the user ??? But not from the categorty model
 export const DELETE = async (req: NextRequest) => {
   try {
-    const { transactionIds } = (await req.json()) as ReqBody;
-    const result = await deleteTransactionsInBulk(transactionIds);
+    const { transactions } = (await req.json()) as ReqBody;
+
+    await connectDb();
+
+    const tokenNext = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+    if (!tokenNext || !tokenNext.id) {
+      return NextResponse.json(
+        { ok: false, error: errorMessages.relogAcc },
+        { status: 400 },
+      );
+    }
+
+    const result = await deleteTransactionsInBulk({
+      userId: tokenNext.id as string,
+      transactions,
+    });
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
     console.log("ERROR DELETING TRANSACTIONS", err);

@@ -132,20 +132,64 @@ export const getFilteredTransactions = async ({
   };
 };
 
-/**
- * Deletes transactions in bulk based on an array of stringified ObjectIds.
- *
- * @param {string[]} transactionIds - Array of stringified ObjectIds of the transactions to delete.
- * @returns {Promise<Object>} - Returns a promise that resolves with the result of the bulk delete operation.
- */
-export const deleteTransactionsInBulk = async (transactionIds: string[]) => {
+export const deleteTransactionsInBulk = async ({
+  userId,
+  transactions,
+}: {
+  userId: string;
+  transactions: {
+    transactionIds: string;
+    categoriesId: Categories[];
+  }[];
+}) => {
   await connectDb();
-  const objectIds = transactionIds.map((id) => new mongoose.Types.ObjectId(id));
+  const transactionsObjectId = transactions.map(
+    (obj) => new mongoose.Types.ObjectId(obj.transactionIds),
+  );
 
-  const result = await TransactionModel.deleteMany({
-    _id: { $in: objectIds },
+  const resultDeleted = await TransactionModel.deleteMany({
+    _id: { $in: transactionsObjectId },
   });
-  return { ok: true, result, deletedCount: result.deletedCount };
+
+  const allCategoryIds = [
+    //@ts-ignore
+    ...new Set(
+      transactions.flatMap((transaction) =>
+        transaction.categoriesId.map((category) => category.id),
+      ),
+    ),
+  ].map((id: string) => new mongoose.Types.ObjectId(id));
+
+  const countedTransactionsPromiseArray = allCategoryIds.map(async (catId) => {
+    const count = await TransactionModel.countDocuments({
+      userId: new mongoose.Types.ObjectId(userId),
+      categories: { $in: catId },
+    });
+    return { catId, count };
+  });
+  const countedTransactions = await Promise.all(
+    countedTransactionsPromiseArray,
+  );
+
+  const categoriesToRemove = countedTransactions
+    .filter((trans) => trans.count <= 0)
+    .map((cat) => cat.catId);
+
+  await UserModel.findByIdAndUpdate(
+    userId,
+    {
+      $pullAll: {
+        categories: categoriesToRemove,
+      },
+    },
+    { new: true },
+  );
+
+  return {
+    ok: true,
+    result: resultDeleted,
+    deletedCount: resultDeleted.deletedCount,
+  };
 };
 
 interface UpdateSingleTransactionParams {
