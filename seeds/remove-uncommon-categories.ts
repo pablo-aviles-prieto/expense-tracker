@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import connectDb from "../lib/mongoose-config";
-import CategoriesModel from "@/models/categories/categories-model";
+import CategoriesModel from "../models/categories/categories-model";
 
 const removeUncommonCategories = async () => {
   try {

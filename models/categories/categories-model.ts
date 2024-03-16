@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Schema, model, Document, ObjectId, Model } from "mongoose";
-import { modelExists } from "@/utils/check-model-exists";
+import { modelExists } from "../../utils/check-model-exists"; // imported like this to make the seeder work
 
 export interface ICategories extends Document {
   _id: ObjectId;
