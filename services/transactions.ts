@@ -155,7 +155,9 @@ export const deleteTransactionsInBulk = async ({
     //@ts-ignore
     ...new Set(
       transactions.flatMap((transaction) =>
-        transaction.categoriesId.map((category) => category.id),
+        transaction.categoriesId
+          .filter((cat) => !cat.common) // not deleting the commons categories on the user prop
+          .map((category) => category.id),
       ),
     ),
   ].map((id: string) => new mongoose.Types.ObjectId(id));
