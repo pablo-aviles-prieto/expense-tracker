@@ -82,30 +82,29 @@ export const AddTransactionsTable = <TData, TValue>({
             ],
       };
     });
-    console.log("parsedTrans", parsedTrans);
 
-    // const res = await fetchPetition<TransactionBulkResponse>({
-    //   url: URL_UPLOAD_BULK_TRANSACTION,
-    //   method: "POST",
-    //   body: { transactions: parsedTrans },
-    // });
+    const res = await fetchPetition<TransactionBulkResponse>({
+      url: URL_UPLOAD_BULK_TRANSACTION,
+      method: "POST",
+      body: { transactions: parsedTrans },
+    });
 
-    // if (res.error) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Error uploading the transactions!",
-    //     description: res.error,
-    //   });
-    // }
-    // if (res.insertedTransactions && res.updatedUser) {
-    //   toast({
-    //     variant: "success",
-    //     title: "Transactions uploaded correctly!",
-    //     description: "There was a problem with your request.",
-    //   });
-    //   router.refresh();
-    //   router.push(`/dashboard/transactions/list`);
-    // }
+    if (res.error) {
+      toast({
+        variant: "destructive",
+        title: "Error uploading the transactions!",
+        description: res.error,
+      });
+    }
+    if (res.insertedTransactions && res.updatedUser) {
+      toast({
+        variant: "success",
+        title: "Transactions uploaded correctly!",
+        description: "There was a problem with your request.",
+      });
+      router.refresh();
+      router.push(`/dashboard/transactions/list`);
+    }
     setIsUploadingTrans(false);
   };
 
