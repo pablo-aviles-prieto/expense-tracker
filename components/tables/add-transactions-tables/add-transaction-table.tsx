@@ -71,15 +71,16 @@ export const AddTransactionsTable = <TData, TValue>({
         amount: parseAmount(trans.Amount),
         date: parsedBackendDate,
         notes: trans.Notes,
-        selectedCategories: trans.selectedCategories
-          ? trans.selectedCategories
-          : [
-              {
-                id: process.env.GENERIC_ID ?? "",
-                name: "Generic",
-                common: true,
-              },
-            ],
+        selectedCategories:
+          trans.selectedCategories && trans.selectedCategories.length > 0
+            ? trans.selectedCategories
+            : [
+                {
+                  id: process.env.GENERIC_ID ?? "",
+                  name: "Generic",
+                  common: true,
+                },
+              ],
       };
     });
 
