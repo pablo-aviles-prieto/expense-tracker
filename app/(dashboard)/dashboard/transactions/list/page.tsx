@@ -161,10 +161,10 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
           {!transResult.error && (
             <Link
-              href={"/dashboard/transactions/add"}
+              href={"/dashboard/transactions/add/multiple"}
               className={cn(buttonVariants(), getEllipsed)}
             >
-              <Plus className="w-4 h-4 mr-2" /> Add transaction
+              <Plus className="w-4 h-4 mr-2" /> Add transactions
             </Link>
           )}
         </div>

@@ -1,5 +1,4 @@
 import { Separator } from "@/components/ui/separator";
-import BreadCrumb from "@/components/breadcrumb";
 import { Heading } from "@/components/ui/heading";
 import Link from "next/link";
 import { getEllipsed } from "@/utils/const";
@@ -11,22 +10,23 @@ import type { CustomSessionI } from "@/types";
 import { authOptions } from "@/lib/auth-options";
 import { getUserCategories } from "@/services/user";
 import { AddTransactionsTab } from "@/components/add-transactions/add-transactions-tab";
-
-const breadcrumbItems = [
-  { title: "Transactions", link: "/dashboard/transactions" },
-  { title: "Add", link: "/dashboard/transactions/add" },
-];
+import { headers } from "next/headers";
+import { BreadCrumbTransactions } from "./bread-crumb-transactions";
 
 export default async function AddTransactionsEntryPoint() {
   const session = (await getServerSession(
     authOptions as NextAuthOptions,
   )) as CustomSessionI;
 
+  const headersList = headers();
+  const fullUrl = headersList.get("referer") || "";
+  console.log("fullUrl", fullUrl);
+
   const userCategories = await getUserCategories(session?.user?.id ?? "");
 
   return (
     <div className="flex-1 p-4 pt-6 space-y-2 sm:space-y-4 md:p-8">
-      <BreadCrumb items={breadcrumbItems} />
+      <BreadCrumbTransactions />
 
       <div className="flex items-start justify-between">
         <Heading
