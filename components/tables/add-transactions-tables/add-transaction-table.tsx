@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { FileUp, Undo } from "lucide-react";
-import { UploadTransactionsModal } from "@/components/modal/upload-transactions";
+import { UploadTransactionsModal } from "@/components/modal/upload-transactions-modal";
 import type {
   TransactionBulk,
   TransactionBulkResponse,
@@ -71,15 +71,16 @@ export const AddTransactionsTable = <TData, TValue>({
         amount: parseAmount(trans.Amount),
         date: parsedBackendDate,
         notes: trans.Notes,
-        selectedCategories: trans.selectedCategories
-          ? trans.selectedCategories
-          : [
-              {
-                id: process.env.GENERIC_ID ?? "",
-                name: "Generic",
-                common: true,
-              },
-            ],
+        selectedCategories:
+          trans.selectedCategories && trans.selectedCategories.length > 0
+            ? trans.selectedCategories
+            : [
+                {
+                  id: process.env.GENERIC_ID ?? "",
+                  name: "Generic",
+                  common: true,
+                },
+              ],
       };
     });
 
@@ -88,7 +89,7 @@ export const AddTransactionsTable = <TData, TValue>({
       method: "POST",
       body: { transactions: parsedTrans },
     });
-    console.log("res", res);
+
     if (res.error) {
       toast({
         variant: "destructive",

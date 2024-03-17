@@ -3,6 +3,7 @@ import { Readable } from "stream";
 import csv from "csv-parser";
 import { FIELDS_FROM_CSV, errorMessages } from "@/utils/const";
 import type { TransactionBulk } from "@/types";
+import { getTransactionsCategories } from "@/utils/get-transactions-categories";
 
 export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
@@ -34,6 +35,13 @@ export const POST = async (req: NextRequest) => {
             const mappedKey = mappedValues[field as keyof typeof mappedValues];
             if (mappedKey && data[mappedKey] !== undefined) {
               acc[field as keyof TransactionBulk] = data[mappedKey];
+            }
+
+            // Directly categorize if the field is 'Concept'
+            if (field === "Concept") {
+              acc.selectedCategories = getTransactionsCategories(
+                data[mappedKey],
+              );
             }
             return acc;
           }, {} as Partial<TransactionBulk>);

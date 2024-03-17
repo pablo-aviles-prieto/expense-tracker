@@ -9,10 +9,11 @@
     "lint": "next lint",
     "prettier": "prettier . --write",
     "seed:compile": "tsc -p seed.tsconfig.json",
-    "seed:single": "node seed-compiled-files/seeds/clearTransactions.js",
+    "seed:clear-trans": "node seed-compiled-files/seeds/clearTransactions.js",
+    "seed:clear-categories": "node seed-compiled-files/seeds/remove-uncommon-categories.js",
     "seed:clean": "rimraf seed-compiled-files",
     "seed:all": "for file in seed-compiled-files/seeds/*.js; do node $file; done",
-    "seed:run-single": "npm run seed:compile && npm run seed:single && npm run seed:clean",
+    "seed:run-single": "npm run seed:compile && npm run seed:clear-trans && npm run seed:clean",
     "seed:run-all": "npm run seed:compile && npm run seed:all && npm run seed:clean"
   },
   "dependencies": {

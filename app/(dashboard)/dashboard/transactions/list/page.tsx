@@ -1,5 +1,4 @@
 import BreadCrumb from "@/components/breadcrumb";
-import { columns } from "@/components/tables/transactions-tables/columns";
 import { ErrorBlock } from "@/components/tables/transactions-tables/error-block";
 import { TransactionsTable } from "@/components/tables/transactions-tables/transaction-table";
 import { getActiveFilters } from "@/components/tables/transactions-tables/utils/get-active-filters";
@@ -162,10 +161,10 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
           {!transResult.error && (
             <Link
-              href={"/dashboard/transactions/add"}
+              href={"/dashboard/transactions/add/multiple"}
               className={cn(buttonVariants(), getEllipsed)}
             >
-              <Plus className="w-4 h-4 mr-2" /> Add transaction
+              <Plus className="w-4 h-4 mr-2" /> Add transactions
             </Link>
           )}
         </div>
@@ -173,7 +172,6 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
         {transResult.data ? (
           <TransactionsTable
-            columns={columns}
             data={transResult.data.list}
             pageCount={pageCount}
             userStoredDates={session.user?.transactionsDate}

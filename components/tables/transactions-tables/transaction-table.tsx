@@ -1,4 +1,14 @@
 "use client";
+import { Checkbox } from "@/components/ui/checkbox";
+import { CellAction } from "./cell-action";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { getEllipsed } from "@/utils/const";
+import { DateCell } from "./date-cell";
+import { AmountCell } from "../amount-cell";
 import {
   ColumnDef,
   PaginationState,
@@ -8,7 +18,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import React from "react";
+import React, { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -42,12 +52,20 @@ import {
 import { DateRange } from "react-day-picker";
 import { format, subYears } from "date-fns";
 import { useFetch } from "@/hooks/use-fetch";
-import type { Categories, TransactionsDateObj } from "@/types";
+import type {
+  Categories,
+  TransactionObjBack,
+  TransactionsDateObj,
+  Category,
+} from "@/types";
 import { useSession } from "next-auth/react";
 import { FilterInputs } from "./filter-inputs";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+interface ParsedRow {
+  original: TransactionObjBack;
+}
+
+interface DataTableProps<TData> {
   data: TData[];
   pageCount: number;
   userCategories: Categories[];
@@ -55,14 +73,13 @@ interface DataTableProps<TData, TValue> {
   userStoredDates?: TransactionsDateObj | null;
 }
 
-export const TransactionsTable = <TData, TValue>({
-  columns,
+export const TransactionsTable = <TData,>({
   data,
   pageCount,
   userCategories,
   userStoredDates = null,
   pageSizeOptions = PAGE_SIZE_OPTIONS,
-}: DataTableProps<TData, TValue>) => {
+}: DataTableProps<TData>) => {
   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
   const { fetchPetition } = useFetch();
   const { update: sessionUpdate } = useSession();
@@ -77,9 +94,6 @@ export const TransactionsTable = <TData, TValue>({
   const perPage = searchParams?.get("limit") ?? String(DEFAULT_PAGE_LIMIT);
   const perPageAsNumber = Number(perPage);
   const fallbackPerPage = isNaN(perPageAsNumber) ? 10 : perPageAsNumber;
-
-  /* this can be used to get the selectedrows 
-  console.log("value", table.getFilteredSelectedRowModel()); */
 
   // Create query string
   const createQueryString = React.useCallback(
@@ -105,8 +119,96 @@ export const TransactionsTable = <TData, TValue>({
       pageSize: fallbackPerPage,
     });
 
+  const columns: ColumnDef<TransactionObjBack>[] = useMemo(
+    () => [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <Checkbox
+            checked={table.getIsAllPageRowsSelected()}
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: "name",
+        header: "NAME",
+      },
+      {
+        accessorKey: "amount",
+        header: "AMOUNT",
+        cell: ({ getValue }) => <AmountCell amount={getValue() as string} />,
+      },
+      {
+        accessorKey: "date",
+        header: "DATE",
+        cell: ({ getValue }) => <DateCell date={getValue() as string} />,
+      },
+      {
+        accessorKey: "categories",
+        header: "CATEGORIES",
+        cell: ({ getValue }) => {
+          const categories = getValue() as Category[];
+          return (
+            <Tooltip>
+              <TooltipTrigger>
+                <div
+                  className={`${getEllipsed} max-w-[100px] bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 px-[10px] py-[5px]
+                  rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring
+                  `}
+                >
+                  {categories.map((category) => category.name).join(", ")}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-sm font-bold">
+                  {categories.map((category) => category.name).join(", ")}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          );
+        },
+      },
+      {
+        accessorKey: "notes",
+        header: "NOTES",
+      },
+      {
+        id: "actions",
+        cell: ({ table, row }) => {
+          const selectedRows = table.getFilteredSelectedRowModel().rows;
+          const selectedTransactions = (
+            selectedRows as unknown as ParsedRow[]
+          ).map((row) => row.original);
+          return (
+            <CellAction
+              selectedTransactions={selectedTransactions}
+              row={row}
+              table={table}
+              userCategories={userCategories}
+            />
+          );
+        },
+      },
+    ],
+    [userCategories],
+  );
+
   const table = useReactTable({
     data,
+    // @ts-ignore
     columns,
     pageCount: pageCount ?? -1,
     getCoreRowModel: getCoreRowModel(),

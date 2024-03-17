@@ -1,18 +1,6 @@
-export const COMMON_CATEGORIES = [
-  { id: 1, name: "Groceries" },
-  { id: 2, name: "Rent" },
-  { id: 3, name: "Transportation" },
-  { id: 4, name: "Entertainment" },
-  { id: 5, name: "Travel" },
-  { id: 6, name: "Shopping" },
-  { id: 7, name: "Gifts" },
-];
-
 export const authProviders = {
   google: "google",
 } as const;
-
-export const DEFAULT_CALLBACK_URL = "/dashboard";
 
 export const errorMessages = {
   authorizedResource: "Not Authorized for this resource",
@@ -32,6 +20,10 @@ export const errorMessages = {
   csvNoColumns: "Columns not found on the CSV",
   incorrectTransactionsData:
     "The transactions provided are not correct. Try again later",
+  deletingTransactions: `Couldn't delete the selected transactions. Try again later`,
+  retrieveCategories: "There was an error retrieving the categories",
+  updateTransaction: "There was an error updating the transaction",
+  createTransaction: "There was an error creating the transaction",
 } as const;
 
 export const dateFormat = {
@@ -66,11 +58,16 @@ export const monthOrder = {
   Dec: 12,
 } as const;
 
+export const DEFAULT_CALLBACK_URL = "/dashboard";
 export const URL_POST_TRANSACTION = `/api/transactions/filtered`;
 export const URL_UPDATE_USER_TRANS_DATES = `/api/user/update-trans-dates`;
 export const URL_UPLOAD_TRANSACTION_FILE = `/api/transactions/upload`;
 export const URL_GET_CSV_HEADERS = `/api/transactions/get-csv-headers`;
 export const URL_UPLOAD_BULK_TRANSACTION = `/api/transactions/add/bulk`;
+export const URL_DELETE_TRANSACTIONS = `/api/transactions/delete`;
+export const URL_USER_CATEGORIES = `/api/user/categories`;
+export const URL_UPDATE_CATEGORY = `/api/transactions/update`;
+export const URL_CREATE_TRANSACTION = `/api/transactions/add/single`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;

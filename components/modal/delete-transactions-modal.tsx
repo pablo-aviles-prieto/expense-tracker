@@ -4,19 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { ClockLoader } from "../icons/clock-loader";
 
-interface AlertModalProps {
+interface DeleteTransactionsModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
   loading: boolean;
+  selectedTransactionsLength: number;
 }
 
-export const AlertModal: React.FC<AlertModalProps> = ({
-  isOpen,
-  onClose,
-  onConfirm,
-  loading,
-}) => {
+export const DeleteTransactionsModal: React.FC<
+  DeleteTransactionsModalProps
+> = ({ isOpen, onClose, onConfirm, loading, selectedTransactionsLength }) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -29,8 +27,8 @@ export const AlertModal: React.FC<AlertModalProps> = ({
 
   return (
     <Modal
-      title="Are you sure?"
-      description="This action cannot be undone."
+      title="Do you want to delete the selected transactions?"
+      description={`You have selected ${selectedTransactionsLength} transactions`}
       isOpen={isOpen}
       onClose={onClose}
     >

@@ -25,14 +25,14 @@ import {
 } from "@/utils/const";
 import { format } from "date-fns";
 import { useEffect } from "react";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "../../ui/use-toast";
 import {
   UploadCSVColumnsSchema,
   uploadCSVColumnsObject,
 } from "@/schemas/upload-csv-columns-schema";
 import { type FilePondInitialFile } from "filepond";
 import { ResponseFile } from "@/types";
-import { ArrowBigRightDash, FileUp } from "lucide-react";
+import { ArrowBigRightDash } from "lucide-react";
 import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
 
 type CSVColumnsDropdownProps = {
@@ -49,7 +49,8 @@ export const CSVColumnsDropdown = ({
   setCSVDateFormat,
 }: CSVColumnsDropdownProps) => {
   const { toast } = useToast();
-  const { setAddTransactions } = useAddTransactionTable();
+  const { setAddTransactions, userCategories, setUserCategories } =
+    useAddTransactionTable();
   const form = useForm<z.infer<typeof UploadCSVColumnsSchema>>({
     resolver: zodResolver(UploadCSVColumnsSchema),
   });
@@ -98,6 +99,20 @@ export const CSVColumnsDropdown = ({
         ...trans,
         id: i,
       }));
+
+      const categoryMap = new Map(
+        userCategories.map((category) => [category.id, category]),
+      );
+      modifiedTrans.forEach((transaction) => {
+        transaction.selectedCategories?.forEach((category) => {
+          if (category.newEntry) {
+            categoryMap.set(category.id, category);
+          }
+        });
+      });
+      const updatedUserCategories = Array.from(categoryMap.values());
+
+      setUserCategories(updatedUserCategories);
       setAddTransactions(modifiedTrans);
       setCurrentStep(1);
       setCSVDateFormat(values.DateFormat);

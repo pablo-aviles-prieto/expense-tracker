@@ -17,24 +17,23 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "../ui/scroll-area";
 import { getEllipsed } from "@/utils/const";
-import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
-import type { EnhancedCategory } from "@/types";
+import type { Categories, EnhancedCategory } from "@/types";
 
-type CategoriesComboboxInputProps = {
-  selectedCategories: EnhancedCategory[];
-  selectedRow: number;
+type CategoriesComboboxFieldProps = {
+  selectedCategories: Categories[];
+  userCats: Categories[];
+  updateSelectedCategories: (cat: Categories[]) => void;
 };
 
-const WIDTH = "w-[225px]";
-
-export const CategoriesComboboxInput = ({
+export const CategoriesComboboxField = ({
   selectedCategories,
-  selectedRow,
-}: CategoriesComboboxInputProps) => {
+  userCats,
+  updateSelectedCategories,
+}: CategoriesComboboxFieldProps) => {
   const [currentInput, setCurrentInput] = React.useState("");
+  const [userCategories, setUserCategories] =
+    React.useState<Categories[]>(userCats);
   const [open, setOpen] = React.useState(false);
-  const { userCategories, setUserCategories, updateTransactionCategories } =
-    useAddTransactionTable();
 
   const categories = React.useMemo(
     () =>
@@ -77,14 +76,9 @@ export const CategoriesComboboxInput = ({
         }
       }
 
-      updateTransactionCategories(selectedRow, newSelectedCategories);
+      updateSelectedCategories(newSelectedCategories);
     },
-    [
-      selectedCategories,
-      updateTransactionCategories,
-      selectedRow,
-      userCategories,
-    ],
+    [selectedCategories, userCategories],
   );
 
   const onAddNewCategory = React.useCallback(() => {
@@ -110,16 +104,14 @@ export const CategoriesComboboxInput = ({
       };
 
       updateUserCategories(newCat);
-      updateTransactionCategories(selectedRow, [...selectedCategories, newCat]);
+      updateSelectedCategories([...selectedCategories, newCat]);
     }
 
     setCurrentInput("");
   }, [
     currentInput,
     userCategories,
-    selectedRow,
     updateUserCategories,
-    updateTransactionCategories,
     setCurrentInput,
     handleSelect,
   ]);
@@ -131,7 +123,7 @@ export const CategoriesComboboxInput = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={`${WIDTH} justify-between ${getEllipsed}`}
+          className={`w-full justify-between ${getEllipsed}`}
         >
           {selectedCategories.length === 1
             ? `${selectedCategories[0].name} selected`
@@ -141,8 +133,8 @@ export const CategoriesComboboxInput = ({
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={`${WIDTH} p-0`}>
-        <Command>
+      <PopoverContent className="p-0" align="start">
+        <Command className="z-[99999]">
           <CommandInput
             placeholder={`Search a category...`}
             onValueChange={(value) => setCurrentInput(value)}

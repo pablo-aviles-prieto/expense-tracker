@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import type { EnhancedCategory } from "./categories";
 import type { User } from "./user";
 
@@ -63,4 +64,23 @@ export interface TransactionBulkResponse {
   error?: string;
   insertedTransactions?: number;
   updatedUser?: User;
+}
+
+export interface TransactionDeleteReponse {
+  ok: boolean;
+  error?: string;
+  result?: mongoose.mongo.DeleteResult;
+  deletedCount?: number;
+}
+
+export interface TransactionUpdateReponse {
+  ok: boolean;
+  error?: string;
+  data?: TransactionObjBack;
+}
+
+export interface TransactionCreateReponse {
+  ok: boolean;
+  error?: string;
+  data?: TransactionObjBack;
 }

@@ -7,10 +7,13 @@ import { errorMessages } from "@/utils/const";
 import { isInvalidUserId } from "@/utils/is-invalid-user-id";
 import CategoriesModel from "@/models/categories/categories-model";
 import type { Categories } from "@/types";
-
-import "@/models/categories/categories-model";
 import { z } from "zod";
 import { FilteredTransactionsSchema } from "@/schemas/filtered-transactions-schema";
+import { IUser } from "@/models";
+import { capitalizeFirstLetter } from "@/utils/capitalize-first-letter";
+import UserModel from "@/models/user/user-model";
+import { type EnhancedTransObj } from "@/app/api/transactions/update/route";
+import "@/models/categories/categories-model";
 
 type FilteredTransactions = z.infer<typeof FilteredTransactionsSchema>;
 
@@ -127,4 +130,119 @@ export const getFilteredTransactions = async ({
     data: { list: parsedTransactions, totalCount },
     error: null,
   };
+};
+
+export const deleteTransactionsInBulk = async ({
+  userId,
+  transactions,
+}: {
+  userId: string;
+  transactions: {
+    transactionIds: string;
+    categoriesId: Categories[];
+  }[];
+}) => {
+  await connectDb();
+  const transactionsObjectId = transactions.map(
+    (obj) => new mongoose.Types.ObjectId(obj.transactionIds),
+  );
+
+  const resultDeleted = await TransactionModel.deleteMany({
+    _id: { $in: transactionsObjectId },
+  });
+
+  const allCategoryIds = [
+    //@ts-ignore
+    ...new Set(
+      transactions.flatMap((transaction) =>
+        transaction.categoriesId
+          .filter((cat) => !cat.common) // not deleting the commons categories on the user prop
+          .map((category) => category.id),
+      ),
+    ),
+  ].map((id: string) => new mongoose.Types.ObjectId(id));
+
+  const countedTransactionsPromiseArray = allCategoryIds.map(async (catId) => {
+    const count = await TransactionModel.countDocuments({
+      userId: new mongoose.Types.ObjectId(userId),
+      categories: { $in: catId },
+    });
+    return { catId, count };
+  });
+  const countedTransactions = await Promise.all(
+    countedTransactionsPromiseArray,
+  );
+
+  const categoriesToRemove = countedTransactions
+    .filter((trans) => trans.count <= 0)
+    .map((cat) => cat.catId);
+
+  await UserModel.findByIdAndUpdate(
+    userId,
+    {
+      $pullAll: {
+        categories: categoriesToRemove,
+      },
+    },
+    { new: true },
+  );
+
+  return {
+    ok: true,
+    result: resultDeleted,
+    deletedCount: resultDeleted.deletedCount,
+  };
+};
+
+interface UpdateSingleTransactionParams {
+  transaction: EnhancedTransObj;
+}
+export const updateSingleTransaction = async ({
+  transaction,
+}: UpdateSingleTransactionParams) => {
+  const { id, categories, ...transactionData } = transaction;
+
+  // Retrieve the transaction and the user associated with it
+  const existingTransaction =
+    await TransactionModel.findById(id).populate("userId");
+  if (!existingTransaction)
+    throw new Error("Transaction not found. Please relog into your account");
+  const user = existingTransaction.userId as unknown as IUser;
+
+  // Process each category
+  const processedCategories = await Promise.all(
+    categories.map(async (category) => {
+      // Return existing category ID (parsed to ObjectId)
+      if (!category.newEntry) return new mongoose.Types.ObjectId(category.id);
+
+      // Check if the category already exists (case insensitive)
+      let existingCategory = await CategoriesModel.findOne({
+        name: { $regex: new RegExp("^" + category.name + "$", "i") },
+      });
+
+      if (!existingCategory) {
+        // Create new category
+        existingCategory = await new CategoriesModel({
+          name: capitalizeFirstLetter(category.name),
+        }).save();
+      }
+      // Update user's categories if the new category is not already associated
+      if (!user.categories.includes(existingCategory._id)) {
+        await UserModel.findByIdAndUpdate(user._id, {
+          $addToSet: { categories: existingCategory._id },
+        });
+      }
+      return existingCategory._id;
+    }),
+  );
+
+  const updated = await TransactionModel.findByIdAndUpdate(
+    id,
+    {
+      ...transactionData,
+      categories: processedCategories,
+    },
+    { new: true },
+  );
+  return updated;
 };
