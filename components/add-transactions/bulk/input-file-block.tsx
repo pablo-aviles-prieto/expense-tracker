@@ -5,7 +5,7 @@ import { FilePond } from "react-filepond";
 import type { FilePondFile, FilePondInitialFile } from "filepond";
 import { URL_GET_CSV_HEADERS } from "@/utils/const";
 import type { ResponseFileHeaders } from "@/types";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "../../ui/use-toast";
 
 type InputFileBlock = {
   files: (FilePondInitialFile | Blob | File)[];

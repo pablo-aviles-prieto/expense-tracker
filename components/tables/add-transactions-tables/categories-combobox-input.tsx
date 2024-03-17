@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "../../ui/scroll-area";
 import { getEllipsed } from "@/utils/const";
 import { useAddTransactionTable } from "@/hooks/use-add-transaction-table";
 import type { EnhancedCategory } from "@/types";

@@ -7,12 +7,13 @@ import { getEllipsed } from "@/utils/const";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Undo2 } from "lucide-react";
-import { AddTransactionsBlock } from "@/components/add-transactions/add-transactions-block";
+import { AddTransactionsBulkBlock } from "@/components/add-transactions/bulk/add-transactions-bulk-block";
 import { type NextAuthOptions, getServerSession } from "next-auth";
 import type { CustomSessionI } from "@/types";
 import { authOptions } from "@/lib/auth-options";
 import { getUserCategories } from "@/services/user";
 import { AddTransactionsTableProvider } from "@/contexts/add-transactions-table-provider";
+import { AddTransactionsSingleBlock } from "@/components/add-transactions/single/add-transactions-single-block";
 
 const breadcrumbItems = [
   { title: "Transactions", link: "/dashboard/transactions" },
@@ -62,11 +63,11 @@ export default async function AddTransactions() {
         </TabsList>
         <TabsContent value="multiple">
           <AddTransactionsTableProvider>
-            <AddTransactionsBlock userCategories={userCategories} />
+            <AddTransactionsBulkBlock userCategories={userCategories} />
           </AddTransactionsTableProvider>
         </TabsContent>
         <TabsContent value="manual">
-          Add multiple transactions manually
+          <AddTransactionsSingleBlock />
         </TabsContent>
       </Tabs>
     </div>
