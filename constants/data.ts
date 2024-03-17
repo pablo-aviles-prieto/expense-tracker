@@ -140,6 +140,20 @@ export const navItems: NavItemWithOptionalChildren[] = [
         href: "/dashboard/transactions/add",
         icon: "addTransaction",
         label: "add",
+        subItems: [
+          {
+            title: "Multiple",
+            href: "/dashboard/transactions/add/multiple",
+            icon: "listTransaction",
+            label: "multiple",
+          },
+          {
+            title: "Single",
+            href: "/dashboard/transactions/add/single",
+            icon: "addTransaction",
+            label: "single",
+          },
+        ],
       },
     ],
   },

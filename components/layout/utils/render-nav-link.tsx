@@ -2,13 +2,15 @@ import { cn } from "@/lib/utils";
 import type { NavItemWithOptionalChildren } from "@/types";
 import Link from "next/link";
 import { Icons } from "@/components/icons";
+import { getPaddingLeftClass } from "./get-padding-left-class";
 
 type Props = {
   item: NavItemWithOptionalChildren;
-  index: number;
+  index: React.Key;
   path: string;
   isSubItem?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  depth?: number;
 };
 
 export const RenderNavLink = ({
@@ -16,9 +18,12 @@ export const RenderNavLink = ({
   index,
   path,
   isSubItem = false,
+  depth = 0,
   setOpen = undefined,
 }: Props) => {
   const Icon = Icons[item.icon || "arrowRight"];
+  const paddingLeft = getPaddingLeftClass(depth);
+
   return (
     <Link
       key={index}
@@ -30,7 +35,7 @@ export const RenderNavLink = ({
       <span
         className={cn(
           "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-          isSubItem ? "my-2 pl-8" : "",
+          isSubItem ? `my-2 ${paddingLeft}` : "",
           path === item.href ? "bg-accent" : "transparent",
           item.disabled && "cursor-not-allowed opacity-80",
         )}
