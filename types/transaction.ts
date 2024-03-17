@@ -78,3 +78,9 @@ export interface TransactionUpdateReponse {
   error?: string;
   data?: TransactionObjBack;
 }
+
+export interface TransactionCreateReponse {
+  ok: boolean;
+  error?: string;
+  data?: TransactionObjBack;
+}

@@ -40,7 +40,7 @@ type Props = {
   cancelButtonContent?: string;
 };
 
-export const UpdateTransactionForm = ({
+export const TransactionForm = ({
   submitHandler,
   onCancel,
   loading,

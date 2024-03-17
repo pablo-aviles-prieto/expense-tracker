@@ -4,28 +4,37 @@ import type { TransactionObj } from "@/types";
 import TransactionModel from "@/models/transaction/transaction-model";
 import CategoriesModel from "@/models/categories/categories-model";
 import { capitalizeFirstLetter } from "@/utils/capitalize-first-letter";
-import { IUser } from "@/models";
 import mongoose from "mongoose";
 import UserModel from "@/models/user/user-model";
-
-export interface EnhancedTransObj extends TransactionObj {
-  id: string;
-}
+import { getToken } from "next-auth/jwt";
 
 interface ReqBody {
-  transaction: EnhancedTransObj;
+  transaction: TransactionObj;
 }
 
 export const POST = async (req: NextRequest) => {
   try {
     const { transaction } = (await req.json()) as ReqBody;
-    const { id, categories, ...transactionData } = transaction;
+    const { categories, ...transactionData } = transaction;
 
-    // Retrieve the transaction and the user associated with it
-    const existingTransaction =
-      await TransactionModel.findById(id).populate("userId");
-    if (!existingTransaction) throw new Error("Transaction not found");
-    const user = existingTransaction.userId as unknown as IUser;
+    const tokenNext = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+    if (!tokenNext || !tokenNext.id) {
+      return NextResponse.json(
+        { ok: false, error: errorMessages.relogAcc },
+        { status: 400 },
+      );
+    }
+
+    const user = await UserModel.findById(tokenNext.id).populate("categories");
+    if (!user) {
+      return NextResponse.json(
+        { ok: false, error: errorMessages.relogAcc },
+        { status: 400 },
+      );
+    }
 
     // Process each category
     const processedCategories = await Promise.all(
@@ -54,20 +63,17 @@ export const POST = async (req: NextRequest) => {
       }),
     );
 
-    const updated = await TransactionModel.findByIdAndUpdate(
-      id,
-      {
-        ...transactionData,
-        categories: processedCategories,
-      },
-      { new: true },
-    );
+    const created = await TransactionModel.create({
+      ...transactionData,
+      categories: processedCategories,
+      userId: new mongoose.Types.ObjectId(tokenNext.id as string),
+    });
 
-    return NextResponse.json({ ok: true, data: updated }, { status: 200 });
+    return NextResponse.json({ ok: true, data: created }, { status: 200 });
   } catch (err) {
-    console.log("ERROR UPDATING TRANSACTION", err);
+    console.log("ERROR CREATING TRANSACTION", err);
     return NextResponse.json(
-      { ok: false, error: errorMessages.updateTransaction },
+      { ok: false, error: errorMessages.createTransaction },
       { status: 500 },
     );
   }

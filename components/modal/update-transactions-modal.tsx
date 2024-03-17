@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
-import { UpdateTransactionForm } from "../forms/transactions/update-transaction-form";
+import { TransactionForm } from "../forms/transactions/transaction-form";
 import { TransactionFormValue } from "@/schemas/update-transactions-schema";
 import { ScrollArea } from "../ui/scroll-area";
 import type {
@@ -80,7 +80,7 @@ export const UpdateTransactionsModal: React.FC<
       onClose={onClose}
     >
       <ScrollArea maxHeight={450}>
-        <UpdateTransactionForm
+        <TransactionForm
           loading={updateLoading}
           onCancel={onClose}
           submitHandler={onSubmit}

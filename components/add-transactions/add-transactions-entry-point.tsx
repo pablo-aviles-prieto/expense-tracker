@@ -10,17 +10,12 @@ import type { CustomSessionI } from "@/types";
 import { authOptions } from "@/lib/auth-options";
 import { getUserCategories } from "@/services/user";
 import { AddTransactionsTab } from "@/components/add-transactions/add-transactions-tab";
-import { headers } from "next/headers";
 import { BreadCrumbTransactions } from "./bread-crumb-transactions";
 
 export default async function AddTransactionsEntryPoint() {
   const session = (await getServerSession(
     authOptions as NextAuthOptions,
   )) as CustomSessionI;
-
-  const headersList = headers();
-  const fullUrl = headersList.get("referer") || "";
-  console.log("fullUrl", fullUrl);
 
   const userCategories = await getUserCategories(session?.user?.id ?? "");
 

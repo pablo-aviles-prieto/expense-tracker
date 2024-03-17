@@ -10,7 +10,6 @@ import mongoose from "mongoose";
 import TransactionModel from "@/models/transaction/transaction-model";
 import { TransactionsArraySchema } from "@/schemas/transaction-endpoint-body-schema";
 import { z } from "zod";
-import { parseZodErrors } from "@/utils/parse-zod-errors";
 
 interface ReqObjI {
   transactions: TransactionEndpointBody[];
