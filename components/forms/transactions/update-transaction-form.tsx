@@ -32,26 +32,30 @@ import { dateFormat } from "@/utils/const";
 
 type Props = {
   loading: boolean;
-  transData: TransactionObjBack;
+  initData?: TransactionObjBack;
   submitHandler: (data: TransactionFormValue) => void;
-  onClose: () => void;
+  onCancel: () => void;
   userCategories: Categories[];
+  submitButtonContent?: string;
+  cancelButtonContent?: string;
 };
 
 export const UpdateTransactionForm = ({
   submitHandler,
-  onClose,
+  onCancel,
   loading,
-  transData,
+  initData,
   userCategories,
+  submitButtonContent,
+  cancelButtonContent,
 }: Props) => {
   const defaultValues = {
-    name: transData.name,
-    amount: transData.amount,
-    date: transData.date,
-    categories: transData.categories,
-    notes: transData.notes ?? "",
-    id: transData.id,
+    name: initData?.name ?? "",
+    amount: initData?.amount ?? 0,
+    date: initData?.date,
+    categories: initData?.categories ?? [],
+    notes: initData?.notes ?? "",
+    id: initData?.id ?? "new trans",
   };
 
   const form = useForm<TransactionFormValue>({
@@ -89,27 +93,6 @@ export const UpdateTransactionForm = ({
             </FormItem>
           )}
         />
-        <FormItem>
-          <FormLabel>Categories</FormLabel>
-          <FormControl>
-            <Controller
-              control={form.control}
-              name="categories"
-              render={({ field, fieldState: { error } }) => (
-                <>
-                  <CategoriesComboboxField
-                    selectedCategories={field.value as Categories[]}
-                    userCats={userCategories}
-                    updateSelectedCategories={(selected) =>
-                      field.onChange(selected)
-                    }
-                  />
-                  {error && <FormMessage>{error.message}</FormMessage>}
-                </>
-              )}
-            />
-          </FormControl>
-        </FormItem>
         <FormField
           control={form.control}
           name="date"
@@ -159,6 +142,27 @@ export const UpdateTransactionForm = ({
             );
           }}
         />
+        <FormItem>
+          <FormLabel>Categories</FormLabel>
+          <FormControl>
+            <Controller
+              control={form.control}
+              name="categories"
+              render={({ field, fieldState: { error } }) => (
+                <>
+                  <CategoriesComboboxField
+                    selectedCategories={field.value as Categories[]}
+                    userCats={userCategories}
+                    updateSelectedCategories={(selected) =>
+                      field.onChange(selected)
+                    }
+                  />
+                  {error && <FormMessage>{error.message}</FormMessage>}
+                </>
+              )}
+            />
+          </FormControl>
+        </FormItem>
         <FormField
           control={form.control}
           name="amount"
@@ -207,11 +211,17 @@ export const UpdateTransactionForm = ({
         />
 
         <div className="flex items-center justify-end w-full pt-6 space-x-2">
-          <Button disabled={loading} variant="outline" onClick={onClose}>
-            Cancel
+          <Button
+            type="button"
+            disabled={loading}
+            variant="outline"
+            onClick={onCancel}
+          >
+            {cancelButtonContent || "Cancel"}
           </Button>
           <Button type="submit" disabled={loading} variant="default">
-            {loading && <ClockLoader className="mr-2" />}Update
+            {loading && <ClockLoader className="mr-2" />}
+            {submitButtonContent || "Update"}
           </Button>
         </div>
       </form>

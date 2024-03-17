@@ -82,9 +82,9 @@ export const UpdateTransactionsModal: React.FC<
       <ScrollArea maxHeight={450}>
         <UpdateTransactionForm
           loading={updateLoading}
-          onClose={onClose}
+          onCancel={onClose}
           submitHandler={onSubmit}
-          transData={rowData}
+          initData={rowData}
           userCategories={userCategories}
         />
       </ScrollArea>

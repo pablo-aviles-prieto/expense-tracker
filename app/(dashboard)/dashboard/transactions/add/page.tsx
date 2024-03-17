@@ -67,7 +67,7 @@ export default async function AddTransactions() {
           </AddTransactionsTableProvider>
         </TabsContent>
         <TabsContent value="manual">
-          <AddTransactionsSingleBlock />
+          <AddTransactionsSingleBlock userCategories={userCategories} />
         </TabsContent>
       </Tabs>
     </div>
