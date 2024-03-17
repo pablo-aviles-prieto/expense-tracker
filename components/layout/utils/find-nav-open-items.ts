@@ -15,7 +15,7 @@ export const findNavOpenItems = (
   path: string,
   prefix: string = "",
 ): string[] => {
-  return items.reduce((acc: string[], item, index) => {
+  return items.reduce((acc: string[], item) => {
     const itemId = `${prefix}item-${item.label}`;
     if (isPathIncluded(item, path) && item.subItems) {
       acc.push(itemId);

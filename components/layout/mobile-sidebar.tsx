@@ -5,11 +5,7 @@ import { navItems } from "@/constants/data";
 import { MenuIcon } from "lucide-react";
 import { useState } from "react";
 
-// import { Playlist } from "../data/playlists";
-
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  // playlists: Playlist[];
-}
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function MobileSidebar({ className }: SidebarProps) {
   const [open, setOpen] = useState(false);
@@ -20,9 +16,9 @@ export function MobileSidebar({ className }: SidebarProps) {
           <MenuIcon />
         </SheetTrigger>
         <SheetContent side="left" className="!px-0">
-          <div className="space-y-4 py-4">
+          <div className="py-4 space-y-4">
             <div className="px-3 py-2">
-              <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+              <h2 className="px-4 mb-2 text-lg font-semibold tracking-tight">
                 Overview
               </h2>
               <div className="space-y-1">
