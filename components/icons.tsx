@@ -35,6 +35,7 @@ import {
   Eye,
   EyeOff,
   FileStack,
+  Gem,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -210,4 +211,5 @@ export const Icons = {
   singleTrans: FilePlus,
   eye: Eye,
   eyeOff: EyeOff,
+  subscription: Gem,
 };
