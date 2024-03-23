@@ -124,6 +124,12 @@ export const navItems: NavItemWithOptionalChildren[] = [
     label: "profile",
   },
   {
+    title: "Subscriptions",
+    href: "/dashboard/subscriptions",
+    icon: "subscription",
+    label: "subscription",
+  },
+  {
     title: "Transactions",
     href: "/dashboard/transactions",
     icon: "wallet",
