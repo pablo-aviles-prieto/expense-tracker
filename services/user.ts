@@ -86,3 +86,19 @@ export const getUserCategories = async (userId: string) => {
 
   return categories;
 };
+
+export const getUsersSubscriptions = async (userId: string) => {
+  if (isInvalidUserId(userId)) {
+    throw new Error(errorMessages.invalidUserId);
+  }
+
+  await connectDb();
+
+  const user = await UserModel.findById(userId).exec();
+
+  if (!user) {
+    throw new Error(errorMessages.relogAcc);
+  }
+
+  return user.subscriptions;
+};

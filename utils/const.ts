@@ -24,6 +24,7 @@ export const errorMessages = {
   retrieveCategories: "There was an error retrieving the categories",
   updateTransaction: "There was an error updating the transaction",
   createTransaction: "There was an error creating the transaction",
+  retrieveSubscriptions: "There was an error retrieving the subscriptions",
 } as const;
 
 export const dateFormat = {

@@ -1,26 +1,36 @@
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import Link from "next/link";
-import { getEllipsed } from "@/utils/const";
+import { errorMessages, getEllipsed } from "@/utils/const";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { type NextAuthOptions, getServerSession } from "next-auth";
 import type { CustomSessionI } from "@/types";
 import { authOptions } from "@/lib/auth-options";
-import { getUserCategories } from "@/services/user";
+import { getUsersSubscriptions } from "@/services/user";
 import BreadCrumb from "@/components/breadcrumb";
 
 const breadcrumbItems = [
   { title: "Subscriptions", link: "/dashboard/subscriptions" },
 ];
 
-export default async function Subscriptions() {
-  // const session = (await getServerSession(
-  //   authOptions as NextAuthOptions,
-  // )) as CustomSessionI;
+const retrieveSubscriptions = async () => {
+  try {
+    const session = (await getServerSession(
+      authOptions as NextAuthOptions,
+    )) as CustomSessionI;
+    const subscriptions = await getUsersSubscriptions(session.user?.id ?? "");
+    return { ok: true, subscriptions };
+  } catch (err) {
+    const errorMessage =
+      err instanceof Error ? err.message : errorMessages.retrieveSubscriptions;
+    return { ok: false, error: errorMessage };
+  }
+};
 
-  // const userCategories = await getUserCategories(session?.user?.id ?? "");
+export default async function Subscriptions() {
+  const userData = await retrieveSubscriptions();
 
   return (
     <div className="flex-1 p-4 pt-6 space-y-2 sm:space-y-4 md:p-8">
@@ -44,7 +54,15 @@ export default async function Subscriptions() {
         </Link>
       </div>
       <Separator />
-      <p>Yo warap ma mang</p>
+      {userData.error ? (
+        <p>There was an error retrieving the subscriptions {userData.error}</p>
+      ) : userData.subscriptions?.length === 0 ? (
+        <p>
+          Seems like you dont have any subscription. Are you missing something?
+        </p>
+      ) : (
+        <p>You have {userData.subscriptions?.length} subscriptions</p>
+      )}
     </div>
   );
 }
