@@ -25,7 +25,6 @@ const SubscriptionSchema = new Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   startDate: { type: String, required: true },
-  nextBillingDate: { type: String, required: true },
   billingPeriod: {
     type: String,
     required: true,

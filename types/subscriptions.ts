@@ -17,7 +17,6 @@ export interface Subscription {
   name: string;
   price: number;
   startDate: string; // Date in format yyyy-MM-dd
-  nextBillingDate: string; // Date in format yyyy-MM-dd
   billingPeriod: BillingPeriod;
   autoRenew: boolean;
   status: SubscriptionStatus;
