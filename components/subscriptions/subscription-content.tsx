@@ -15,7 +15,7 @@ export const SubscriptionContent = ({ userData }: SubscriptionContentProps) => {
     <>
       <div className="flex items-start justify-between">
         <Heading
-          maxWidthClass="max-w-[calc(100%-170px)]"
+          maxWidthClass="max-w-[calc(100%-180px)]"
           title="Subscriptions"
           description="Manage all your subscriptions to ensure you're not paying for anything you don't use"
         />
@@ -23,7 +23,7 @@ export const SubscriptionContent = ({ userData }: SubscriptionContentProps) => {
           variant="default"
           onClick={() => console.log("open add subscription modal")}
         >
-          <Plus className="w-4 h-4 mr-2" /> Add subscription
+          <Plus className="w-4 h-4 mr-2" /> Add subscriptions
         </Button>
       </div>
       <Separator />

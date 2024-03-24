@@ -25,17 +25,13 @@ export default async function AddTransactionsEntryPoint() {
 
       <div className="flex items-start justify-between">
         <Heading
-          maxWidthClass="max-w-[calc(100%-167px)]"
+          maxWidthClass="max-w-[calc(100%-180px)]"
           title="Add transactions"
           description="Add transactions autommatically via CSV or manually"
         />
         <Link
           href={"/dashboard/transactions/list"}
-          className={cn(
-            buttonVariants(),
-            getEllipsed,
-            "h-8 px-3 sm:px-4 sm:h-9 text-xs sm:text-sm",
-          )}
+          className={cn(buttonVariants())}
         >
           <Undo2 className="w-4 h-4 mr-2" /> Go back to the list
         </Link>
