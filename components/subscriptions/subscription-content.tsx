@@ -39,6 +39,7 @@ export const SubscriptionContent = () => {
     data: userData,
     error,
     isLoading,
+    refetch,
   } = useQuery({
     queryKey: [URL_GET_SUBSCRIPTION],
     queryFn: fetchSubscriptions,
@@ -61,6 +62,7 @@ export const SubscriptionContent = () => {
       <CreateSubscriptionModal
         isOpen={openCreateSubModal}
         onClose={() => setOpenCreateSubModal(false)}
+        refetch={refetch}
       />
       <div className="flex items-start justify-between">
         <Heading
@@ -75,6 +77,8 @@ export const SubscriptionContent = () => {
       <Separator />
       {error ? (
         <p>There was an error retrieving the subscriptions</p>
+      ) : isLoading ? (
+        <div>Loading...</div>
       ) : !userData || userData?.length === 0 ? (
         <div className="flex items-end gap-x-2">
           <p>Seems like you dont have any subscription. </p>

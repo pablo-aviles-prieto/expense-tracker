@@ -2,28 +2,28 @@
 
 import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import type { UserSubscriptionResponse } from "@/types";
 import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
 import { SubscriptionForm } from "@/components/forms/subscriptions/subscription-form";
 import { SubscriptionFormValue } from "@/schemas/create-subscription-schema";
 import { URL_ADD_SUBSCRIPTION } from "@/utils/const";
+import { type RefetchOptions } from "@tanstack/react-query";
 
 interface CreateSubscriptionModalProps {
   isOpen: boolean;
   onClose: () => void;
+  refetch: (options?: RefetchOptions | undefined) => any;
 }
 
 export const CreateSubscriptionModal: React.FC<
   CreateSubscriptionModalProps
-> = ({ isOpen, onClose }) => {
+> = ({ isOpen, onClose, refetch }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const { fetchPetition } = useFetch();
   const { toast } = useToast();
-  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
@@ -61,7 +61,7 @@ export const CreateSubscriptionModal: React.FC<
       });
       onClose();
     }
-    router.refresh();
+    refetch();
     setUpdateLoading(false);
   };
 
