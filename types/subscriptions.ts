@@ -25,6 +25,10 @@ export interface Subscription {
   notes?: string;
 }
 
+export interface EnhancedSubscription extends Subscription {
+  _id: string;
+}
+
 export interface UserSubscriptionResponse {
   ok: boolean;
   error?: string;

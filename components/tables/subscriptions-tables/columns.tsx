@@ -1,10 +1,11 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import type { Subscription } from "@/types";
+import type { EnhancedSubscription, Subscription } from "@/types";
 import { AmountCell } from "../amount-cell";
 import { DateCell } from "../date-cell";
 import { NextBillingDateCell } from "./next-billing-date-cell";
+import { CellAction } from "./cell-action";
 
 export const columns: ColumnDef<Subscription>[] = [
   {
@@ -48,5 +49,11 @@ export const columns: ColumnDef<Subscription>[] = [
   {
     accessorKey: "notes",
     header: "NOTES",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => (
+      <CellAction row={row.original as EnhancedSubscription} />
+    ),
   },
 ];

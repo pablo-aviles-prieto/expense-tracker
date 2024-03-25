@@ -35,7 +35,7 @@ export const SubscriptionTable = <TData, TValue>({
 
   return (
     <>
-      <ScrollArea className="h-[calc(100vh-435px)] border rounded-md">
+      <ScrollArea className="h-[calc(100vh-235px)] border rounded-md">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

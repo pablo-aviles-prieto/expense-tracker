@@ -20,7 +20,7 @@ interface ResponseSubscriptions {
   subscriptions?: Subscription[];
 }
 
-// TODO: Style on error, when no data, and the table when subscriptions are found!
+// TODO: Style on error, when no data, and the loading (use a skeleton?)
 export const SubscriptionContent = () => {
   const [openCreateSubModal, setOpenCreateSubModal] = useState(false);
   const { fetchPetition } = useFetch();
