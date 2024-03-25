@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getEllipsed } from "@/utils/const";
-import { DateCell } from "./date-cell";
+import { DateCell } from "../date-cell";
 import { AmountCell } from "../amount-cell";
 import {
   ColumnDef,

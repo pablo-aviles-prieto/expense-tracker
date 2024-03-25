@@ -11,6 +11,8 @@ import { URL_GET_SUBSCRIPTION } from "@/utils/const";
 import { useQuery } from "@tanstack/react-query";
 import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/components/ui/use-toast";
+import { SubscriptionTable } from "../tables/subscriptions-tables/subscription-table";
+import { columns } from "../tables/subscriptions-tables/columns";
 
 interface ResponseSubscriptions {
   ok: boolean;
@@ -55,8 +57,6 @@ export const SubscriptionContent = () => {
     }
   }, [error, isLoading]);
 
-  console.log("userData", userData);
-
   return (
     <>
       <CreateSubscriptionModal
@@ -91,7 +91,7 @@ export const SubscriptionContent = () => {
           </Button>
         </div>
       ) : (
-        <p>You have {userData.length} subscriptions</p>
+        <SubscriptionTable columns={columns} data={userData} />
       )}
     </>
   );
