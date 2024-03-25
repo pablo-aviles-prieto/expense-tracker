@@ -5,16 +5,56 @@ import { Separator } from "@/components//ui/separator";
 import { Button } from "@/components/ui/button";
 import type { Subscription } from "@/types";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CreateSubscriptionModal } from "@/components/modal/create-subscription-modal";
+import { URL_GET_SUBSCRIPTION } from "@/utils/const";
+import { useQuery } from "@tanstack/react-query";
+import { useFetch } from "@/hooks/use-fetch";
+import { useToast } from "@/components/ui/use-toast";
 
-interface SubscriptionContentProps {
-  userData: { ok: boolean; error?: string; subscriptions?: Subscription[] };
+interface ResponseSubscriptions {
+  ok: boolean;
+  error?: string;
+  subscriptions?: Subscription[];
 }
 
-// TODO: Style on error, when no data, and the table when subscriptions are found
-export const SubscriptionContent = ({ userData }: SubscriptionContentProps) => {
+// TODO: Style on error, when no data, and the table when subscriptions are found!
+export const SubscriptionContent = () => {
   const [openCreateSubModal, setOpenCreateSubModal] = useState(false);
+  const { fetchPetition } = useFetch();
+  const { toast } = useToast();
+
+  const fetchSubscriptions = async () => {
+    const response = await fetchPetition<ResponseSubscriptions>({
+      url: URL_GET_SUBSCRIPTION,
+      method: "GET",
+    });
+    if (!response.ok) {
+      throw new Error(response.error ?? "Network response was not ok");
+    }
+    return response.subscriptions;
+  };
+
+  const {
+    data: userData,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: [URL_GET_SUBSCRIPTION],
+    queryFn: fetchSubscriptions,
+  });
+
+  useEffect(() => {
+    if (error && !isLoading) {
+      toast({
+        title: "There has been an error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  }, [error, isLoading]);
+
+  console.log("userData", userData);
 
   return (
     <>
@@ -33,9 +73,9 @@ export const SubscriptionContent = ({ userData }: SubscriptionContentProps) => {
         </Button>
       </div>
       <Separator />
-      {userData.error ? (
-        <p>There was an error retrieving the subscriptions {userData.error}</p>
-      ) : !userData.subscriptions || userData.subscriptions.length === 0 ? (
+      {error ? (
+        <p>There was an error retrieving the subscriptions</p>
+      ) : !userData || userData?.length === 0 ? (
         <div className="flex items-end gap-x-2">
           <p>Seems like you dont have any subscription. </p>
           <Button
@@ -47,7 +87,7 @@ export const SubscriptionContent = ({ userData }: SubscriptionContentProps) => {
           </Button>
         </div>
       ) : (
-        <p>You have {userData.subscriptions.length} subscriptions</p>
+        <p>You have {userData.length} subscriptions</p>
       )}
     </>
   );

@@ -166,7 +166,7 @@ export const POST = async (req: NextRequest) => {
     const errorMessage =
       err instanceof Error ? err.message : errorMessages.addingTransaction;
     return NextResponse.json(
-      { ok: true, error: errorMessage },
+      { ok: false, error: errorMessage },
       { status: 500 },
     );
   }

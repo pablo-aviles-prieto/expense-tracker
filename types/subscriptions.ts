@@ -1,3 +1,5 @@
+import { type IUser } from "@/models";
+
 export enum BillingPeriod {
   Monthly = "MONTHLY",
   BiMonthly = "BI-MONTHLY",
@@ -21,4 +23,10 @@ export interface Subscription {
   autoRenew: boolean;
   status: SubscriptionStatus;
   notes?: string;
+}
+
+export interface UserSubscriptionResponse {
+  ok: boolean;
+  error?: string;
+  updatedUser?: IUser;
 }

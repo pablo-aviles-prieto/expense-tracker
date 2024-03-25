@@ -14,12 +14,15 @@ export const errorMessages = {
   relogAcc: "Something happened, please relog into your account",
   gettingCategories: "Error getting the categories",
   addingTransaction: "Error adding the transaction to database",
+  addingSubscription: "Error adding the subscription to database",
   fileParsing: "File processing failed. Try again later",
   fileType: "Wrong file type. Only CSV is allowed",
   dateFormatCSV: "Please, select the correct date format used on your CSV file",
   csvNoColumns: "Columns not found on the CSV",
   incorrectTransactionsData:
     "The transactions provided are not correct. Try again later",
+  incorrectSubscriptionData:
+    "The subscription data provided is not correct. Try again later",
   deletingTransactions: `Couldn't delete the selected transactions. Try again later`,
   retrieveCategories: "There was an error retrieving the categories",
   updateTransaction: "There was an error updating the transaction",
@@ -69,6 +72,8 @@ export const URL_DELETE_TRANSACTIONS = `/api/transactions/delete`;
 export const URL_USER_CATEGORIES = `/api/user/categories`;
 export const URL_UPDATE_CATEGORY = `/api/transactions/update`;
 export const URL_CREATE_TRANSACTION = `/api/transactions/add/single`;
+export const URL_ADD_SUBSCRIPTION = `/api/user/subscriptions/add`;
+export const URL_GET_SUBSCRIPTION = `/api/user/subscriptions`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;
