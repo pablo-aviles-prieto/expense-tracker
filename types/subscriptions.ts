@@ -46,3 +46,15 @@ export interface UserSubscriptionUpdateResponse {
     upsertedId: string | null;
   };
 }
+
+export interface UserSubscriptionDeleteResponse {
+  ok: boolean;
+  error?: string;
+  result?: {
+    acknowledged: true;
+    matchedCount: number;
+    modifiedCount: number;
+    upsertedCount: number;
+    upsertedId: string | null;
+  };
+}

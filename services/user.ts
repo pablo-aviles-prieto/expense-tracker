@@ -20,6 +20,11 @@ type UpdateSubscriptionToUserParams = {
   subscription: EnhancedSubscription;
 };
 
+type DeleteSubscriptionToUserParams = {
+  userId: string;
+  subscriptionIds: string[];
+};
+
 /**
  * Updates the transactionsDate for a user.
  *
@@ -131,7 +136,7 @@ export const addSubscriptionToUser = async ({
   ).exec();
 
   if (!updatedUser) {
-    throw new Error("User not found or update failed");
+    throw new Error("User not found or creation failed");
   }
 
   return updatedUser;
@@ -163,6 +168,32 @@ export const updateSubscription = async ({
 
   if (!result.acknowledged || result.modifiedCount === 0) {
     throw new Error("User not found or update failed");
+  }
+
+  return result;
+};
+
+export const deleteSubscriptions = async ({
+  userId,
+  subscriptionIds,
+}: DeleteSubscriptionToUserParams) => {
+  if (isInvalidUserId(userId)) {
+    throw new Error(errorMessages.invalidUserId);
+  }
+
+  await connectDb();
+
+  const result = await UserModel.updateOne(
+    { _id: userId },
+    {
+      $pull: {
+        subscriptions: { _id: { $in: subscriptionIds } },
+      },
+    },
+  );
+
+  if (!result.acknowledged || result.modifiedCount === 0) {
+    throw new Error("Subscription not found or deletion failed");
   }
 
   return result;

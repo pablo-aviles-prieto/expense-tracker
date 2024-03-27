@@ -1,12 +1,16 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row, Table } from "@tanstack/react-table";
 import type { EnhancedSubscription, Subscription } from "@/types";
 import { AmountCell } from "../amount-cell";
 import { DateCell } from "../date-cell";
 import { NextBillingDateCell } from "./next-billing-date-cell";
 import { CellAction } from "./cell-action";
 import { Checkbox } from "@/components/ui/checkbox";
+
+interface ParsedRow {
+  original: EnhancedSubscription;
+}
 
 export const columns: ColumnDef<Subscription>[] = [
   {
@@ -72,8 +76,18 @@ export const columns: ColumnDef<Subscription>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => (
-      <CellAction row={row.original as EnhancedSubscription} />
-    ),
+    cell: ({ table, row }) => {
+      const selectedRows = table.getFilteredSelectedRowModel().rows;
+      const selectedSubscriptions = (
+        selectedRows as unknown as ParsedRow[]
+      ).map((row) => row.original);
+      return (
+        <CellAction
+          row={row as unknown as Row<EnhancedSubscription>}
+          table={table as unknown as Table<EnhancedSubscription>}
+          selectedSubscriptions={selectedSubscriptions}
+        />
+      );
+    },
   },
 ];
