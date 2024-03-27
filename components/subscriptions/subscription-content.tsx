@@ -21,6 +21,8 @@ interface ResponseSubscriptions {
 }
 
 // TODO: Style on error, when no data, and the loading (use a skeleton?)
+// TODO: Add the delete and update actions
+// TODO: Style the table elements
 export const SubscriptionContent = () => {
   const [openCreateSubModal, setOpenCreateSubModal] = useState(false);
   const { fetchPetition } = useFetch();
