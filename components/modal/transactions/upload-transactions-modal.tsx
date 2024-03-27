@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
-import { ClockLoader } from "../icons/clock-loader";
+import { ClockLoader } from "../../icons/clock-loader";
 
 interface UploadTransactionsModalProps {
   isOpen: boolean;

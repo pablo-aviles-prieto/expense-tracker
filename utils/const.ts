@@ -26,6 +26,7 @@ export const errorMessages = {
   deletingTransactions: `Couldn't delete the selected transactions. Try again later`,
   retrieveCategories: "There was an error retrieving the categories",
   updateTransaction: "There was an error updating the transaction",
+  updateSubscription: "There was an error updating the subscription",
   createTransaction: "There was an error creating the transaction",
   retrieveSubscriptions: "There was an error retrieving the subscriptions",
 } as const;
@@ -74,6 +75,7 @@ export const URL_UPDATE_CATEGORY = `/api/transactions/update`;
 export const URL_CREATE_TRANSACTION = `/api/transactions/add/single`;
 export const URL_ADD_SUBSCRIPTION = `/api/user/subscriptions/add`;
 export const URL_GET_SUBSCRIPTION = `/api/user/subscriptions`;
+export const URL_UPDATE_SUBSCRIPTION = `/api/user/subscriptions/update`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;

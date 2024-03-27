@@ -1,5 +1,4 @@
 "use client";
-import { AlertModal } from "@/components/modal/delete-transactions-modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -26,12 +25,12 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   return (
     <>
-      <AlertModal
+      {/* <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
         loading={loading}
-      />
+      /> */}
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="w-8 h-8 p-0">

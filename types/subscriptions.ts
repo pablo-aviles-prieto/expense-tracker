@@ -34,3 +34,15 @@ export interface UserSubscriptionResponse {
   error?: string;
   updatedUser?: IUser;
 }
+
+export interface UserSubscriptionUpdateResponse {
+  ok: boolean;
+  error?: string;
+  result?: {
+    acknowledged: true;
+    matchedCount: number;
+    modifiedCount: number;
+    upsertedCount: number;
+    upsertedId: string | null;
+  };
+}

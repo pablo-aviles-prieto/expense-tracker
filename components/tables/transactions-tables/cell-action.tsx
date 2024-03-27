@@ -1,6 +1,6 @@
 "use client";
-import { DeleteTransactionsModal } from "@/components/modal/delete-transactions-modal";
-import { UpdateTransactionsModal } from "@/components/modal/update-transactions-modal";
+import { DeleteTransactionsModal } from "@/components/modal/transactions/delete-transactions-modal";
+import { UpdateTransactionsModal } from "@/components/modal/transactions/update-transactions-modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

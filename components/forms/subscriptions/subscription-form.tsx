@@ -11,7 +11,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { BillingPeriod, SubscriptionStatus, type Subscription } from "@/types";
+import {
+  BillingPeriod,
+  SubscriptionStatus,
+  type EnhancedSubscription,
+} from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -41,7 +45,7 @@ import { formatEnumKey } from "@/utils/format-enum-key";
 
 type Props = {
   loading: boolean;
-  initData?: Subscription;
+  initData?: EnhancedSubscription;
   submitHandler: (data: SubscriptionFormValue) => void;
   onCancel: () => void;
   submitButtonContent?: string;
@@ -64,6 +68,7 @@ export const SubscriptionForm = ({
     autoRenew: initData?.autoRenew ?? true,
     status: initData?.status ?? SubscriptionStatus.Active,
     notes: initData?.notes ?? "",
+    _id: initData?._id ?? "new sub",
   };
 
   const form = useForm<SubscriptionFormValue>({

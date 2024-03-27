@@ -17,6 +17,7 @@ export const CreateSubSchema = z.object({
       message: "Need to select a status",
     }),
   notes: z.string().optional(),
+  _id: z.string(),
 });
 
 export type SubscriptionFormValue = z.infer<typeof CreateSubSchema>;

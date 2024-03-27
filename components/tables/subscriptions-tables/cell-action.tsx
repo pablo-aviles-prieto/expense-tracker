@@ -1,5 +1,6 @@
 "use client";
 
+import { UpdateSubscriptionModal } from "@/components/modal/subscriptions/update-subscription-modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,7 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { EnhancedSubscription } from "@/types";
-import { CoreRow, Row } from "@tanstack/react-table";
+import { URL_GET_SUBSCRIPTION } from "@/utils/const";
+import { useQueryClient } from "@tanstack/react-query";
+import { CoreRow } from "@tanstack/react-table";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useState } from "react";
 
@@ -18,6 +21,7 @@ interface CellActionProps {
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ row }) => {
+  const queryClient = useQueryClient();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
@@ -29,13 +33,17 @@ export const CellAction: React.FC<CellActionProps> = ({ row }) => {
         onConfirm={onDeleteTransactions}
         loading={deleteLoading}
         selectedTransactionsLength={selectedTransactions.length}
-      />
-      <UpdateTransactionsModal
+        />*/}
+      <UpdateSubscriptionModal
         isOpen={openUpdateModal}
         onClose={() => setOpenUpdateModal(false)}
-        rowData={row.original}
-        userCategories={userCategories}
-      /> */}
+        rowData={row}
+        refetch={async () =>
+          await queryClient.invalidateQueries({
+            queryKey: [URL_GET_SUBSCRIPTION],
+          })
+        }
+      />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="w-8 h-8 p-0">
@@ -45,7 +53,7 @@ export const CellAction: React.FC<CellActionProps> = ({ row }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => console.log("update row", row)}>
+          <DropdownMenuItem onClick={() => setOpenUpdateModal(true)}>
             <Edit className="w-4 h-4 mr-2" /> Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => console.log("delete row", row)}>

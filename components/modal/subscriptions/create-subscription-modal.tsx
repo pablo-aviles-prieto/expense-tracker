@@ -42,7 +42,6 @@ export const CreateSubscriptionModal: React.FC<
       method: "POST",
       body: { subscriptionData: data },
     });
-    console.log("parsedRes", parsedRes);
 
     if (parsedRes.error) {
       update({

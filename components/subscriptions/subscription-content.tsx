@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import type { Subscription } from "@/types";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CreateSubscriptionModal } from "@/components/modal/create-subscription-modal";
+import { CreateSubscriptionModal } from "@/components/modal/subscriptions/create-subscription-modal";
 import { URL_GET_SUBSCRIPTION } from "@/utils/const";
 import { useQuery } from "@tanstack/react-query";
 import { useFetch } from "@/hooks/use-fetch";

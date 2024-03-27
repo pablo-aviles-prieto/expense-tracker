@@ -3,8 +3,7 @@ import UserModel from "@/models/user/user-model";
 import { errorMessages } from "@/utils/const";
 import connectDb from "@/lib/mongoose-config";
 import type { ICategories } from "@/models";
-import type { Subscription } from "@/types";
-import mongoose from "mongoose";
+import type { EnhancedSubscription, Subscription } from "@/types";
 
 type UpdateUserTransactionsDateProps = {
   userId: string;
@@ -14,6 +13,11 @@ type UpdateUserTransactionsDateProps = {
 type AddSubscriptionToUserParams = {
   userId: string;
   subscription: Subscription;
+};
+
+type UpdateSubscriptionToUserParams = {
+  userId: string;
+  subscription: EnhancedSubscription;
 };
 
 /**
@@ -131,4 +135,35 @@ export const addSubscriptionToUser = async ({
   }
 
   return updatedUser;
+};
+
+export const updateSubscription = async ({
+  userId,
+  subscription,
+}: UpdateSubscriptionToUserParams) => {
+  if (isInvalidUserId(userId)) {
+    throw new Error(errorMessages.invalidUserId);
+  }
+
+  await connectDb();
+
+  const subscriptionId = subscription._id;
+
+  const result = await UserModel.updateOne(
+    {
+      _id: userId,
+      "subscriptions._id": subscriptionId,
+    },
+    {
+      $set: {
+        "subscriptions.$": subscription,
+      },
+    },
+  );
+
+  if (!result.acknowledged || result.modifiedCount === 0) {
+    throw new Error("User not found or update failed");
+  }
+
+  return result;
 };

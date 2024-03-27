@@ -1,5 +1,5 @@
 "use client";
-import { AlertModal } from "@/components/modal/delete-transactions-modal";
+import { AlertModal } from "@/components/modal/transactions/delete-transactions-modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
