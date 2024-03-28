@@ -1,12 +1,17 @@
 "use client";
 
 import { ColumnDef, Row, Table } from "@tanstack/react-table";
-import type { EnhancedSubscription, Subscription } from "@/types";
+import {
+  BillingPeriod,
+  type EnhancedSubscription,
+  type Subscription,
+} from "@/types";
 import { AmountCell } from "../amount-cell";
 import { DateCell } from "../date-cell";
 import { NextBillingDateCell } from "./next-billing-date-cell";
 import { CellAction } from "./cell-action";
 import { Checkbox } from "@/components/ui/checkbox";
+import { formatEnumKey, getEnumKeyByEnumValue } from "@/utils/enum-operations";
 
 interface ParsedRow {
   original: EnhancedSubscription;
@@ -61,10 +66,23 @@ export const columns: ColumnDef<Subscription>[] = [
   {
     accessorKey: "billingPeriod",
     header: "BILLING PERIOD",
+    cell: ({ getValue }) => {
+      const enumKey = getEnumKeyByEnumValue(
+        BillingPeriod,
+        getValue() as string,
+      );
+      return (
+        <div className="min-w-[110px]">{formatEnumKey(enumKey ?? "")}</div>
+      );
+    },
   },
   {
     accessorKey: "autoRenew",
     header: "AUTO RENEW",
+    cell: ({ getValue }) => {
+      console.log("getValue()", getValue());
+      return <div className="min-w-[110px]">{String(getValue())}</div>;
+    },
   },
   {
     accessorKey: "status",

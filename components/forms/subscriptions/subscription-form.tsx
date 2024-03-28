@@ -41,7 +41,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { formatEnumKey } from "@/utils/format-enum-key";
+import { formatEnumKey } from "@/utils/enum-operations";
 
 type Props = {
   loading: boolean;
