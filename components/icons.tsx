@@ -36,6 +36,9 @@ import {
   EyeOff,
   FileStack,
   Gem,
+  PauseCircle,
+  XCircle,
+  CheckCircle2,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -212,4 +215,7 @@ export const Icons = {
   eye: Eye,
   eyeOff: EyeOff,
   subscription: Gem,
+  pause: PauseCircle,
+  cancel: XCircle,
+  active: CheckCircle2,
 };

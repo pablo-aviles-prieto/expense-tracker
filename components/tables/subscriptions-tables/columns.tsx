@@ -12,6 +12,13 @@ import { NextBillingDateCell } from "./next-billing-date-cell";
 import { CellAction } from "./cell-action";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatEnumKey, getEnumKeyByEnumValue } from "@/utils/enum-operations";
+import { getStatusInfo } from "./utils/get-status-info";
+import { Icons } from "@/components/icons";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ParsedRow {
   original: EnhancedSubscription;
@@ -80,13 +87,28 @@ export const columns: ColumnDef<Subscription>[] = [
     accessorKey: "autoRenew",
     header: "AUTO RENEW",
     cell: ({ getValue }) => {
-      console.log("getValue()", getValue());
       return <div className="min-w-[110px]">{String(getValue())}</div>;
     },
   },
   {
     accessorKey: "status",
     header: "STATUS",
+    cell: ({ getValue }) => {
+      const statusInfo = getStatusInfo(String(getValue()));
+      const Icon = Icons[statusInfo?.icon ?? "active"];
+      return (
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="ml-3">
+              <Icon className={statusInfo?.color} />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="text-sm font-bold">{statusInfo?.text}</p>
+          </TooltipContent>
+        </Tooltip>
+      );
+    },
   },
   {
     accessorKey: "notes",
