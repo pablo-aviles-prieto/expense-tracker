@@ -13,6 +13,7 @@ import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/components/ui/use-toast";
 import { SubscriptionTable } from "../tables/subscriptions-tables/subscription-table";
 import { columns } from "../tables/subscriptions-tables/columns";
+import { LoadingSpinner } from "../ui/spinner";
 
 interface ResponseSubscriptions {
   ok: boolean;
@@ -20,8 +21,6 @@ interface ResponseSubscriptions {
   subscriptions?: Subscription[];
 }
 
-// TODO: Style on error, when no data, and the loading (use a skeleton?)
-// TODO: Style the table elements
 export const SubscriptionContent = () => {
   const [openCreateSubModal, setOpenCreateSubModal] = useState(false);
   const { fetchPetition } = useFetch();
@@ -77,11 +76,16 @@ export const SubscriptionContent = () => {
       </div>
       <Separator />
       {error ? (
-        <p>There was an error retrieving the subscriptions</p>
+        <p className="pt-2 text-center">
+          There was an error retrieving the subscriptions. Please try again
+          later
+        </p>
       ) : isLoading ? (
-        <div>Loading...</div>
+        <div className="flex items-center justify-center pt-10">
+          <LoadingSpinner size={140} />
+        </div>
       ) : !userData || userData?.length === 0 ? (
-        <div className="flex items-end gap-x-2">
+        <div className="flex items-end justify-center pt-2 gap-x-2">
           <p>Seems like you dont have any subscription. </p>
           <Button
             className="p-0 h-[22px]"
