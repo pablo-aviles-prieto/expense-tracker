@@ -19,5 +19,5 @@ export const NextBillingDateCell = ({
     startDateStr,
     dateFormat,
   });
-  return <p className="min-w-[134px]">{parsedDate}</p>;
+  return <p className="w-[134px] text-center">{parsedDate}</p>;
 };

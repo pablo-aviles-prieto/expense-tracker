@@ -39,6 +39,8 @@ import {
   PauseCircle,
   XCircle,
   CheckCircle2,
+  CalendarX,
+  CalendarCheck,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -218,4 +220,6 @@ export const Icons = {
   pause: PauseCircle,
   cancel: XCircle,
   active: CheckCircle2,
+  autoRenew: CalendarCheck,
+  autoRenewOff: CalendarX,
 };

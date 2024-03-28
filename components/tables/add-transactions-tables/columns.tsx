@@ -13,7 +13,9 @@ export const columns: ColumnDef<TransactionBulk>[] = [
   {
     accessorKey: "Amount",
     header: "AMOUNT",
-    cell: ({ getValue }) => <AmountCell amount={getValue() as string} />,
+    cell: ({ getValue }) => (
+      <AmountCell textLeft amount={getValue() as string} />
+    ),
   },
   {
     accessorKey: "Date",

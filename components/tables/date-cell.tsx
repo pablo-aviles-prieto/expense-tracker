@@ -5,9 +5,14 @@ import { format } from "date-fns";
 
 type DateCellProps = {
   date: string;
+  center?: boolean;
 };
 
-export const DateCell = ({ date }: DateCellProps) => {
+export const DateCell = ({ date, center = false }: DateCellProps) => {
   const { dateFormat } = useDateFormat();
-  return <p className="min-w-[90px]">{format(new Date(date), dateFormat)}</p>;
+  return (
+    <p className={`w-[90px] ${center ? "text-center" : ""}`}>
+      {format(new Date(date), dateFormat)}
+    </p>
+  );
 };

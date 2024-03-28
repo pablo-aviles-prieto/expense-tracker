@@ -19,6 +19,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getAutoRenewInfo } from "./utils/get-auto-renew-info";
 
 interface ParsedRow {
   original: EnhancedSubscription;
@@ -58,7 +59,7 @@ export const columns: ColumnDef<Subscription>[] = [
   {
     accessorKey: "startDate",
     header: "START DATE",
-    cell: ({ getValue }) => <DateCell date={getValue() as string} />,
+    cell: ({ getValue }) => <DateCell center date={getValue() as string} />,
   },
   {
     accessorKey: "nextBillingDate",
@@ -79,7 +80,9 @@ export const columns: ColumnDef<Subscription>[] = [
         getValue() as string,
       );
       return (
-        <div className="min-w-[110px]">{formatEnumKey(enumKey ?? "")}</div>
+        <div className="min-w-[110px] text-center">
+          {formatEnumKey(enumKey ?? "")}
+        </div>
       );
     },
   },
@@ -87,7 +90,20 @@ export const columns: ColumnDef<Subscription>[] = [
     accessorKey: "autoRenew",
     header: "AUTO RENEW",
     cell: ({ getValue }) => {
-      return <div className="min-w-[110px]">{String(getValue())}</div>;
+      const autoRenewInfo = getAutoRenewInfo(Boolean(getValue()));
+      const Icon = Icons[autoRenewInfo?.icon ?? "autoRenew"];
+      return (
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="min-w-[94px] flex items-center justify-center">
+              <Icon className={autoRenewInfo?.color} />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="text-sm font-bold">{autoRenewInfo?.text}</p>
+          </TooltipContent>
+        </Tooltip>
+      );
     },
   },
   {
@@ -99,7 +115,7 @@ export const columns: ColumnDef<Subscription>[] = [
       return (
         <Tooltip>
           <TooltipTrigger>
-            <div className="ml-3">
+            <div className="w-[50px] flex items-center justify-center">
               <Icon className={statusInfo?.color} />
             </div>
           </TooltipTrigger>
