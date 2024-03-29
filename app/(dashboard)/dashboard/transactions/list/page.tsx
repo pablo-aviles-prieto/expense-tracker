@@ -16,7 +16,6 @@ import {
   DEFAULT_PAGE_LIMIT,
   dateFormat,
   errorMessages,
-  getEllipsed,
 } from "@/utils/const";
 import { parseZodErrors } from "@/utils/parse-zod-errors";
 import { format, subYears } from "date-fns";
@@ -30,7 +29,7 @@ const breadcrumbItems = [
   { title: "List", link: "/dashboard/transactions/list" },
 ];
 
-type paramsProps = {
+type ParamsProps = {
   searchParams: {
     [key: string]: string | undefined;
   };
@@ -84,7 +83,7 @@ const getTransactions = async ({
   }
 };
 
-export default async function ListTransactions({ searchParams }: paramsProps) {
+export default async function ListTransactions({ searchParams }: ParamsProps) {
   const {
     startDate: startDateParam,
     endDate: endDateParam,

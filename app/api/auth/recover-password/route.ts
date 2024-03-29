@@ -1,13 +1,10 @@
-import { hash } from "bcryptjs";
 import connectDb from "@/lib/mongoose-config";
 import UserModel from "@/models/user/user-model";
-import { bcryptSalt } from "@/utils/gen-bcrypt-salt";
 import { errorMessages } from "@/utils/const";
-import CategoriesModel from "@/models/categories/categories-model";
 import { NextRequest, NextResponse } from "next/server";
 import { ForgotPasswordFormSchema } from "@/schemas/forgot-password-schema";
 import { z } from "zod";
-import { generateRecoveryToken, verifyRecoveryToken } from "@/services/user";
+import { generateRecoveryToken } from "@/services/user";
 import { handleResetPasswordMail } from "@/utils/reset-password-mail";
 
 type ReqObjI = {
@@ -26,16 +23,10 @@ export const POST = async (req: NextRequest) => {
 
     if (existingUser) {
       const token = await generateRecoveryToken(existingUser.id);
-      const result = await handleResetPasswordMail({
+      await handleResetPasswordMail({
         token,
         receiverMail: data.email,
       });
-      console.log("result", result);
-      // const decodedToken = await verifyRecoveryToken(token);
-
-      // TODO: The user may try to recover the password into an account that doesnt have
-      // a password stored since it was created by the google provider, so it could add
-      // a password to it.
     }
 
     return NextResponse.json(
