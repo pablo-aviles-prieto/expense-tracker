@@ -1,5 +1,5 @@
-import { ResetPasswordBlock } from "@/components/reset-password/reset-password-block";
-import { verifyRecoveryToken } from "@/services/user";
+import { RegisterUserBlock } from "@/components/register-user-block/register-user-block";
+import { verifyRegisterToken } from "@/services/user";
 import { errorMessages } from "@/utils/const";
 
 type ParamsProps = {
@@ -10,12 +10,12 @@ type ParamsProps = {
 
 const decodedToken = async (token: string) => {
   try {
-    const decodedTkn = await verifyRecoveryToken(token);
+    const decodedTkn = await verifyRegisterToken(token);
     return decodedTkn
       ? { data: decodedTkn, errorMessage: null }
-      : { errorMessage: errorMessages.resetTokenExpired };
+      : { errorMessage: errorMessages.registerTokenExpired };
   } catch (err) {
-    return { errorMessage: errorMessages.resetTokenExpired };
+    return { errorMessage: errorMessages.registerTokenExpired };
   }
 };
 
@@ -25,5 +25,5 @@ export default async function AuthenticationPage({
   const { token } = searchParams;
   const decodedTkn = await decodedToken(token ?? "");
 
-  return <ResetPasswordBlock decodedToken={decodedTkn} />;
+  return <RegisterUserBlock decodedToken={decodedTkn} />;
 }

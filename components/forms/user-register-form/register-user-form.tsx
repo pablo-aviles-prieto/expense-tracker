@@ -13,49 +13,27 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useFetch } from "@/hooks/use-fetch";
 import type { ResponseUser } from "@/types";
-import { errorMessages } from "@/utils/const";
+import {
+  DEFAULT_CALLBACK_URL,
+  URL_REGISTER_USER,
+  errorMessages,
+} from "@/utils/const";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { ShowPasswordBlock } from "../show-password-block";
-
-const formSchema = z
-  .object({
-    name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-    email: z.string().email({ message: "Enter a valid email address" }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters long" })
-      .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
-      .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
-      .regex(/[0-9]/, { message: "Password must include a number" })
-      .regex(/[\W_]+/, { message: "Password must include a symbol" }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords doesn't match",
-    path: ["confirmPassword"],
-  });
-
-const defaultValues = {
-  name: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-};
-
-const registerUrl = `api/user/register`;
-
-type UserFormValue = z.infer<typeof formSchema>;
+import {
+  RegisterUserFormValue,
+  RegisterUserSchema,
+} from "@/schemas/register-user-schema";
 
 type Props = {
-  callbackUrl: string;
+  email: string;
 };
 
-export const RegisterForm = ({ callbackUrl }: Props) => {
+export const RegisterUserForm = ({ email }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -63,14 +41,21 @@ export const RegisterForm = ({ callbackUrl }: Props) => {
   const { fetchPetition } = useFetch();
   const router = useRouter();
 
-  const form = useForm<UserFormValue>({
-    resolver: zodResolver(formSchema),
+  const defaultValues = {
+    name: "",
+    email,
+    password: "",
+    confirmPassword: "",
+  };
+
+  const form = useForm<RegisterUserFormValue>({
+    resolver: zodResolver(RegisterUserSchema),
     defaultValues,
   });
 
   const { trigger } = form;
 
-  const onSubmit = async (data: UserFormValue) => {
+  const onSubmit = async (data: RegisterUserFormValue) => {
     const { update, id: toastId } = toast({
       title: "Signing up...",
       description: "Please wait while we create your account.",
@@ -92,7 +77,7 @@ export const RegisterForm = ({ callbackUrl }: Props) => {
     };
     try {
       const registerResponse = await fetchPetition<ResponseUser>({
-        url: registerUrl,
+        url: URL_REGISTER_USER,
         method: "POST",
         body: parsedData,
       });
@@ -110,13 +95,13 @@ export const RegisterForm = ({ callbackUrl }: Props) => {
         redirect: false,
       });
       if (loginResponse?.ok && registerResponse.createdUser) {
-        router.push(callbackUrl);
         update({
           id: toastId,
           title: "✅ Signup Successful",
           description: `Welcome ${registerResponse.createdUser.name}`,
           variant: "success",
         });
+        router.push(DEFAULT_CALLBACK_URL);
       } else {
         displayRegisterErrorToast(
           registerResponse.error ?? errorMessages.generic,
@@ -144,28 +129,6 @@ export const RegisterForm = ({ callbackUrl }: Props) => {
                 <Input
                   type="text"
                   placeholder="Enter your name..."
-                  disabled={loading}
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    trigger(field.name);
-                  }}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  type="email"
-                  placeholder="Enter your email..."
                   disabled={loading}
                   {...field}
                   onChange={(e) => {

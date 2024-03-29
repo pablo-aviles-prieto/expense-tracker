@@ -15,13 +15,12 @@ import { useFetch } from "@/hooks/use-fetch";
 import type { ResponseRegisterMail } from "@/types";
 import { URL_REGISTER_EMAIL } from "@/utils/const";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  RegisterUserFormValue,
-  RegisterUserSchema,
-} from "@/schemas/register-user-schema";
+  RegisterMailFormValue,
+  RegisterMailSchema,
+} from "@/schemas/register-mail-schema";
 
 const defaultValues = {
   email: "",
@@ -32,14 +31,14 @@ export const RegisterEmailForm = () => {
   const { toast } = useToast();
   const { fetchPetition } = useFetch();
 
-  const form = useForm<RegisterUserFormValue>({
-    resolver: zodResolver(RegisterUserSchema),
+  const form = useForm<RegisterMailFormValue>({
+    resolver: zodResolver(RegisterMailSchema),
     defaultValues,
   });
 
   const { trigger } = form;
 
-  const onSubmit = async (data: RegisterUserFormValue) => {
+  const onSubmit = async (data: RegisterMailFormValue) => {
     const { update, id: toastId } = toast({
       title: "Creating...",
       description: "Please wait while we create the account",

@@ -89,6 +89,7 @@ export const URL_DELETE_SUBSCRIPTION = `/api/user/subscriptions/delete`;
 export const URL_RECOVER_PASSWORD = `/api/auth/recover-password`;
 export const URL_RESET_PASSWORD = `/api/auth/reset-password`;
 export const URL_REGISTER_EMAIL = `/api/user/register-email`;
+export const URL_REGISTER_USER = `/api/user/register`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;

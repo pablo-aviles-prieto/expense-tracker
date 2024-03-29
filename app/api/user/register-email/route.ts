@@ -1,11 +1,8 @@
-import { hash } from "bcryptjs";
 import connectDb from "@/lib/mongoose-config";
 import UserModel from "@/models/user/user-model";
-import { bcryptSalt } from "@/utils/gen-bcrypt-salt";
 import { errorMessages } from "@/utils/const";
-import CategoriesModel from "@/models/categories/categories-model";
 import { NextRequest, NextResponse } from "next/server";
-import { RegisterUserSchema } from "@/schemas/register-user-schema";
+import { RegisterMailSchema } from "@/schemas/register-mail-schema";
 import { z } from "zod";
 import { generateRegisterToken } from "@/services/user";
 import { handleRegisterUserMail } from "@/utils/register-user-mail";
@@ -18,7 +15,7 @@ export const POST = async (req: NextRequest) => {
   const data = (await req.json()) as ReqObjI;
 
   try {
-    RegisterUserSchema.parse(data);
+    RegisterMailSchema.parse(data);
     await connectDb();
 
     const existingUser = await UserModel.findOne({ email: data.email });

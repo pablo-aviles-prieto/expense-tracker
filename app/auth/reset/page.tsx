@@ -1,4 +1,4 @@
-import { ResetPasswordBlock } from "@/components/reset-password/reset-password-block";
+import { ResetPasswordBlock } from "@/components/reset-password-block/reset-password-block";
 import { verifyRecoveryToken } from "@/services/user";
 import { errorMessages } from "@/utils/const";
 
