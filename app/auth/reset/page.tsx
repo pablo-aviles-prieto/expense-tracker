@@ -1,5 +1,6 @@
+import { ResetPasswordBlock } from "@/components/reset-password/reset-password-block";
 import { verifyRecoveryToken } from "@/services/user";
-import { redirect } from "next/navigation";
+import { errorMessages } from "@/utils/const";
 
 type ParamsProps = {
   searchParams: {
@@ -7,19 +8,22 @@ type ParamsProps = {
   };
 };
 
+const decodedToken = async (token: string) => {
+  try {
+    const decodedTkn = await verifyRecoveryToken(token);
+    return decodedTkn
+      ? { data: decodedTkn, errorMessage: null }
+      : { errorMessage: errorMessages.tokenExpired };
+  } catch (err) {
+    return { errorMessage: errorMessages.tokenExpired };
+  }
+};
+
 export default async function AuthenticationPage({
   searchParams,
 }: ParamsProps) {
   const { token } = searchParams;
+  const decodedTkn = await decodedToken(token ?? "");
 
-  const decodedToken = await verifyRecoveryToken(token ?? "");
-
-  // TODO: The user may try to recover the password into an account that doesnt have
-  // a password stored since it was created by the google provider, so it could add
-  // a password to it.
-  if (!decodedToken) {
-    redirect("/auth");
-  }
-
-  return <div>Reset password</div>;
+  return <ResetPasswordBlock decodedToken={decodedTkn} />;
 }

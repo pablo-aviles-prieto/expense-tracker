@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const RecoverPasswordFormSchema = z
+export const ResetPasswordFormSchema = z
   .object({
     password: z
       .string()
@@ -10,9 +10,10 @@ export const RecoverPasswordFormSchema = z
       .regex(/[0-9]/, { message: "Password must include a number" })
       .regex(/[\W_]+/, { message: "Password must include a symbol" }),
     confirmPassword: z.string(),
+    userId: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords doesn't match",
     path: ["confirmPassword"],
   });
-export type ForgotPasswordFormValue = z.infer<typeof RecoverPasswordFormSchema>;
+export type ResetPasswordFormValue = z.infer<typeof ResetPasswordFormSchema>;

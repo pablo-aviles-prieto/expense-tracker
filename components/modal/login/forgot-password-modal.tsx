@@ -49,7 +49,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
       });
     } else if (response.message) {
       toast({
-        title: "Reset password email sent",
+        title: "Email sent",
         description: response.message,
         variant: "success",
       });

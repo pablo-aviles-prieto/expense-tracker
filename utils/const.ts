@@ -33,7 +33,9 @@ export const errorMessages = {
   incorrectData: "There was an error with the data retrieved. Try again later",
   recoveryPassword:
     "There was an error sending the recovery password email. Try again later",
-  tokenExpired: "The verification link has expired",
+  tokenExpired: "The reset password link has expired",
+  resetPassword:
+    "There was an error while resetting the password. Try again later",
 } as const;
 
 export const dateFormat = {
@@ -83,6 +85,7 @@ export const URL_GET_SUBSCRIPTION = `/api/user/subscriptions`;
 export const URL_UPDATE_SUBSCRIPTION = `/api/user/subscriptions/update`;
 export const URL_DELETE_SUBSCRIPTION = `/api/user/subscriptions/delete`;
 export const URL_RECOVER_PASSWORD = `/api/auth/recover-password`;
+export const URL_RESET_PASSWORD = `/api/auth/reset-password`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;
