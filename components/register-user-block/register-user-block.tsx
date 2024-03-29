@@ -30,7 +30,7 @@ export const RegisterUserBlock = ({ decodedToken }: RegisterUserBlockProps) => {
   return (
     <div
       className="relative mx-auto flex w-full flex-col justify-center 
-    space-y-2 sm:w-[375px] overflow-hidden min-h-[600px]"
+      space-y-2 sm:w-[375px] overflow-hidden min-h-[600px] sm:px-2"
     >
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
