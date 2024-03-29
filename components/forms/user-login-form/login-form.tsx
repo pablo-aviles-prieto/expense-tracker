@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ShowPasswordBlock } from "../show-password-block";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Enter a valid email address" }),
@@ -35,9 +36,13 @@ type UserFormValue = z.infer<typeof formSchema>;
 
 type Props = {
   callbackUrl: string;
+  setOpenForgotPasswordModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const LoginForm = ({ callbackUrl }: Props) => {
+export const LoginForm = ({
+  callbackUrl,
+  setOpenForgotPasswordModal,
+}: Props) => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
@@ -137,12 +142,15 @@ export const LoginForm = ({ callbackUrl }: Props) => {
             </FormItem>
           )}
         />
-
-        <Button
-          disabled={loading}
-          className="w-full !mt-4 ml-auto"
-          type="submit"
+        <p
+          className={`!my-1 text-sm cursor-pointer !p-0 ${cn(
+            buttonVariants({ variant: "link" }),
+          )}`}
+          onClick={() => setOpenForgotPasswordModal(true)}
         >
+          Forgot your password? Recover it!
+        </p>
+        <Button disabled={loading} className="w-full !mt-0" type="submit">
           Login
         </Button>
       </form>

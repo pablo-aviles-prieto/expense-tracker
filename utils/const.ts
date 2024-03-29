@@ -30,6 +30,10 @@ export const errorMessages = {
   updateSubscription: "There was an error updating the subscription",
   createTransaction: "There was an error creating the transaction",
   retrieveSubscriptions: "There was an error retrieving the subscriptions",
+  incorrectData: "There was an error with the data retrieved. Try again later",
+  recoveryPassword:
+    "There was an error sending the recovery password email. Try again later",
+  tokenExpired: "The verification link has expired",
 } as const;
 
 export const dateFormat = {
@@ -78,6 +82,7 @@ export const URL_ADD_SUBSCRIPTION = `/api/user/subscriptions/add`;
 export const URL_GET_SUBSCRIPTION = `/api/user/subscriptions`;
 export const URL_UPDATE_SUBSCRIPTION = `/api/user/subscriptions/update`;
 export const URL_DELETE_SUBSCRIPTION = `/api/user/subscriptions/delete`;
+export const URL_RECOVER_PASSWORD = `/api/auth/recover-password`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;
