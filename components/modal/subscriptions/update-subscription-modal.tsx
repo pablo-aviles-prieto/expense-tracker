@@ -1,50 +1,50 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
-import { TransactionForm } from "../forms/transactions/transaction-form";
-import { TransactionFormValue } from "@/schemas/update-transactions-schema";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import type {
-  Categories,
-  TransactionObjBack,
-  TransactionUpdateReponse,
+  EnhancedSubscription,
+  UserSubscriptionUpdateResponse,
 } from "@/types";
 import { useFetch } from "@/hooks/use-fetch";
-import { URL_UPDATE_CATEGORY } from "@/utils/const";
-import { useToast } from "../ui/use-toast";
-import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import { SubscriptionForm } from "@/components/forms/subscriptions/subscription-form";
+import { SubscriptionFormValue } from "@/schemas/create-subscription-schema";
+import { URL_UPDATE_SUBSCRIPTION } from "@/utils/const";
+import { type RefetchOptions } from "@tanstack/react-query";
 
-interface UpdateTransactionsModalProps {
+interface UpdateSubscriptionModalProps {
   isOpen: boolean;
+  rowData: EnhancedSubscription;
   onClose: () => void;
-  rowData: TransactionObjBack;
-  userCategories: Categories[];
+  refetch: (options?: RefetchOptions | undefined) => any;
 }
 
-export const UpdateTransactionsModal: React.FC<
-  UpdateTransactionsModalProps
-> = ({ isOpen, onClose, rowData, userCategories }) => {
+export const UpdateSubscriptionModal: React.FC<
+  UpdateSubscriptionModalProps
+> = ({ isOpen, onClose, refetch, rowData }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const { fetchPetition } = useFetch();
   const { toast } = useToast();
-  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const onSubmit = async (data: TransactionFormValue) => {
+  const onSubmit = async (data: SubscriptionFormValue) => {
     const { update, id: toastId } = toast({
-      title: "Updating transaction...",
+      title: "Updating subscription...",
       description: "Please wait while the update is being processed",
       variant: "default",
     });
     setUpdateLoading(true);
-    const parsedRes = await fetchPetition<TransactionUpdateReponse>({
-      url: URL_UPDATE_CATEGORY,
-      method: "POST",
-      body: { transaction: data },
+
+    const parsedRes = await fetchPetition<UserSubscriptionUpdateResponse>({
+      url: URL_UPDATE_SUBSCRIPTION,
+      method: "PUT",
+      body: { subscriptionData: data },
     });
 
     if (parsedRes.error) {
@@ -55,16 +55,16 @@ export const UpdateTransactionsModal: React.FC<
         variant: "destructive",
       });
     }
-    if (parsedRes.data) {
+    if (parsedRes.result) {
       update({
         id: toastId,
         title: "Succesfully updated",
-        description: "The transaction has been succesfully updated",
+        description: "The subscription has been succesfully updated",
         variant: "success",
       });
       onClose();
     }
-    router.refresh();
+    refetch();
     setUpdateLoading(false);
   };
 
@@ -74,18 +74,17 @@ export const UpdateTransactionsModal: React.FC<
 
   return (
     <Modal
-      title="Update the transaction"
-      description="Fill all the inputs before submitting the changes"
+      title="Update the subscription"
+      description="Fill all the inputs to update the subscription"
       isOpen={isOpen}
       onClose={onClose}
     >
       <ScrollArea maxHeight={450}>
-        <TransactionForm
+        <SubscriptionForm
           loading={updateLoading}
           onCancel={onClose}
           submitHandler={onSubmit}
           initData={rowData}
-          userCategories={userCategories}
         />
       </ScrollArea>
     </Modal>

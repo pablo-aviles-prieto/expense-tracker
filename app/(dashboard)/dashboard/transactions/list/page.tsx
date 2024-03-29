@@ -150,7 +150,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
 
         <div className="flex items-start justify-between">
           <Heading
-            maxWidthClass="max-w-[calc(100%-167px)]"
+            maxWidthClass="max-w-[calc(100%-175px)]"
             title={
               transResult.error
                 ? "Error retrieving the transactions"
@@ -162,7 +162,7 @@ export default async function ListTransactions({ searchParams }: paramsProps) {
           {!transResult.error && (
             <Link
               href={"/dashboard/transactions/add/multiple"}
-              className={cn(buttonVariants(), getEllipsed)}
+              className={cn(buttonVariants())}
             >
               <Plus className="w-4 h-4 mr-2" /> Add transactions
             </Link>

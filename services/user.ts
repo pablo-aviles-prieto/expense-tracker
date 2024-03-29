@@ -3,10 +3,26 @@ import UserModel from "@/models/user/user-model";
 import { errorMessages } from "@/utils/const";
 import connectDb from "@/lib/mongoose-config";
 import type { ICategories } from "@/models";
+import type { EnhancedSubscription, Subscription } from "@/types";
 
 type UpdateUserTransactionsDateProps = {
   userId: string;
   transactionsDate: { from: string; to: string } | null;
+};
+
+type AddSubscriptionToUserParams = {
+  userId: string;
+  subscription: Subscription;
+};
+
+type UpdateSubscriptionToUserParams = {
+  userId: string;
+  subscription: EnhancedSubscription;
+};
+
+type DeleteSubscriptionToUserParams = {
+  userId: string;
+  subscriptionIds: string[];
 };
 
 /**
@@ -85,4 +101,100 @@ export const getUserCategories = async (userId: string) => {
   }));
 
   return categories;
+};
+
+export const getUsersSubscriptions = async (userId: string) => {
+  if (isInvalidUserId(userId)) {
+    throw new Error(errorMessages.invalidUserId);
+  }
+
+  await connectDb();
+
+  const user = await UserModel.findById(userId).exec();
+
+  if (!user) {
+    throw new Error(errorMessages.relogAcc);
+  }
+
+  return user.subscriptions;
+};
+
+export const addSubscriptionToUser = async ({
+  userId,
+  subscription,
+}: AddSubscriptionToUserParams) => {
+  if (isInvalidUserId(userId)) {
+    throw new Error(errorMessages.invalidUserId);
+  }
+
+  await connectDb();
+
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    userId,
+    { $push: { subscriptions: subscription } },
+    { new: true },
+  ).exec();
+
+  if (!updatedUser) {
+    throw new Error("User not found or creation failed");
+  }
+
+  return updatedUser;
+};
+
+export const updateSubscription = async ({
+  userId,
+  subscription,
+}: UpdateSubscriptionToUserParams) => {
+  if (isInvalidUserId(userId)) {
+    throw new Error(errorMessages.invalidUserId);
+  }
+
+  await connectDb();
+
+  const subscriptionId = subscription._id;
+
+  const result = await UserModel.updateOne(
+    {
+      _id: userId,
+      "subscriptions._id": subscriptionId,
+    },
+    {
+      $set: {
+        "subscriptions.$": subscription,
+      },
+    },
+  );
+
+  if (!result.acknowledged || result.modifiedCount === 0) {
+    throw new Error("User not found or update failed");
+  }
+
+  return result;
+};
+
+export const deleteSubscriptions = async ({
+  userId,
+  subscriptionIds,
+}: DeleteSubscriptionToUserParams) => {
+  if (isInvalidUserId(userId)) {
+    throw new Error(errorMessages.invalidUserId);
+  }
+
+  await connectDb();
+
+  const result = await UserModel.updateOne(
+    { _id: userId },
+    {
+      $pull: {
+        subscriptions: { _id: { $in: subscriptionIds } },
+      },
+    },
+  );
+
+  if (!result.acknowledged || result.modifiedCount === 0) {
+    throw new Error("Subscription not found or deletion failed");
+  }
+
+  return result;
 };

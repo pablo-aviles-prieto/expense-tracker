@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getEllipsed } from "@/utils/const";
-import { DateCell } from "./date-cell";
+import { DateCell } from "../date-cell";
 import { AmountCell } from "../amount-cell";
 import {
   ColumnDef,
@@ -149,7 +149,9 @@ export const TransactionsTable = <TData,>({
       {
         accessorKey: "amount",
         header: "AMOUNT",
-        cell: ({ getValue }) => <AmountCell amount={getValue() as string} />,
+        cell: ({ getValue }) => (
+          <AmountCell textLeft amount={getValue() as string} />
+        ),
       },
       {
         accessorKey: "date",

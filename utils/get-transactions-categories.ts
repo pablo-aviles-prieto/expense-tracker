@@ -80,9 +80,9 @@ const categoryKeywordsMapping = {
   Podiatrist: {
     id: "podiatrist",
     name: [
-      "alma",
+      "alma cl.san rosendo",
       "clin.podologica",
-      "maquieira",
+      "clinica maquieira",
       "clinica honduras",
       "podologia",
     ],

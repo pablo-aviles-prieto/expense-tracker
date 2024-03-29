@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { FileUp, Undo } from "lucide-react";
-import { UploadTransactionsModal } from "@/components/modal/upload-transactions-modal";
+import { UploadTransactionsModal } from "@/components/modal/transactions/upload-transactions-modal";
 import type {
   TransactionBulk,
   TransactionBulkResponse,

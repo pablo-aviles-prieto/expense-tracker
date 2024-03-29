@@ -6,13 +6,14 @@ import { parseAmount } from "@/utils/parse-amount";
 
 type AmountCellProps = {
   amount: string;
+  textLeft?: boolean;
 };
 
-export const AmountCell = ({ amount }: AmountCellProps) => {
+export const AmountCell = ({ amount, textLeft = false }: AmountCellProps) => {
   const { currency } = useCurrency();
   const parsedAmount = parseAmount(String(amount));
   return (
-    <p className="pr-1 text-right min-w-[75px]">
+    <p className={`pr-1 ${textLeft ? "text-left" : "text-right"} min-w-[75px]`}>
       {formatterUS.format(parsedAmount)} {currency}
     </p>
   );
