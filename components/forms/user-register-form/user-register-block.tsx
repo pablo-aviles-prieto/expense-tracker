@@ -1,8 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { DEFAULT_CALLBACK_URL } from "@/utils/const";
-import { RegisterForm } from "./register-form";
+import { RegisterEmailForm } from "./register-email-form";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -10,20 +8,21 @@ type Props = {
 };
 
 export const UserRegisterBlock = ({ switchForm }: Props) => {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
-
   return (
     <>
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
           Create an account
         </h1>
-        <p className="text-sm text-muted-foreground">
-          Enter your credentials below to create your account
+        <p className="!my-2 text-sm text-left text-muted-foreground">
+          Please provide your email to begin the registration process.
+          <span className="inline-block">
+            You&apos;ll receive an email with a verification link to complete
+            your registration.
+          </span>
         </p>
       </div>
-      <RegisterForm callbackUrl={callbackUrl ?? DEFAULT_CALLBACK_URL} />
+      <RegisterEmailForm />
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />

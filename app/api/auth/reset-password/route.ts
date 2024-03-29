@@ -17,9 +17,9 @@ export const POST = async (req: NextRequest) => {
 
   // Creating an object with the confirmPassword to validate with zod schema
   const objToParse = { ...data, confirmPassword: data.password };
-  ResetPasswordFormSchema.parse(objToParse);
 
   try {
+    ResetPasswordFormSchema.parse(objToParse);
     await connectDb();
 
     const salt = await bcryptSalt();

@@ -1,6 +1,6 @@
 "use client";
 
-import { type DecodedJWT } from "@/services/user";
+import { type DecodedResetJWT } from "@/services/user";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
@@ -10,7 +10,7 @@ import { useFetch } from "@/hooks/use-fetch";
 import { URL_RESET_PASSWORD } from "@/utils/const";
 
 interface ResetPasswordBlockProps {
-  decodedToken: { data?: DecodedJWT; errorMessage: string | null };
+  decodedToken: { data?: DecodedResetJWT; errorMessage: string | null };
 }
 
 interface ResetPasswordResponse {

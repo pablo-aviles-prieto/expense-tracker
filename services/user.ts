@@ -26,8 +26,15 @@ type DeleteSubscriptionToUserParams = {
   subscriptionIds: string[];
 };
 
-export type DecodedJWT = {
+export type DecodedResetJWT = {
   userId: string;
+  iat: number;
+  exp: number;
+  jti: string;
+};
+
+export type DecodedRegisterJWT = {
+  email: string;
   iat: number;
   exp: number;
   jti: string;
@@ -227,11 +234,47 @@ export const verifyRecoveryToken = async (token: string) => {
   }
 
   try {
-    const decodedToken = (await decode({ token, secret })) as DecodedJWT;
+    const decodedToken = (await decode({ token, secret })) as DecodedResetJWT;
 
     // Check if the token has expired
     if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
-      throw new Error(errorMessages.tokenExpired);
+      throw new Error(errorMessages.resetTokenExpired);
+    }
+
+    return decodedToken;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const generateRegisterToken = async (email: string) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT secret key is not defined");
+  }
+
+  return encode({
+    token: { email },
+    secret,
+    maxAge: 3600,
+  });
+};
+
+export const verifyRegisterToken = async (token: string) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT secret key is not defined");
+  }
+
+  try {
+    const decodedToken = (await decode({
+      token,
+      secret,
+    })) as DecodedRegisterJWT;
+
+    // Check if the token has expired
+    if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
+      throw new Error(errorMessages.registerTokenExpired);
     }
 
     return decodedToken;
