@@ -14,7 +14,10 @@ export interface IUser extends Document {
   password: string;
   signupDate: string;
   categories: ObjectId[];
+  currency: string;
+  dateFormat: string;
   subscriptions?: Subscription[];
+  theme?: string;
   transactionsDate?: {
     from: string; // Date in format yyyy-MM-dd
     to: string; // Date in format yyyy-MM-dd
@@ -53,6 +56,9 @@ const UserSchema: Schema = new Schema({
   signupDate: { type: String, required: true },
   categories: [{ type: Schema.Types.ObjectId, ref: "categories" }],
   subscriptions: [SubscriptionSchema],
+  currency: { type: String, required: true },
+  dateFormat: { type: String, required: true },
+  theme: { type: String },
   transactionsDate: {
     from: { type: String },
     to: { type: String },

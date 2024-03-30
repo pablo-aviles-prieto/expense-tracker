@@ -10,7 +10,7 @@ const breadcrumbItems = [{ title: "Profile", link: "/dashboard/profile" }];
 
 export default async function ProfilePage() {
   const session = (await getServerSession(
-    authOptions as NextAuthOptions,
+    authOptions as unknown as NextAuthOptions,
   )) as CustomSessionI;
 
   return (

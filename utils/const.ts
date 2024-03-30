@@ -113,3 +113,17 @@ export const FIELDS_FROM_CSV = ["Date", "Concept", "Amount", "Notes"];
 export const formatterUS = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
+
+export const availableCurrency = {
+  EUR: "€",
+  USD: "$",
+  GBP: "£",
+  JPY: "¥",
+  INR: "₹",
+} as const;
+
+export const availableDateFormatTypes = {
+  EU: dateFormat.EU,
+  US: dateFormat.US,
+  ISO: dateFormat.ISO,
+} as const;

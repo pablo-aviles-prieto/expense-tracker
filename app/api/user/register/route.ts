@@ -2,7 +2,11 @@ import { hash } from "bcryptjs";
 import connectDb from "@/lib/mongoose-config";
 import UserModel from "@/models/user/user-model";
 import { bcryptSalt } from "@/utils/gen-bcrypt-salt";
-import { errorMessages } from "@/utils/const";
+import {
+  availableCurrency,
+  availableDateFormatTypes,
+  errorMessages,
+} from "@/utils/const";
 import CategoriesModel from "@/models/categories/categories-model";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -48,6 +52,8 @@ export const POST = async (req: NextRequest) => {
       password: hashedPassword,
       signupDate: new Date().toISOString(),
       categories: commonCategories,
+      currency: availableCurrency.EUR,
+      dateFormat: availableDateFormatTypes.EU,
     });
 
     const savedUser = await newUser.save();

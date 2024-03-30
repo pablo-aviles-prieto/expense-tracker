@@ -1,13 +1,9 @@
 "use client";
 
-import { dateFormat } from "@/utils/const";
+import { CustomSessionI } from "@/types";
+import { availableDateFormatTypes } from "@/utils/const";
+import { useSession } from "next-auth/react";
 import React, { createContext, useState } from "react";
-
-const availableDateFormatTypes = {
-  EU: dateFormat.EU,
-  US: dateFormat.US,
-  ISO: dateFormat.ISO,
-} as const;
 
 type DateFormatType =
   (typeof availableDateFormatTypes)[keyof typeof availableDateFormatTypes];
@@ -25,9 +21,11 @@ export const DateFormatContext = createContext<
 export const DateFormatProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // TODO: Retrieve it from user details or localStorage
+  // retrieving from next-auth session the dateFormat stored on db
+  const { data } = useSession();
+  const session = data as CustomSessionI;
   const [dateFormat, setDateFormat] = useState<DateFormatType>(
-    availableDateFormatTypes.EU,
+    (session.user?.dateFormat as DateFormatType) ?? availableDateFormatTypes.EU,
   );
 
   const value = { dateFormat, setDateFormat, availableDateFormatTypes };

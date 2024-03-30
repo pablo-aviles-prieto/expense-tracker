@@ -1,14 +1,9 @@
 "use client";
 
+import { CustomSessionI } from "@/types";
+import { availableCurrency } from "@/utils/const";
+import { useSession } from "next-auth/react";
 import React, { createContext, useState } from "react";
-
-const availableCurrency = {
-  EUR: "€",
-  USD: "$",
-  GBP: "£",
-  JPY: "¥",
-  INR: "₹",
-} as const;
 
 type CurrencyType = (typeof availableCurrency)[keyof typeof availableCurrency];
 
@@ -25,8 +20,12 @@ export const CurrencyContext = createContext<CurrencyContextType | undefined>(
 export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // TODO: Retrieve it from user details or localStorage
-  const [currency, setCurrency] = useState<CurrencyType>(availableCurrency.EUR);
+  // retrieving from next-auth session the currency stored on db
+  const { data } = useSession();
+  const session = data as CustomSessionI;
+  const [currency, setCurrency] = useState<CurrencyType>(
+    (session?.user?.currency as CurrencyType) ?? availableCurrency.EUR,
+  );
 
   const value = { currency, setCurrency, availableCurrency };
 
