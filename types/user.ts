@@ -1,3 +1,4 @@
+import { IUser } from "@/models";
 import { Categories } from "./categories";
 
 export interface ResponseUser {
@@ -28,6 +29,13 @@ export interface User {
 
 export interface ResetPasswordResponse {
   ok: boolean;
+  error?: string;
+  message?: string;
+}
+
+export interface UpdateUserPreferencesResponse {
+  ok: boolean;
+  updatedUser?: IUser;
   error?: string;
   message?: string;
 }

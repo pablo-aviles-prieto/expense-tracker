@@ -86,9 +86,14 @@ export const authOptions = {
       if (trigger === "update" && session?.transDates) {
         token.transactionsDate = session.transDates;
       }
+      if (trigger === "update" && session?.currency) {
+        token.currency = session.currency;
+      }
+      if (trigger === "update" && session?.dateFormat) {
+        token.dateFormat = session.dateFormat;
+      }
       return token;
     },
-    // eslint-disable-next-line @typescript-eslint/require-await
     async session({ session, token }: { session: DefaultSession; token: JWT }) {
       // This callback is called whenever the session data is accessed.
       // You can include additional user information from the `token` object.

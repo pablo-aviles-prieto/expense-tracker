@@ -7,7 +7,6 @@ import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "../ui/use-toast";
 import type { ResetPasswordResponse } from "@/types";
 import { URL_RESET_PASSWORD } from "@/utils/const";
-import { useRouter } from "next/navigation";
 
 interface ChangePasswordBlockProps {
   userId: string;
@@ -21,7 +20,6 @@ export const ChangePasswordBlock = ({
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { fetchPetition } = useFetch();
-  const router = useRouter();
 
   const onSubmit = async (data: ResetPasswordFormValue) => {
     setIsLoading(true);

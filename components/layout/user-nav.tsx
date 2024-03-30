@@ -24,9 +24,9 @@ import { useCurrency } from "@/hooks/use-currency";
 
 export function UserNav() {
   const { data: session } = useSession();
-  const { dateFormat, availableDateFormatTypes, setDateFormat } =
+  const { dateFormat, availableDateFormatTypes, changeDateFormat } =
     useDateFormat();
-  const { currency, setCurrency, availableCurrency } = useCurrency();
+  const { currency, changeCurrency, availableCurrency } = useCurrency();
   const router = useRouter();
 
   if (session) {
@@ -79,7 +79,7 @@ export function UserNav() {
                     ([key, value]) => (
                       <DropdownMenuCheckboxItem
                         key={key}
-                        onClick={() => setDateFormat(value)}
+                        onClick={() => changeDateFormat(value)}
                         checked={dateFormat === value}
                       >
                         <p>
@@ -99,7 +99,7 @@ export function UserNav() {
                   {Object.entries(availableCurrency).map(([key, value]) => (
                     <DropdownMenuCheckboxItem
                       key={key}
-                      onClick={() => setCurrency(value)}
+                      onClick={() => changeCurrency(value)}
                       checked={currency === value}
                     >
                       <p>
