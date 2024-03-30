@@ -9,9 +9,52 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Check } from "lucide-react";
+import { useSession } from "next-auth/react";
+import type { CustomSessionI, UpdateUserPreferencesResponse } from "@/types";
+import { useEffect } from "react";
+import { useFetch } from "@/hooks/use-fetch";
+import { useToast } from "@/components/ui/use-toast";
+import { URL_CHANGE_PREFERENCES } from "@/utils/const";
+
 type CompProps = {};
+
+const themeOptions = [
+  { key: "light", name: "Light" },
+  { key: "dark", name: "Dark" },
+  { key: "system", name: "System" },
+];
+
 export default function ThemeToggle({}: CompProps) {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
+  const { data, update } = useSession();
+  const session = data as CustomSessionI;
+  const { fetchPetition } = useFetch();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (session?.user?.theme) {
+      setTheme(session.user.theme);
+    }
+  }, [session]);
+
+  const changeTheme = async (themeName: string) => {
+    setTheme(themeName);
+    await update({ theme: themeName });
+    const response = await fetchPetition<UpdateUserPreferencesResponse>({
+      method: "POST",
+      url: URL_CHANGE_PREFERENCES,
+      body: { theme: themeName },
+    });
+    if (response.error) {
+      toast({
+        title: "Error updating preferences",
+        description: response.error,
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,15 +65,17 @@ export default function ThemeToggle({}: CompProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
+        {themeOptions.map((themeOpt) => (
+          <DropdownMenuItem
+            key={themeOpt.key}
+            onClick={() => changeTheme(themeOpt.key)}
+          >
+            {themeOpt.name}{" "}
+            {theme === themeOpt.key && (
+              <Check className="w-[22px] h-[22px] pl-2" />
+            )}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

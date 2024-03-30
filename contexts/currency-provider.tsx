@@ -26,7 +26,7 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
   const { data, update } = useSession();
   const session = data as CustomSessionI;
   const [currency, setCurrency] = useState<CurrencyType>(
-    (session?.user?.currency as CurrencyType) ?? availableCurrency.GBP,
+    (session?.user?.currency as CurrencyType) ?? availableCurrency.EUR,
   );
   const { fetchPetition } = useFetch();
   const { toast } = useToast();

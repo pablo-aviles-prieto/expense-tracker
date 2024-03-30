@@ -92,6 +92,9 @@ export const authOptions = {
       if (trigger === "update" && session?.dateFormat) {
         token.dateFormat = session.dateFormat;
       }
+      if (trigger === "update" && session?.theme) {
+        token.theme = session.theme;
+      }
       return token;
     },
     async session({ session, token }: { session: DefaultSession; token: JWT }) {
