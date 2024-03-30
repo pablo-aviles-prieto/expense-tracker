@@ -41,7 +41,8 @@ export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
     dateBlock?.from && dateBlock?.to
       ? differenceInCalendarDays(dateBlock.to, dateBlock.from)
       : 0;
-  const moneyPerDay = (netSavings >= 0 ? incomes : expenses) / daysBetweenDates;
+  const moneyPerDay = netSavings / daysBetweenDates;
+
   return (
     <>
       <Card>
