@@ -6,6 +6,7 @@ import { UniqueIdentifier } from "@dnd-kit/core";
 
 export type Status = "TODO" | "IN_PROGRESS" | "DONE";
 
+// TODO: Remove zustand in package.json
 const defaultCols = [
   {
     id: "TODO" as const,

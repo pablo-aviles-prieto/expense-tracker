@@ -4,6 +4,7 @@ import { errorMessages } from "@/utils/const";
 import connectDb from "@/lib/mongoose-config";
 import type { ICategories } from "@/models";
 import type { EnhancedSubscription, Subscription } from "@/types";
+import { decode, encode } from "next-auth/jwt";
 
 type UpdateUserTransactionsDateProps = {
   userId: string;
@@ -23,6 +24,20 @@ type UpdateSubscriptionToUserParams = {
 type DeleteSubscriptionToUserParams = {
   userId: string;
   subscriptionIds: string[];
+};
+
+export type DecodedResetJWT = {
+  userId: string;
+  iat: number;
+  exp: number;
+  jti: string;
+};
+
+export type DecodedRegisterJWT = {
+  email: string;
+  iat: number;
+  exp: number;
+  jti: string;
 };
 
 /**
@@ -197,4 +212,73 @@ export const deleteSubscriptions = async ({
   }
 
   return result;
+};
+
+export const generateRecoveryToken = async (userId: string) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT secret key is not defined");
+  }
+
+  return encode({
+    token: { userId },
+    secret,
+    maxAge: 3600,
+  });
+};
+
+export const verifyRecoveryToken = async (token: string) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT secret key is not defined");
+  }
+
+  try {
+    const decodedToken = (await decode({ token, secret })) as DecodedResetJWT;
+
+    // Check if the token has expired
+    if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
+      throw new Error(errorMessages.resetTokenExpired);
+    }
+
+    return decodedToken;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const generateRegisterToken = async (email: string) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT secret key is not defined");
+  }
+
+  return encode({
+    token: { email },
+    secret,
+    maxAge: 3600,
+  });
+};
+
+export const verifyRegisterToken = async (token: string) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT secret key is not defined");
+  }
+
+  try {
+    const decodedToken = (await decode({
+      token,
+      secret,
+    })) as DecodedRegisterJWT;
+
+    // Check if the token has expired
+    if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
+      throw new Error(errorMessages.registerTokenExpired);
+    }
+
+    return decodedToken;
+  } catch (error) {
+    throw error;
+  }
 };

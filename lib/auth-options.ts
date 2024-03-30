@@ -151,14 +151,27 @@ export const authOptions = {
           };
           await db.collection("accounts").insertOne(newAccount);
         } else {
-          // If the user exist, it updates the expires_at prop
-          await db
+          // Checking if the account exists in the account/providers table, if it does, just update it,
+          // if it doesnt, have to create it, meaning the user firstly created the account manually
+          // and now is trying to access via an email provider
+          const accountUser = await db
             .collection("accounts")
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            .updateOne(
-              { userId: existingUser._id },
-              { $set: { expires_at: account.expires_at } },
-            );
+            .findOne({ userId: existingUser._id });
+          // If the user exist, it updates the expires_at prop
+          if (accountUser) {
+            await db
+              .collection("accounts")
+              .updateOne(
+                { userId: existingUser._id },
+                { $set: { expires_at: account.expires_at } },
+              );
+          } else {
+            const newAccount = {
+              ...account,
+              userId: existingUser._id,
+            };
+            await db.collection("accounts").insertOne(newAccount);
+          }
         }
       }
       return true; // Returning true will continue the sign-in process

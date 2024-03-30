@@ -4,17 +4,24 @@ import { useSearchParams } from "next/navigation";
 import { LoginForm } from "./login-form";
 import { DEFAULT_CALLBACK_URL } from "@/utils/const";
 import GoogleSignInButton from "../google-auth-button";
+import { ForgotPasswordModal } from "@/components/modal/login/forgot-password-modal";
+import { useState } from "react";
 
 type Props = {
   switchForm: () => void;
 };
 
 export const UserLoginBlock = ({ switchForm }: Props) => {
+  const [openForgotPasswordModal, setOpenForgotPasswordModal] = useState(false);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
 
   return (
     <>
+      <ForgotPasswordModal
+        isOpen={openForgotPasswordModal}
+        onClose={() => setOpenForgotPasswordModal(false)}
+      />
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
           Access to your account
@@ -23,7 +30,10 @@ export const UserLoginBlock = ({ switchForm }: Props) => {
           Enter your credentials below to login
         </p>
       </div>
-      <LoginForm callbackUrl={callbackUrl ?? DEFAULT_CALLBACK_URL} />
+      <LoginForm
+        callbackUrl={callbackUrl ?? DEFAULT_CALLBACK_URL}
+        setOpenForgotPasswordModal={setOpenForgotPasswordModal}
+      />
       <div className="my-4">
         <GoogleSignInButton callbackUrl={callbackUrl ?? DEFAULT_CALLBACK_URL} />
       </div>

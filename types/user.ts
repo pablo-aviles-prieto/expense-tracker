@@ -6,6 +6,12 @@ export interface ResponseUser {
   createdUser?: User;
 }
 
+export interface ResponseRegisterMail {
+  ok: boolean;
+  error?: string;
+  message?: string;
+}
+
 export interface User {
   email: string;
   id: string;
