@@ -1,13 +1,53 @@
 "use client";
 
+import { RegisterMailFormValue } from "@/schemas/register-mail-schema";
 import { RegisterEmailForm } from "./register-email-form";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { useFetch } from "@/hooks/use-fetch";
+import { URL_REGISTER_EMAIL } from "@/utils/const";
+import { ResponseRegisterMail } from "@/types";
 
 type Props = {
   switchForm: () => void;
 };
 
 export const UserRegisterBlock = ({ switchForm }: Props) => {
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const { fetchPetition } = useFetch();
+
+  const onSubmit = async (data: RegisterMailFormValue) => {
+    const { update, id: toastId } = toast({
+      title: "Creating...",
+      description: "Please wait while we create the account",
+      variant: "default",
+    });
+    setLoading(true);
+    const response = await fetchPetition<ResponseRegisterMail>({
+      url: URL_REGISTER_EMAIL,
+      method: "POST",
+      body: { email: data.email },
+    });
+    if (response.error) {
+      update({
+        id: toastId,
+        title: "Error registering the email",
+        description: response.error,
+        variant: "destructive",
+      });
+    } else if (response.message) {
+      update({
+        id: toastId,
+        title: "Email registered succesfully",
+        description: response.message,
+        variant: "success",
+      });
+    }
+    setLoading(false);
+  };
+
   return (
     <>
       <div className="flex flex-col space-y-2 text-center">
@@ -22,7 +62,7 @@ export const UserRegisterBlock = ({ switchForm }: Props) => {
           </span>
         </p>
       </div>
-      <RegisterEmailForm />
+      <RegisterEmailForm isLoading={loading} onSubmit={onSubmit} />
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />

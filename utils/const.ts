@@ -30,7 +30,7 @@ export const errorMessages = {
   updateSubscription: "There was an error updating the subscription",
   createTransaction: "There was an error creating the transaction",
   retrieveSubscriptions: "There was an error retrieving the subscriptions",
-  incorrectData: "There was an error with the data retrieved. Try again later",
+  incorrectData: "There was an error with the data provided. Try again later",
   recoveryPassword:
     "There was an error sending the recovery password email. Try again later",
   resetTokenExpired: "The reset password link has expired",
@@ -38,6 +38,7 @@ export const errorMessages = {
   resetPassword:
     "There was an error while resetting the password. Try again later",
   registerEmail: "There was an error registering the email. Try again later",
+  changeEmail: "There was an error changing the email. Try again later",
 } as const;
 
 export const dateFormat = {
@@ -90,6 +91,7 @@ export const URL_RECOVER_PASSWORD = `/api/auth/recover-password`;
 export const URL_RESET_PASSWORD = `/api/auth/reset-password`;
 export const URL_REGISTER_EMAIL = `/api/user/register-email`;
 export const URL_REGISTER_USER = `/api/user/register`;
+export const URL_CHANGE_EMAIL = `/api/user/change-email`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;

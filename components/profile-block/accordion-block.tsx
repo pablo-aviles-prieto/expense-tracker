@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { useCallback, useMemo, useState } from "react";
 import { ChangePasswordBlock } from "./change-password-block";
+import { ChangeEmailBlock } from "./change-email-block";
 
 interface AccordionData {
   key: string;
@@ -45,12 +46,15 @@ export const AccordionBlock = ({ userId }: AccordionBlockProps) => {
         key: "change-email",
         title: "Change Email",
         data: (
-          <div>
-            Block explaining how to change the email of the account (it should
-            change the email in the users collection and remove if it exists,
-            the associated document in the accounts collection)
+          <div className="max-w-sm py-4 mx-auto">
+            <ChangeEmailBlock userId={userId} />
           </div>
         ),
+      },
+      {
+        key: "change-name",
+        title: "Change Name",
+        data: <div>Block to change the name of the user</div>,
       },
       {
         key: "change-preferences",
@@ -61,11 +65,6 @@ export const AccordionBlock = ({ userId }: AccordionBlockProps) => {
             it on DB
           </div>
         ),
-      },
-      {
-        key: "change-name",
-        title: "Change Name",
-        data: <div>Block to change the name of the user</div>,
       },
     ],
     [userId, resetAccordion],
