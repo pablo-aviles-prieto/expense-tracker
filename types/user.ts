@@ -25,3 +25,9 @@ export interface User {
     to: string; // Date in format yyyy-MM-dd
   };
 }
+
+export interface ResetPasswordResponse {
+  ok: boolean;
+  error?: string;
+  message?: string;
+}

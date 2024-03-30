@@ -15,7 +15,7 @@ export const UserRegisterBlock = ({ switchForm }: Props) => {
           Create an account
         </h1>
         <p className="!my-2 text-sm text-left text-muted-foreground">
-          Please provide your email to begin the registration process.
+          Provide your email to start the registration process.
           <span className="inline-block">
             You&apos;ll receive an email with a verification link to complete
             your registration.

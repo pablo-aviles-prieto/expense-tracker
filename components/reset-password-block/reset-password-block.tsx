@@ -8,15 +8,10 @@ import { ResetPasswordForm } from "../forms/recover-password-form/reset-password
 import { ResetPasswordFormValue } from "@/schemas/reset-password-schema";
 import { useFetch } from "@/hooks/use-fetch";
 import { URL_RESET_PASSWORD } from "@/utils/const";
+import type { ResetPasswordResponse } from "@/types";
 
 interface ResetPasswordBlockProps {
   decodedToken: { data?: DecodedResetJWT; errorMessage: string | null };
-}
-
-interface ResetPasswordResponse {
-  ok: boolean;
-  error?: string;
-  message?: string;
 }
 
 export const ResetPasswordBlock = ({
