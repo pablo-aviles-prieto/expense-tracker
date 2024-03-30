@@ -54,6 +54,7 @@ export const POST = async (req: NextRequest) => {
       categories: commonCategories,
       currency: availableCurrency.EUR,
       dateFormat: availableDateFormatTypes.EU,
+      theme: "system",
     });
 
     const savedUser = await newUser.save();

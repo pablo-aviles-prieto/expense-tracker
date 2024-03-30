@@ -157,6 +157,7 @@ export const authOptions = {
             dateFormat: availableDateFormatTypes.EU,
             signupDate: new Date().toISOString(),
             categories: commonCategories,
+            theme: "system",
           };
           const createdUser = await db.collection("users").insertOne(newUser);
 
