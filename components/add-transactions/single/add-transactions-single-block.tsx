@@ -52,8 +52,8 @@ export const AddTransactionsSingleBlock = ({
     if (parsedRes.data) {
       update({
         id: toastId,
-        title: "Succesfully created",
-        description: "The transaction has been succesfully created",
+        title: "Successfully created",
+        description: "The transaction has been successfully created",
         variant: "success",
       });
       router.push("/dashboard/transactions/list");

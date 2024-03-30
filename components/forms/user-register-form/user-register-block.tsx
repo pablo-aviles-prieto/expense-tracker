@@ -40,7 +40,7 @@ export const UserRegisterBlock = ({ switchForm }: Props) => {
     } else if (response.message) {
       update({
         id: toastId,
-        title: "Email registered succesfully",
+        title: "Email registered successfully",
         description: response.message,
         variant: "success",
       });

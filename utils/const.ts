@@ -39,6 +39,7 @@ export const errorMessages = {
     "There was an error while resetting the password. Try again later",
   registerEmail: "There was an error registering the email. Try again later",
   changeEmail: "There was an error changing the email. Try again later",
+  changeName: "There was an error changing the name. Try again later",
 } as const;
 
 export const dateFormat = {
@@ -92,6 +93,7 @@ export const URL_RESET_PASSWORD = `/api/auth/reset-password`;
 export const URL_REGISTER_EMAIL = `/api/user/register-email`;
 export const URL_REGISTER_USER = `/api/user/register`;
 export const URL_CHANGE_EMAIL = `/api/user/change-email`;
+export const URL_CHANGE_NAME = `/api/user/change-name`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;

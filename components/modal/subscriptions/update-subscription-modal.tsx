@@ -58,8 +58,8 @@ export const UpdateSubscriptionModal: React.FC<
     if (parsedRes.result) {
       update({
         id: toastId,
-        title: "Succesfully updated",
-        description: "The subscription has been succesfully updated",
+        title: "Successfully updated",
+        description: "The subscription has been successfully updated",
         variant: "success",
       });
       onClose();

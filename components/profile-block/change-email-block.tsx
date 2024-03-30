@@ -45,7 +45,7 @@ export const ChangeEmailBlock = ({ userId }: ChangeEmailBlockProps) => {
     } else if (response.message) {
       update({
         id: toastId,
-        title: "Email changed succesfully",
+        title: "Email changed successfully",
         description: response.message,
         variant: "success",
       });

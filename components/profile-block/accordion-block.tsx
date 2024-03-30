@@ -9,6 +9,7 @@ import {
 import { useCallback, useMemo, useState } from "react";
 import { ChangePasswordBlock } from "./change-password-block";
 import { ChangeEmailBlock } from "./change-email-block";
+import { ChangeNameBlock } from "./change-name-block";
 
 interface AccordionData {
   key: string;
@@ -54,7 +55,11 @@ export const AccordionBlock = ({ userId }: AccordionBlockProps) => {
       {
         key: "change-name",
         title: "Change Name",
-        data: <div>Block to change the name of the user</div>,
+        data: (
+          <div className="max-w-sm py-4 mx-auto">
+            <ChangeNameBlock userId={userId} />
+          </div>
+        ),
       },
       {
         key: "change-preferences",
