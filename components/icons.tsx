@@ -41,6 +41,7 @@ import {
   CheckCircle2,
   CalendarX,
   CalendarCheck,
+  LogOut,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -222,4 +223,5 @@ export const Icons = {
   active: CheckCircle2,
   autoRenew: CalendarCheck,
   autoRenewOff: CalendarX,
+  logout: LogOut,
 };

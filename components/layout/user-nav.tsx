@@ -62,15 +62,6 @@ export function UserNav() {
                 <Icons.profile className="w-4 h-4" />
               </DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              Billing
-              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              Settings
-              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>New Team</DropdownMenuItem>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Date Format</DropdownMenuSubTrigger>
               <DropdownMenuPortal>
@@ -114,7 +105,9 @@ export function UserNav() {
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => signOut()}>
             Log out
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>
+              <Icons.logout className="w-4 h-4" />
+            </DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
