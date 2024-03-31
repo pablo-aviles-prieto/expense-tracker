@@ -130,3 +130,9 @@ export const availableDateFormatTypes = {
   US: dateFormat.US,
   ISO: dateFormat.ISO,
 } as const;
+
+export const themeOptions = [
+  { key: "light", name: "Light" },
+  { key: "dark", name: "Dark" },
+  { key: "system", name: "System" },
+] as const;

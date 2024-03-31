@@ -20,7 +20,7 @@ export default async function ProfilePage() {
         <Heading
           maxWidthClass="max-w-[calc(100%-175px)]"
           title="Profile"
-          description="Manage your profile settings"
+          description="Manage your account settings"
         />
       </div>
       <Separator />

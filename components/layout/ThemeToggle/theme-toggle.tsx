@@ -15,15 +15,9 @@ import type { CustomSessionI, UpdateUserPreferencesResponse } from "@/types";
 import { useEffect } from "react";
 import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/components/ui/use-toast";
-import { URL_CHANGE_PREFERENCES } from "@/utils/const";
+import { URL_CHANGE_PREFERENCES, themeOptions } from "@/utils/const";
 
 type CompProps = {};
-
-const themeOptions = [
-  { key: "light", name: "Light" },
-  { key: "dark", name: "Dark" },
-  { key: "system", name: "System" },
-];
 
 export default function ThemeToggle({}: CompProps) {
   const { setTheme, theme } = useTheme();

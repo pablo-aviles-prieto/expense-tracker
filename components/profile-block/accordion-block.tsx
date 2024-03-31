@@ -10,6 +10,7 @@ import { useCallback, useMemo, useState } from "react";
 import { ChangePasswordBlock } from "./change-password-block";
 import { ChangeEmailBlock } from "./change-email-block";
 import { ChangeNameBlock } from "./change-name-block";
+import { ChangePreferencesBlock } from "./change-preferences-block";
 
 interface AccordionData {
   key: string;
@@ -65,9 +66,8 @@ export const AccordionBlock = ({ userId }: AccordionBlockProps) => {
         key: "change-preferences",
         title: "Change Preferences",
         data: (
-          <div>
-            Block to change the currency, the date format and the theme. Storing
-            it on DB
+          <div className="max-w-sm py-4 mx-auto xl:max-w-full">
+            <ChangePreferencesBlock resetAccordion={resetAccordion} />
           </div>
         ),
       },

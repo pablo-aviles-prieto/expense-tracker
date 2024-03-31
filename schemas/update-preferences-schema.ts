@@ -9,3 +9,7 @@ export const UpdatePreferencesSchema = z.object({
   dateFormat: z.enum(dateFormatTypes as [string, ...string[]]).optional(),
   theme: z.string().optional(),
 });
+
+export type UpdatePreferencesFormValue = z.infer<
+  typeof UpdatePreferencesSchema
+>;

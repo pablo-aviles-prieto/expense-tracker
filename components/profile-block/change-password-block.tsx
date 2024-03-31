@@ -46,10 +46,16 @@ export const ChangePasswordBlock = ({
   };
 
   return (
-    <ResetPasswordForm
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      userId={userId}
-    />
+    <div>
+      <p className="pb-4 text-muted-foreground">
+        After changing your password, you will need to use the new password for
+        all future sign-in attempts
+      </p>
+      <ResetPasswordForm
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+        userId={userId}
+      />
+    </div>
   );
 };

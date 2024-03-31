@@ -58,7 +58,7 @@ export const ChangeEmailBlock = ({ userId }: ChangeEmailBlockProps) => {
     <div>
       <p className="pb-4 text-muted-foreground">
         Please note, after updating your email address, you will be required to
-        sign in again using the new email address to ensure the security and
+        sign-in again using the new email address to ensure the security and
         integrity of your account
       </p>
       <RegisterEmailForm

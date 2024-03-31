@@ -57,7 +57,7 @@ export const ChangeNameBlock = ({ userId }: ChangeNameBlockProps) => {
   return (
     <div>
       <p className="pb-4 text-muted-foreground">
-        Please note, after updating your name, you will be required to sign in
+        Please note, after updating your name, you will be required to sign-in
         again to ensure the change propagates
       </p>
       <ChangeNameForm isLoading={loading} onSubmit={onSubmit} />

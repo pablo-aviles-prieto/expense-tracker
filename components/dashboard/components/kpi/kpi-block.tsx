@@ -16,6 +16,8 @@ type Props = {
   dateBlock: DateRange | undefined;
 };
 
+// TODO: Create a helper function that wraps the formatterUS, so it can return
+// a minimum of 2 fraction digits if its not a whole number
 export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
   const { currency } = useCurrency();
 

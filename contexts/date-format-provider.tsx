@@ -10,13 +10,14 @@ import {
 import { useSession } from "next-auth/react";
 import React, { createContext, useEffect, useState } from "react";
 
-type DateFormatType =
+export type DateFormatType =
   (typeof availableDateFormatTypes)[keyof typeof availableDateFormatTypes];
 
 interface DateFormatContextType {
   dateFormat: DateFormatType;
   availableDateFormatTypes: typeof availableDateFormatTypes;
   changeDateFormat: (dateFormat: DateFormatType) => Promise<void>;
+  setDateFormat: React.Dispatch<React.SetStateAction<DateFormatType>>;
 }
 
 export const DateFormatContext = createContext<
@@ -59,7 +60,12 @@ export const DateFormatProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const value = { dateFormat, changeDateFormat, availableDateFormatTypes };
+  const value = {
+    dateFormat,
+    changeDateFormat,
+    setDateFormat,
+    availableDateFormatTypes,
+  };
 
   return (
     <DateFormatContext.Provider value={value}>

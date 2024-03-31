@@ -7,12 +7,14 @@ import { URL_CHANGE_PREFERENCES, availableCurrency } from "@/utils/const";
 import { useSession } from "next-auth/react";
 import React, { createContext, useEffect, useState } from "react";
 
-type CurrencyType = (typeof availableCurrency)[keyof typeof availableCurrency];
+export type CurrencyType =
+  (typeof availableCurrency)[keyof typeof availableCurrency];
 
 interface CurrencyContextType {
   currency: CurrencyType;
   availableCurrency: typeof availableCurrency;
   changeCurrency: (currency: CurrencyType) => Promise<void>;
+  setCurrency: React.Dispatch<React.SetStateAction<CurrencyType>>;
 }
 
 export const CurrencyContext = createContext<CurrencyContextType | undefined>(
@@ -54,7 +56,7 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const value = { currency, changeCurrency, availableCurrency };
+  const value = { currency, changeCurrency, setCurrency, availableCurrency };
 
   return (
     <CurrencyContext.Provider value={value}>
