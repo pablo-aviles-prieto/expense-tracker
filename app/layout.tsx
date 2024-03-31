@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description: "Manage your expenses and incomes easily!",
 };
 
+// TODO: Set a max width to the content of the app?
 export default async function RootLayout({
   children,
 }: {

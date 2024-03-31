@@ -128,7 +128,7 @@ export const Dashboard = ({ session }: Props) => {
             dateBlock={date}
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-7">
           <Card className="relative col-span-4">
             <CardHeader>
               <CardTitle>Selected period overview</CardTitle>
