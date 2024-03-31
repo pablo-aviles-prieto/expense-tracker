@@ -1,3 +1,5 @@
+import type { NavItemWithOptionalChildren } from "@/types";
+
 export const authProviders = {
   google: "google",
 } as const;
@@ -136,3 +138,58 @@ export const themeOptions = [
   { key: "dark", name: "Dark" },
   { key: "system", name: "System" },
 ] as const;
+
+export const navItems: NavItemWithOptionalChildren[] = [
+  {
+    title: "Dashboard",
+    href: "/dashboard",
+    icon: "dashboard",
+    label: "Dashboard",
+  },
+  {
+    title: "Profile",
+    href: "/dashboard/profile",
+    icon: "profile",
+    label: "profile",
+  },
+  {
+    title: "Subscriptions",
+    href: "/dashboard/subscriptions",
+    icon: "subscription",
+    label: "subscription",
+  },
+  {
+    title: "Transactions",
+    href: "/dashboard/transactions",
+    icon: "wallet",
+    label: "transactions",
+    subItems: [
+      {
+        title: "List",
+        href: "/dashboard/transactions/list",
+        icon: "listTransaction",
+        label: "list",
+      },
+      {
+        title: "Add",
+        href: "/dashboard/transactions/add",
+        icon: "addTransaction",
+        label: "add",
+        subItems: [
+          {
+            title: "Multiple",
+            href: "/dashboard/transactions/add/multiple",
+            icon: "multipleTrans",
+            label: "multiple",
+          },
+          {
+            title: "Single",
+            href: "/dashboard/transactions/add/single",
+            icon: "singleTrans",
+            label: "single",
+          },
+        ],
+      },
+    ],
+  },
+];
