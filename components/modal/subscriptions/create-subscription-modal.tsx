@@ -54,8 +54,8 @@ export const CreateSubscriptionModal: React.FC<
     if (parsedRes.updatedUser) {
       update({
         id: toastId,
-        title: "Succesfully created",
-        description: "The subscription has been succesfully created",
+        title: "Successfully created",
+        description: "The subscription has been successfully created",
         variant: "success",
       });
       onClose();

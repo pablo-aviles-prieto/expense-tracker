@@ -65,7 +65,7 @@ export const CellAction: React.FC<CellActionProps> = ({
     }
     if (parsedRes.result && parsedRes.deletedCount) {
       toast({
-        title: "Transactions succesfully deleted",
+        title: "Transactions successfully deleted",
         description: `Deleted ${parsedRes.deletedCount} ${
           parsedRes.deletedCount === 1 ? "transaction" : "transactions"
         }`,

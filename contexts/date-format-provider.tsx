@@ -1,21 +1,23 @@
 "use client";
 
-import { dateFormat } from "@/utils/const";
-import React, { createContext, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { useFetch } from "@/hooks/use-fetch";
+import type { CustomSessionI, UpdateUserPreferencesResponse } from "@/types";
+import {
+  URL_CHANGE_PREFERENCES,
+  availableDateFormatTypes,
+} from "@/utils/const";
+import { useSession } from "next-auth/react";
+import React, { createContext, useEffect, useState } from "react";
 
-const availableDateFormatTypes = {
-  EU: dateFormat.EU,
-  US: dateFormat.US,
-  ISO: dateFormat.ISO,
-} as const;
-
-type DateFormatType =
+export type DateFormatType =
   (typeof availableDateFormatTypes)[keyof typeof availableDateFormatTypes];
 
 interface DateFormatContextType {
   dateFormat: DateFormatType;
   availableDateFormatTypes: typeof availableDateFormatTypes;
-  setDateFormat: (dateFormat: DateFormatType) => void;
+  changeDateFormat: (dateFormat: DateFormatType) => Promise<void>;
+  setDateFormat: React.Dispatch<React.SetStateAction<DateFormatType>>;
 }
 
 export const DateFormatContext = createContext<
@@ -25,12 +27,45 @@ export const DateFormatContext = createContext<
 export const DateFormatProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // TODO: Retrieve it from user details or localStorage
+  // retrieving from next-auth session the dateFormat stored on db
+  const { data, update } = useSession();
+  const session = data as CustomSessionI;
   const [dateFormat, setDateFormat] = useState<DateFormatType>(
-    availableDateFormatTypes.EU,
+    (session?.user?.dateFormat as DateFormatType) ??
+      availableDateFormatTypes.EU,
   );
+  const { fetchPetition } = useFetch();
+  const { toast } = useToast();
 
-  const value = { dateFormat, setDateFormat, availableDateFormatTypes };
+  useEffect(() => {
+    if (session?.user?.dateFormat) {
+      setDateFormat(session.user.dateFormat as DateFormatType);
+    }
+  }, [session]);
+
+  const changeDateFormat = async (newDateFormat: DateFormatType) => {
+    setDateFormat(newDateFormat);
+    await update({ dateFormat: newDateFormat });
+    const response = await fetchPetition<UpdateUserPreferencesResponse>({
+      method: "POST",
+      url: URL_CHANGE_PREFERENCES,
+      body: { dateFormat: newDateFormat },
+    });
+    if (response.error) {
+      toast({
+        title: "Error updating preferences",
+        description: response.error,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const value = {
+    dateFormat,
+    changeDateFormat,
+    setDateFormat,
+    availableDateFormatTypes,
+  };
 
   return (
     <DateFormatContext.Provider value={value}>

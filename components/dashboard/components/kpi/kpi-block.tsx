@@ -16,6 +16,8 @@ type Props = {
   dateBlock: DateRange | undefined;
 };
 
+// TODO: Create a helper function that wraps the formatterUS, so it can return
+// a minimum of 2 fraction digits if its not a whole number
 export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
   const { currency } = useCurrency();
 
@@ -41,7 +43,8 @@ export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
     dateBlock?.from && dateBlock?.to
       ? differenceInCalendarDays(dateBlock.to, dateBlock.from)
       : 0;
-  const moneyPerDay = (netSavings >= 0 ? incomes : expenses) / daysBetweenDates;
+  const moneyPerDay = netSavings / daysBetweenDates;
+
   return (
     <>
       <Card>

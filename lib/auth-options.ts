@@ -13,6 +13,7 @@ import { JWT, encode } from "next-auth/jwt";
 import { CustomSessionI, TransactionsDateObj } from "@/types";
 import { compare } from "bcryptjs";
 import { isAuthProvider } from "@/utils/is-auth-provider";
+import { availableCurrency, availableDateFormatTypes } from "@/utils/const";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
@@ -33,10 +34,8 @@ export const authOptions = {
         );
         if (!passwordMatches) return null;
         const returnedUser = {
+          ...user,
           id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-          image: user.image,
         };
         return returnedUser;
       },
@@ -80,13 +79,24 @@ export const authOptions = {
         token.email = user.email;
         token.image = user.image;
         token.transactionsDate = user.transactionsDate;
+        token.currency = user.currency;
+        token.dateFormat = user.dateFormat;
+        token.theme = user.theme;
       }
       if (trigger === "update" && session?.transDates) {
         token.transactionsDate = session.transDates;
       }
+      if (trigger === "update" && session?.currency) {
+        token.currency = session.currency;
+      }
+      if (trigger === "update" && session?.dateFormat) {
+        token.dateFormat = session.dateFormat;
+      }
+      if (trigger === "update" && session?.theme) {
+        token.theme = session.theme;
+      }
       return token;
     },
-    // eslint-disable-next-line @typescript-eslint/require-await
     async session({ session, token }: { session: DefaultSession; token: JWT }) {
       // This callback is called whenever the session data is accessed.
       // You can include additional user information from the `token` object.
@@ -105,6 +115,9 @@ export const authOptions = {
             email: token.email,
             image: token.image as string,
             transactionsDate: token.transactionsDate as TransactionsDateObj,
+            currency: token.currency as string,
+            dateFormat: token.dateFormat as string,
+            theme: token?.theme as string | undefined,
           },
         };
         return customSession;
@@ -140,8 +153,11 @@ export const authOptions = {
           const { id, ...dataUser } = user;
           const newUser = {
             ...dataUser,
+            currency: availableCurrency.EUR,
+            dateFormat: availableDateFormatTypes.EU,
             signupDate: new Date().toISOString(),
             categories: commonCategories,
+            theme: "system",
           };
           const createdUser = await db.collection("users").insertOne(newUser);
 

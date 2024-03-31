@@ -60,7 +60,7 @@ export const CellAction: React.FC<CellActionProps> = ({
     }
     if (parsedRes.result) {
       toast({
-        title: "Subscriptions succesfully deleted",
+        title: "Subscriptions successfully deleted",
         description: `Deleted ${subscriptionIds.length} ${
           subscriptionIds.length === 1 ? "subscription" : "subscriptions"
         }`,

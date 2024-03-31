@@ -30,7 +30,7 @@ export const errorMessages = {
   updateSubscription: "There was an error updating the subscription",
   createTransaction: "There was an error creating the transaction",
   retrieveSubscriptions: "There was an error retrieving the subscriptions",
-  incorrectData: "There was an error with the data retrieved. Try again later",
+  incorrectData: "There was an error with the data provided. Try again later",
   recoveryPassword:
     "There was an error sending the recovery password email. Try again later",
   resetTokenExpired: "The reset password link has expired",
@@ -38,6 +38,10 @@ export const errorMessages = {
   resetPassword:
     "There was an error while resetting the password. Try again later",
   registerEmail: "There was an error registering the email. Try again later",
+  changeEmail: "There was an error changing the email. Try again later",
+  changeName: "There was an error changing the name. Try again later",
+  updatingPreferences:
+    "There was an error updating the preferences on database. Try again later",
 } as const;
 
 export const dateFormat = {
@@ -90,6 +94,9 @@ export const URL_RECOVER_PASSWORD = `/api/auth/recover-password`;
 export const URL_RESET_PASSWORD = `/api/auth/reset-password`;
 export const URL_REGISTER_EMAIL = `/api/user/register-email`;
 export const URL_REGISTER_USER = `/api/user/register`;
+export const URL_CHANGE_EMAIL = `/api/user/change-email`;
+export const URL_CHANGE_NAME = `/api/user/change-name`;
+export const URL_CHANGE_PREFERENCES = `/api/user/change-preferences`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;
@@ -109,3 +116,23 @@ export const FIELDS_FROM_CSV = ["Date", "Concept", "Amount", "Notes"];
 export const formatterUS = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
+
+export const availableCurrency = {
+  EUR: "€",
+  USD: "$",
+  GBP: "£",
+  JPY: "¥",
+  INR: "₹",
+} as const;
+
+export const availableDateFormatTypes = {
+  EU: dateFormat.EU,
+  US: dateFormat.US,
+  ISO: dateFormat.ISO,
+} as const;
+
+export const themeOptions = [
+  { key: "light", name: "Light" },
+  { key: "dark", name: "Dark" },
+  { key: "system", name: "System" },
+] as const;

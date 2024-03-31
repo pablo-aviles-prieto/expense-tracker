@@ -3,7 +3,9 @@ import { authOptions } from "@/lib/auth-options";
 import { type NextAuthOptions, getServerSession } from "next-auth";
 
 export default async function page() {
-  const session = await getServerSession(authOptions as NextAuthOptions);
+  const session = await getServerSession(
+    authOptions as unknown as NextAuthOptions,
+  );
 
   return <Dashboard session={session} />;
 }

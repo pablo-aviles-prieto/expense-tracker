@@ -101,7 +101,7 @@ export default async function ListTransactions({ searchParams }: ParamsProps) {
   const parsedCategories = categories?.split(",");
 
   const session = (await getServerSession(
-    authOptions as NextAuthOptions,
+    authOptions as unknown as NextAuthOptions,
   )) as CustomSessionI;
 
   const userCategories = await getUserCategories(session?.user?.id ?? "");

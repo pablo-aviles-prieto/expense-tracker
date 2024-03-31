@@ -58,8 +58,8 @@ export const UpdateTransactionsModal: React.FC<
     if (parsedRes.data) {
       update({
         id: toastId,
-        title: "Succesfully updated",
-        description: "The transaction has been succesfully updated",
+        title: "Successfully updated",
+        description: "The transaction has been successfully updated",
         variant: "success",
       });
       onClose();

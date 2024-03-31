@@ -14,7 +14,7 @@ import { BreadCrumbTransactions } from "./bread-crumb-transactions";
 
 export default async function AddTransactionsEntryPoint() {
   const session = (await getServerSession(
-    authOptions as NextAuthOptions,
+    authOptions as unknown as NextAuthOptions,
   )) as CustomSessionI;
 
   const userCategories = await getUserCategories(session?.user?.id ?? "");

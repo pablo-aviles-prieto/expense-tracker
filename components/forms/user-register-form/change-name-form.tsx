@@ -13,27 +13,25 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  RegisterMailFormValue,
-  RegisterMailSchema,
-} from "@/schemas/register-mail-schema";
+  ChangeNameFormValue,
+  ChangeNameSchema,
+} from "@/schemas/change-name-schema";
 
 const defaultValues = {
-  email: "",
+  name: "",
 };
 
 interface RegisterEmailFormProps {
-  onSubmit: (data: RegisterMailFormValue) => Promise<void>;
+  onSubmit: (data: ChangeNameFormValue) => Promise<void>;
   isLoading: boolean;
-  buttonContent?: string;
 }
 
-export const RegisterEmailForm = ({
+export const ChangeNameForm = ({
   onSubmit,
   isLoading,
-  buttonContent = "Register account",
 }: RegisterEmailFormProps) => {
-  const form = useForm<RegisterMailFormValue>({
-    resolver: zodResolver(RegisterMailSchema),
+  const form = useForm<ChangeNameFormValue>({
+    resolver: zodResolver(ChangeNameSchema),
     defaultValues,
   });
 
@@ -44,14 +42,14 @@ export const RegisterEmailForm = ({
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
         <FormField
           control={form.control}
-          name="email"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input
-                  type="email"
-                  placeholder="Enter your email..."
+                  type="text"
+                  placeholder="Enter your name..."
                   disabled={isLoading}
                   {...field}
                   onChange={(e) => {
@@ -69,7 +67,7 @@ export const RegisterEmailForm = ({
           className="w-full !mt-4 ml-auto"
           type="submit"
         >
-          {buttonContent}
+          Change name
         </Button>
       </form>
     </Form>
