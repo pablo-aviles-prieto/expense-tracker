@@ -10,8 +10,8 @@ import { getServerSession } from "next-auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next Shadcn",
-  description: "Basic dashboard with Next.js and Shadcn",
+  title: "Expense tracker",
+  description: "Manage your expenses and incomes easily!",
 };
 
 export default async function RootLayout({
