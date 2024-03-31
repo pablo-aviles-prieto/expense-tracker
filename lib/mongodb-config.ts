@@ -1,4 +1,3 @@
-// TODO: Clean this fucking mess
 // This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
 // https://github.com/choutkamartin/next-auth-mongoose/blob/main/lib/mongodb.js
 import { MongoClient, MongoClientOptions } from "mongodb";
