@@ -4,6 +4,8 @@ import { PieChart, Pie, ResponsiveContainer, Sector } from "recharts";
 import type { PieChartData } from "../../types/pie-chart";
 import { useState } from "react";
 import { useCurrency } from "@/hooks/use-currency";
+import { getEllipsed } from "@/utils/const";
+import { formatAmount } from "@/utils/format-amount";
 
 type PieChartBlockProps = {
   data: PieChartData;
@@ -48,9 +50,14 @@ const renderActiveShape = ({
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
-        {payload.name}
-      </text>
+      <foreignObject x={cx - 50} y={cy - 8} width="95" height="40">
+        <div
+          className={`w-full text-sm text-[14px] text-center ${getEllipsed}`}
+          style={{ color: fill.slice(0, -2) }}
+        >
+          {payload.name}
+        </div>
+      </foreignObject>
       <Sector
         cx={cx}
         cy={cy}
@@ -80,7 +87,7 @@ const renderActiveShape = ({
         y={ey}
         textAnchor={textAnchor}
         fill="#727272"
-      >{`${value}${currency}`}</text>
+      >{`${formatAmount(value)}${currency}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -88,7 +95,7 @@ const renderActiveShape = ({
         textAnchor={textAnchor}
         fill="#999"
       >
-        {`(${(percent * 100).toFixed(2)}%)`}
+        {`(${formatAmount(percent * 100)}%)`}
       </text>
     </g>
   );
@@ -114,7 +121,7 @@ export const PieChartBlock = ({ data, pieColor }: PieChartBlockProps) => {
           cx="50%"
           cy="50%"
           innerRadius={50}
-          outerRadius={65}
+          outerRadius={60}
           fill={`${pieColor}80`}
           dataKey="value"
           onMouseEnter={onPieEnter}

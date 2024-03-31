@@ -1,6 +1,5 @@
 import type { TransactionObjBack } from "@/types";
 import { PieChartData } from "../types/pie-chart";
-import { formatterUS } from "@/utils/const";
 
 type Props = {
   transactions: TransactionObjBack[];
