@@ -18,10 +18,6 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^2.3.3",
-    "@dnd-kit/core": "^6.1.0",
-    "@dnd-kit/modifiers": "^7.0.0",
-    "@dnd-kit/sortable": "^8.0.0",
-    "@dnd-kit/utilities": "^3.2.2",
     "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -47,7 +43,6 @@
     "@types/node": "20.5.7",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
-    "@uploadthing/react": "^5.7.0",
     "autoprefixer": "10.4.15",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
@@ -72,19 +67,15 @@
     "react-filepond": "^7.1.2",
     "react-hook-form": "^7.47.0",
     "recharts": "^2.9.2",
-    "sharp": "^0.33.2",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
-    "uploadthing": "^5.7.4",
-    "uuid": "^9.0.1",
     "zod": "^3.22.4",
     "zustand": "^4.4.6"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "prettier": "3.0.3"
   }

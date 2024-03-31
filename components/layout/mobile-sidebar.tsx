@@ -1,13 +1,13 @@
 "use client";
 import { DashboardNav } from "@/components/layout/dashboard-nav";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { navItems } from "@/constants/data";
+import { navItems } from "@/utils/const";
 import { MenuIcon } from "lucide-react";
 import { useState } from "react";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function MobileSidebar({ className }: SidebarProps) {
+export function MobileSidebar({}: SidebarProps) {
   const [open, setOpen] = useState(false);
   return (
     <>
