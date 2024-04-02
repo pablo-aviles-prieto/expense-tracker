@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/images/favicon.ico" }],
 };
 
-// TODO: Set a max width to the content of the app?
+// TODO: Set a max width to the content of the app?!
 export default async function RootLayout({
   children,
 }: {
