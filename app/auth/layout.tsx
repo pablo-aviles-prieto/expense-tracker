@@ -6,7 +6,9 @@ export const metadata: Metadata = {
   description: "Signin or signup into expense tracker",
 };
 
-// TODO: Add random quotes and images of stock on the left side
+// TODO: Get some quotes
+// TODO: Optimize images to webp
+// TODO: Randomize the images, and also the quotes
 // TODO: Add the logo in top of the login/signup panels
 export default async function AuthLayout({
   children,
