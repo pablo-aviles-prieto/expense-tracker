@@ -8,7 +8,7 @@ import Image from "next/image";
 export default function Header() {
   return (
     <div className="fixed top-0 left-0 right-0 z-20 border-b supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur">
-      <nav className="flex items-center justify-between px-4 h-14">
+      <nav className="flex items-center justify-between px-4 mx-auto h-14 max-w-screen-2xl">
         <div className="hidden lg:block">
           <Link href={"/dashboard"}>
             <Image
