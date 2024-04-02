@@ -117,6 +117,7 @@ export const FIELDS_FROM_CSV = ["Date", "Concept", "Amount", "Notes"];
 
 export const formatterUS = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
 });
 
 export const availableCurrency = {

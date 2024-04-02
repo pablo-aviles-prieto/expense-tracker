@@ -1,7 +1,7 @@
 "use client";
 
 import { useCurrency } from "@/hooks/use-currency";
-import { formatterUS } from "@/utils/const";
+import { formatAmount } from "@/utils/format-amount";
 import { parseAmount } from "@/utils/parse-amount";
 
 type AmountCellProps = {
@@ -14,7 +14,7 @@ export const AmountCell = ({ amount, textLeft = false }: AmountCellProps) => {
   const parsedAmount = parseAmount(String(amount));
   return (
     <p className={`pr-1 ${textLeft ? "text-left" : "text-right"} min-w-[75px]`}>
-      {formatterUS.format(parsedAmount)} {currency}
+      {formatAmount(parsedAmount)} {currency}
     </p>
   );
 };

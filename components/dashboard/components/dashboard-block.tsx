@@ -109,9 +109,6 @@ export const Dashboard = ({ session }: Props) => {
     }
   };
 
-  // TODO: The transaction pie chart should have more width.
-  // 1 solution should be to change the breakpoint to 1280px instead of 1024
-  // TODO: Try to add a ellipsis to the category inside the pie
   return (
     <ScrollArea className="h-full">
       <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
@@ -128,7 +125,7 @@ export const Dashboard = ({ session }: Props) => {
             dateBlock={date}
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-7">
           <Card className="relative col-span-4">
             <CardHeader>
               <CardTitle>Selected period overview</CardTitle>

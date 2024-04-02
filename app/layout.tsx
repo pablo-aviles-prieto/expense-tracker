@@ -11,6 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Expense tracker",
   description: "Manage your expenses and incomes easily!",
+  icons: [{ rel: "icon", url: "/images/favicon.ico" }],
 };
 
 export default async function RootLayout({

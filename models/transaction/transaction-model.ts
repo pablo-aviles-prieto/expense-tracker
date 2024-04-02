@@ -1,11 +1,6 @@
 import { Schema, model, Document, ObjectId, Model } from "mongoose";
 import { modelExists } from "../../utils/check-model-exists"; // imported like this to make the seeder work
 
-/*
- ** https://mongoosejs.com/docs/2.7.x/docs/indexes.html
- ** TODO: userId and date should be indexed
- */
-
 export interface ITransaction extends Document {
   _id: ObjectId;
   amount: number;

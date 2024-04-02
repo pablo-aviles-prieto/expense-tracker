@@ -5,10 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TransactionObjBack } from "@/types";
 import { calculateTotalTypeTrans } from "../../utils/calculate-total-type-trans";
-import { formatterUS, getEllipsed } from "@/utils/const";
+import { getEllipsed } from "@/utils/const";
 import { differenceInCalendarDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { useCurrency } from "@/hooks/use-currency";
+import { formatAmount } from "@/utils/format-amount";
 
 type Props = {
   filteredData: TransactionObjBack[] | undefined;
@@ -16,8 +17,6 @@ type Props = {
   dateBlock: DateRange | undefined;
 };
 
-// TODO: Create a helper function that wraps the formatterUS, so it can return
-// a minimum of 2 fraction digits if its not a whole number
 export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
   const { currency } = useCurrency();
 
@@ -63,13 +62,11 @@ export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
           ) : filteredData && filteredData.length > 0 ? (
             <>
               <div className="text-2xl font-bold text-green-600">
-                +{formatterUS.format(incomes)}
+                +{formatAmount(incomes)}
                 {currency}
               </div>
               <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
-                <span className="font-bold">
-                  {formatterUS.format(incomeTransactions.length)}{" "}
-                </span>
+                <span className="font-bold">{incomeTransactions.length} </span>
                 income transactions
               </p>
             </>
@@ -96,13 +93,11 @@ export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
           ) : filteredData && filteredData.length > 0 ? (
             <>
               <div className="text-2xl font-bold text-red-700">
-                {formatterUS.format(expenses)}
+                {formatAmount(expenses)}
                 {currency}
               </div>
               <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
-                <span className="font-bold">
-                  {formatterUS.format(expenseTransactions.length)}{" "}
-                </span>
+                <span className="font-bold">{expenseTransactions.length} </span>
                 expense transactions
               </p>
             </>
@@ -134,13 +129,13 @@ export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
                 }`}
               >
                 {netSavingSymbol}
-                {formatterUS.format(netSavings)}
+                {formatAmount(netSavings)}
                 {currency}
               </div>
               <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
                 <span className="font-bold">
                   {netSavingSymbol}
-                  {formatterUS.format(moneyPerDay)}{" "}
+                  {formatAmount(moneyPerDay)}{" "}
                 </span>
                 per day (in {daysBetweenDates} days)
               </p>
@@ -168,15 +163,15 @@ export const KpiBlock = ({ filteredData, isLoading, dateBlock }: Props) => {
           ) : filteredData && filteredData.length > 0 ? (
             <>
               <div className="text-2xl font-bold">
-                {formatterUS.format(filteredData.length)}
+                {formatAmount(filteredData.length)}
               </div>
               <p className={`text-xs text-muted-foreground ${getEllipsed}`}>
                 <span className="font-bold">
                   {incomes >= Math.abs(expenses)
-                    ? formatterUS.format(
+                    ? formatAmount(
                         (incomeTransactions.length * 100) / filteredData.length,
                       )
-                    : formatterUS.format(
+                    : formatAmount(
                         (expenseTransactions.length * 100) /
                           filteredData.length,
                       )}
