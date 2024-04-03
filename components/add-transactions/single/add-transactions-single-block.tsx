@@ -70,8 +70,8 @@ export const AddTransactionsSingleBlock = ({
           onCancel={() => switchTab("multiple")}
           submitHandler={onSubmit}
           userCategories={userCategories}
-          cancelButtonContent="Create multiple transactions"
-          submitButtonContent="Create transaction"
+          cancelButtonContent="Create multiple"
+          submitButtonContent="Create single"
         />
       </ScrollArea>
     </div>

@@ -137,7 +137,7 @@ export const Dashboard = ({ session }: Props) => {
               />
             </CardContent>
           </Card>
-          <Card className="relative col-span-4 lg:col-span-3">
+          <Card className="relative col-span-4 xl:col-span-3">
             <CardHeader>
               <CardTitle>Organized by categories</CardTitle>
               {filteredData && filteredData.length > 0 && (
