@@ -42,6 +42,7 @@ import {
   CalendarX,
   CalendarCheck,
   LogOut,
+  Mail,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -224,4 +225,5 @@ export const Icons = {
   autoRenew: CalendarCheck,
   autoRenewOff: CalendarX,
   logout: LogOut,
+  mail: Mail,
 };
