@@ -22,6 +22,7 @@ import {
   ContactMailSchema,
 } from "@/schemas/contact-mail-schema";
 import { ClockLoader } from "@/components/icons/clock-loader";
+import { Textarea } from "@/components/ui/textarea";
 
 const defaultValues = {
   name: "",
@@ -45,7 +46,7 @@ export const ContactMailForm = ({ onSubmit, isSendingMail }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full !space-y-2 px-1"
+        className="w-full px-1 space-y-2"
       >
         <FormField
           control={form.control}
@@ -108,8 +109,7 @@ export const ContactMailForm = ({ onSubmit, isSendingMail }: Props) => {
             <FormItem>
               <FormLabel>Message</FormLabel>
               <FormControl>
-                <Input
-                  type="text"
+                <Textarea
                   placeholder="Enter the message..."
                   disabled={isSendingMail}
                   {...field}
@@ -119,7 +119,7 @@ export const ContactMailForm = ({ onSubmit, isSendingMail }: Props) => {
             </FormItem>
           )}
         />
-        <Button disabled={isSendingMail} className="w-full !mt-0" type="submit">
+        <Button disabled={isSendingMail} className="w-full !mt-8" type="submit">
           {isSendingMail && <ClockLoader className="mr-2" />}
           {isSendingMail ? "Sending" : "Send"} mail
         </Button>

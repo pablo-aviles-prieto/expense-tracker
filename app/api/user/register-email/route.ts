@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest) => {
         message:
           "If the email is not already registered, you will receive an email with the instructions",
       },
-      { status: 201 },
+      { status: 20 },
     );
   } catch (err) {
     console.log("ERROR REGISTERING EMAIL", err);

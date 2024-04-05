@@ -5,9 +5,7 @@ import { Modal } from "@/components/ui/modal";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFetch } from "@/hooks/use-fetch";
 import { useToast } from "@/components/ui/use-toast";
-import { ForgotPasswordForm } from "@/components/forms/recover-password-form/forgot-password-form";
-import { ForgotPasswordFormValue } from "@/schemas/forgot-password-schema";
-import { URL_RECOVER_PASSWORD } from "@/utils/const";
+import { URL_CONTACT_MAIL } from "@/utils/const";
 import { ContactMailFormValue } from "@/schemas/contact-mail-schema";
 import { ContactMailForm } from "@/components/forms/contact-mail-form/contact-mail-form";
 
@@ -36,28 +34,35 @@ export const ContactMailModal: React.FC<ContactMailModalProps> = ({
   }, []);
 
   const onSubmit = async (data: ContactMailFormValue) => {
+    const { update, id: toastId } = toast({
+      title: "Sending the email...",
+      description: "Please wait while the email is being sent",
+      variant: "default",
+    });
     setIsSendingMail(true);
-    console.log("data", data);
-    // const response = await fetchPetition<ContactMailResponse>({
-    //   method: "POST",
-    //   url: URL_RECOVER_PASSWORD,
-    //   body: { email: data.email },
-    // });
 
-    // if (response.error) {
-    //   toast({
-    //     title: "Error sending the reset password email",
-    //     description: response.error,
-    //     variant: "destructive",
-    //   });
-    // } else if (response.message) {
-    //   toast({
-    //     title: "Email sent",
-    //     description: response.message,
-    //     variant: "success",
-    //   });
-    // }
-    onClose();
+    const response = await fetchPetition<ContactMailResponse>({
+      method: "POST",
+      url: URL_CONTACT_MAIL,
+      body: { contact: data },
+    });
+
+    if (response.error) {
+      update({
+        id: toastId,
+        title: "Error sending the email",
+        description: response.error,
+        variant: "destructive",
+      });
+    } else if (response.message) {
+      update({
+        id: toastId,
+        title: "Email sent succesfully",
+        description: response.message,
+        variant: "success",
+      });
+      onClose();
+    }
     setIsSendingMail(false);
   };
 

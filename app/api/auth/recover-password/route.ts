@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest) => {
         message:
           "If the email is registered, you will receive an email with the instructions",
       },
-      { status: 201 },
+      { status: 200 },
     );
   } catch (err) {
     console.log("ERROR SENDING THE RECOVERY PASSWORD EMAIL", err);

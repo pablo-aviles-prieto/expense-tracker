@@ -44,6 +44,7 @@ export const errorMessages = {
   changeName: "There was an error changing the name. Try again later",
   updatingPreferences:
     "There was an error updating the preferences on database. Try again later",
+  contactEmail: "There was an error sending the contact email. Try again later",
 } as const;
 
 export const dateFormat = {
@@ -99,6 +100,7 @@ export const URL_REGISTER_USER = `/api/user/register`;
 export const URL_CHANGE_EMAIL = `/api/user/change-email`;
 export const URL_CHANGE_NAME = `/api/user/change-name`;
 export const URL_CHANGE_PREFERENCES = `/api/user/change-preferences`;
+export const URL_CONTACT_MAIL = `/api/contact-form`;
 
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_LIMIT = 20;
