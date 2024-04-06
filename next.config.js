@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    domains: ["utfs.io"],
-  },
   env: {
     GENERIC_ID: "65f5e3a19468e44338cb336a",
     MARKET_ID: "65103a62a852a61a87d9eb09",
