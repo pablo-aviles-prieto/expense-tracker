@@ -5,7 +5,7 @@ import quotes from "../../public/data/quotes.json";
 import authImages from "../../public/data/auth-images.json";
 
 export const metadata: Metadata = {
-  title: "Authentication",
+  title: "Expense Tracker - Authentication",
   description: "Signin or signup into expense tracker",
 };
 
@@ -28,14 +28,14 @@ export default async function AuthLayout({
             backgroundPosition: "center",
           }}
         />
-        <div className="relative z-20 flex items-center text-lg font-medium gap-x-2 p-0.5 bg-black bg-opacity-20 rounded-lg w-[200px]">
+        <div className="relative z-20 flex items-center text-lg font-medium gap-x-2 p-0.5 bg-black bg-opacity-20 rounded-lg w-[203px]">
           <Image
             src="/images/logo.webp"
             alt="Expense tracker logo"
             width={45}
             height={45}
           />
-          <span className="">Expense tracker</span>
+          <span className="">Expense Tracker</span>
         </div>
         <div className="relative z-20 mt-auto">
           <blockquote className="p-2 space-y-2 bg-black bg-opacity-50 rounded-lg">

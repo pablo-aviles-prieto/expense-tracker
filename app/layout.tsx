@@ -8,7 +8,7 @@ import { getServerSession } from "next-auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// TODO: Add some metada data
+// TODO: Check the metadata title
 // TODO: Add a readme
 // TODO: Check not leaking any key into the client!
 // TODO: Create a sample video
@@ -26,7 +26,6 @@ export const metadata: Metadata = {
     "subscription management",
   ],
   authors: [{ name: "Pablo Avilés Prieto", url: "https://www.pabloaviles.es" }],
-  viewport: "width=device-width, initial-scale=1",
   applicationName: "Expense Tracker",
   icons: [{ rel: "icon", url: "/images/favicon.ico" }],
   openGraph: {
