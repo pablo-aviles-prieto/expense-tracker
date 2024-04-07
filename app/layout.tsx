@@ -8,7 +8,6 @@ import { getServerSession } from "next-auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// TODO: Check the metadata title
 // TODO: Add a readme
 // TODO: Check not leaking any key into the client!
 // TODO: Create a sample video
