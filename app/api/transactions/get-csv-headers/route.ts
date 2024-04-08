@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { errorMessages } from "@/utils/const";
+import { guessCSVDelimiter } from "@/utils/guess-csv-delimiter";
 
 export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
@@ -18,7 +19,8 @@ export const POST = async (req: NextRequest) => {
     const buffer = await csvFile.arrayBuffer();
     const text = new TextDecoder().decode(buffer);
     const headersLine = text.replaceAll("\r", "").split(/\r\n|\n|\r/)[0];
-    const headersArray = headersLine.split(";");
+    const delimeter = guessCSVDelimiter(headersLine);
+    const headersArray = headersLine.split(delimeter);
     const uniqueHeaders = new Set(headersArray);
 
     return NextResponse.json(
