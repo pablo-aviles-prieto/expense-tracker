@@ -108,18 +108,25 @@ export const PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50];
 
 export const DATES_CSV_FORMAT_OPTIONS = [
   "dd-MM-yyyy",
+  "dd-MMM-yyyy",
   "MM-dd-yyyy",
+  "MMM-dd-yyyy",
   "yyyy-MM-dd",
   "dd/MM/yyyy",
+  "dd/MMM/yyyy",
   "MM/dd/yyyy",
+  "MMM/dd/yyyy",
   "yyyy/MM/dd",
 ];
 
 export const FIELDS_FROM_CSV = ["Date", "Concept", "Amount", "Notes"];
 
-export const formatterUS = new Intl.NumberFormat("en-US", {
+export const formatterUSTwoDecimals = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
   minimumFractionDigits: 2,
+});
+export const formatterUSNoDecimals = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 0,
 });
 
 export const availableCurrency = {

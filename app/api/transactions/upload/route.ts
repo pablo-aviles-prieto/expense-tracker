@@ -4,6 +4,7 @@ import csv from "csv-parser";
 import { FIELDS_FROM_CSV, errorMessages } from "@/utils/const";
 import type { TransactionBulk } from "@/types";
 import { getTransactionsCategories } from "@/utils/get-transactions-categories";
+import { guessCSVDelimiter } from "@/utils/guess-csv-delimiter";
 
 export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
@@ -22,13 +23,17 @@ export const POST = async (req: NextRequest) => {
   const processFile = async (file: File) => {
     const results: TransactionBulk[] = [];
     return new Promise<Partial<TransactionBulk>[]>(async (resolve, reject) => {
+      const fileContent = await file.text();
+      const firstLine = fileContent.split("\n")[0];
+      const guessedDelimiter = guessCSVDelimiter(firstLine);
+
       const csvReadableStream = new Readable();
       csvReadableStream._read = () => {};
       csvReadableStream.push(Buffer.from(await file.arrayBuffer()));
       csvReadableStream.push(null);
 
       csvReadableStream
-        .pipe(csv({ separator: ";" }))
+        .pipe(csv({ separator: guessedDelimiter }))
         .on("data", (data) => {
           // Transform the data based on mappings
           const transformedData = FIELDS_FROM_CSV.reduce((acc, field) => {

@@ -119,12 +119,27 @@ export const CSVColumnsDropdown = ({
     }
   };
 
+  // TODO: Indicate to the motherfuckers that the CSV has to be clean (in case that the bank
+  // provided a xlsx and then converting it to csv)
   return (
     <Form {...form}>
       <form
         onError={(err) => console.log("error", err)}
         onSubmit={form.handleSubmit(onSubmit)}
       >
+        <FormDescription>
+          - Please ensure your CSV file starts directly with the column headers,
+          followed by the data rows.
+          <span className="font-bold">
+            {" "}
+            Remove any introductory text, descriptions, or metadata
+          </span>{" "}
+          that banks often include at the top of the file. This step is crucial
+          for a{" "}
+          <span className="font-bold">
+            successful upload and processing of your file.
+          </span>
+        </FormDescription>
         <FormDescription>
           - Please <span className="font-bold">identify the columns</span> in
           your CSV for{" "}
