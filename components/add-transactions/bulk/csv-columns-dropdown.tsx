@@ -128,6 +128,19 @@ export const CSVColumnsDropdown = ({
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormDescription>
+          - Please ensure your CSV file starts directly with the column headers,
+          followed by the data rows.
+          <span className="font-bold">
+            {" "}
+            Remove any introductory text, descriptions, or metadata
+          </span>{" "}
+          that banks often include at the top of the file. This step is crucial
+          for a{" "}
+          <span className="font-bold">
+            successful upload and processing of your file.
+          </span>
+        </FormDescription>
+        <FormDescription>
           - Please <span className="font-bold">identify the columns</span> in
           your CSV for{" "}
           <span className="font-bold">Date, Description/Concept, Amount</span>,

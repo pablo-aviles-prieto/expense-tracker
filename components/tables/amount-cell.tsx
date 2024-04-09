@@ -13,7 +13,7 @@ export const AmountCell = ({ amount, textLeft = false }: AmountCellProps) => {
   const { currency } = useCurrency();
   const parsedAmount = parseAmount(String(amount));
   return (
-    <p className={`pr-1 ${textLeft ? "text-left" : "text-right"} min-w-[75px]`}>
+    <p className={`pr-1 ${textLeft ? "text-left" : "text-right"} min-w-[95px]`}>
       {formatAmount(parsedAmount)} {currency}
     </p>
   );

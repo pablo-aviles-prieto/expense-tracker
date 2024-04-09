@@ -1,7 +1,9 @@
 "use client";
 
-import { formatterUS } from "./const";
+import { formatterUSTwoDecimals, formatterUSNoDecimals } from "./const";
 
 export const formatAmount = (price: number) => {
-  return price % 1 === 0 ? price : formatterUS.format(price);
+  return price % 1 === 0
+    ? formatterUSNoDecimals.format(price)
+    : formatterUSTwoDecimals.format(price);
 };
