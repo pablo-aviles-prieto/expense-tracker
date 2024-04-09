@@ -119,8 +119,6 @@ export const CSVColumnsDropdown = ({
     }
   };
 
-  // TODO: Indicate to the motherfuckers that the CSV has to be clean (in case that the bank
-  // provided a xlsx and then converting it to csv)
   return (
     <Form {...form}>
       <form

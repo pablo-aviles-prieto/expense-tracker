@@ -10,7 +10,7 @@ export const AuthBlock = () => {
 
   return (
     <div className="w-full mx-auto">
-      <div className="lg:hidden mb-5 flex items-center text-lg font-medium gap-x-2 p-0.5 justify-center">
+      <div className="lg:hidden mt-20 mb-5 flex items-center text-lg font-medium gap-x-2 p-0.5 justify-center">
         <Image
           src="/images/logo.webp"
           alt="Expense tracker logo"
