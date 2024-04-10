@@ -322,15 +322,14 @@ export const TransactionsTable = <TData,>({
 
   return (
     <>
-      <ScrollArea className="pb-3 overflow-y-hidden">
+      <div className="pb-1 overflow-x-auto">
         <FilterInputs
           date={date}
           userCategories={userCategories}
           createQueryString={createQueryString}
           onSetDate={onSetDate}
         />
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
+      </div>
       <ScrollArea className="rounded-md border h-[calc(80vh-240px)]">
         <Table className="relative">
           <TableHeader>

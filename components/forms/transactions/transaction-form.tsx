@@ -133,7 +133,6 @@ export const TransactionForm = ({
                         )
                       }
                       defaultMonth={parsedDateValue}
-                      initialFocus
                     />
                   </PopoverContent>
                 </Popover>

@@ -170,7 +170,6 @@ export const SubscriptionForm = ({
                         )
                       }
                       defaultMonth={parsedDateValue}
-                      initialFocus
                     />
                   </PopoverContent>
                 </Popover>

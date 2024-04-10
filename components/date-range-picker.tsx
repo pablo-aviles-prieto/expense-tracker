@@ -48,7 +48,6 @@ export function CalendarDateRangePicker({ date, setDate, className }: Props) {
         <PopoverContent className="w-auto p-0" align="end">
           <div className="flex flex-col">
             <Calendar
-              initialFocus
               mode="range"
               defaultMonth={date?.from}
               selected={date}

@@ -112,9 +112,9 @@ export const Dashboard = ({ session }: Props) => {
   return (
     <ScrollArea className="h-full">
       <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
-        <div className="flex items-center justify-between space-y-2">
+        <div className="flex flex-col items-center justify-between space-y-2 md:flex-row">
           <UserMessage session={session} />
-          <div className="items-center hidden space-x-2 md:flex">
+          <div className="items-center space-x-2 md:flex">
             <CalendarDateRangePicker date={date} setDate={onSetDate} />
           </div>
         </div>
