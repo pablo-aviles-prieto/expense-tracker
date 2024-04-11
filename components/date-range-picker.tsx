@@ -15,9 +15,15 @@ import { DateRange } from "react-day-picker";
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   date: DateRange | undefined;
   setDate: (e: DateRange | undefined) => void;
+  viewport?: string;
 }
 
-export function CalendarDateRangePicker({ date, setDate, className }: Props) {
+export function CalendarDateRangePicker({
+  date,
+  setDate,
+  className,
+  viewport,
+}: Props) {
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -48,13 +54,14 @@ export function CalendarDateRangePicker({ date, setDate, className }: Props) {
         <PopoverContent className="w-auto p-0" align="end">
           <div className="flex flex-col">
             <Calendar
+              initialFocus
               mode="range"
               defaultMonth={date?.from}
               selected={date}
               onSelect={(e) => {
                 setDate(e);
               }}
-              numberOfMonths={2}
+              numberOfMonths={viewport === "mobile" ? 1 : 2}
             />
             <Button
               variant="secondary"

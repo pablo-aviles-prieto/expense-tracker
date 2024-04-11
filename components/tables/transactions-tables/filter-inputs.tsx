@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 type FilterInputsProps = {
   date: DateRange | undefined;
   userCategories: Categories[];
+  viewport: string | undefined;
   onSetDate: (dateRange: DateRange | undefined) => Promise<void>;
   createQueryString: (params: Record<string, string | number | null>) => string;
 };
@@ -28,6 +29,7 @@ type FilterInputsProps = {
 export const FilterInputs = ({
   date,
   userCategories,
+  viewport,
   createQueryString,
   onSetDate,
 }: FilterInputsProps) => {
@@ -213,7 +215,11 @@ export const FilterInputs = ({
           options={parsedCategories}
         />
       </div>
-      <CalendarDateRangePicker date={date} setDate={onSetDate} />
+      <CalendarDateRangePicker
+        viewport={viewport}
+        date={date}
+        setDate={onSetDate}
+      />
     </div>
   );
 };

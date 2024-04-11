@@ -25,6 +25,7 @@ import { useToast } from "../../ui/use-toast";
 
 type Props = {
   session: Session | null;
+  viewport: string | undefined;
 };
 
 type ResponseFilteredData = {
@@ -33,7 +34,7 @@ type ResponseFilteredData = {
   error?: string;
 };
 
-export const Dashboard = ({ session }: Props) => {
+export const Dashboard = ({ session, viewport }: Props) => {
   // Have to add this initial loader cuz the useEffect cause a flicker
   const [initialLoading, setInitialLoading] = useState(true);
   const [date, setDate] = useState<DateRange | undefined>(undefined);
@@ -115,7 +116,11 @@ export const Dashboard = ({ session }: Props) => {
         <div className="flex flex-col items-center justify-between space-y-2 md:flex-row">
           <UserMessage session={session} />
           <div className="items-center space-x-2 md:flex">
-            <CalendarDateRangePicker date={date} setDate={onSetDate} />
+            <CalendarDateRangePicker
+              viewport={viewport}
+              date={date}
+              setDate={onSetDate}
+            />
           </div>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

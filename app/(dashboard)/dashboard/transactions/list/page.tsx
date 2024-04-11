@@ -94,6 +94,7 @@ export default async function ListTransactions({ searchParams }: ParamsProps) {
     filterOperator,
     filterValue,
     categories,
+    viewport,
   } = searchParams;
   const page = Number(pageParam) || DEFAULT_PAGE;
   const pageLimit = Number(pageLimitParam) || DEFAULT_PAGE_LIMIT;
@@ -175,6 +176,7 @@ export default async function ListTransactions({ searchParams }: ParamsProps) {
             pageCount={pageCount}
             userStoredDates={session.user?.transactionsDate}
             userCategories={userCategories}
+            viewport={viewport}
           />
         ) : (
           <ErrorBlock transError={transResult.error} />

@@ -71,6 +71,7 @@ interface DataTableProps<TData> {
   userCategories: Categories[];
   pageSizeOptions?: number[];
   userStoredDates?: TransactionsDateObj | null;
+  viewport: string | undefined;
 }
 
 export const TransactionsTable = <TData,>({
@@ -79,6 +80,7 @@ export const TransactionsTable = <TData,>({
   userCategories,
   userStoredDates = null,
   pageSizeOptions = PAGE_SIZE_OPTIONS,
+  viewport,
 }: DataTableProps<TData>) => {
   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
   const { fetchPetition } = useFetch();
@@ -328,6 +330,7 @@ export const TransactionsTable = <TData,>({
           userCategories={userCategories}
           createQueryString={createQueryString}
           onSetDate={onSetDate}
+          viewport={viewport}
         />
       </div>
       <ScrollArea className="rounded-md border h-[calc(80vh-240px)]">

@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 // TODO: Check the height of the viewport to display only 1 calendar instead of 2
 // TODO: En las tablas con paginación, añadir la paginación en la línea de las rows
+// TODO?: Restablecer le initialFocus en lso calendars ? No deberian crashear
 // TODO: Add a readme
 // TODO: Check not leaking any key into the client!
 // TODO: Create a sample video
