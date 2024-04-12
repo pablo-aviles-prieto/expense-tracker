@@ -121,10 +121,7 @@ export const CSVColumnsDropdown = ({
 
   return (
     <Form {...form}>
-      <form
-        onError={(err) => console.log("error", err)}
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormDescription>
           - Please ensure your CSV file starts directly with the column headers,
           followed by the data rows.

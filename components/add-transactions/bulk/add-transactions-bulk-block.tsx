@@ -32,7 +32,7 @@ export const AddTransactionsBulkBlock = ({
 
   useEffect(() => {
     setUserCategories(userCategories);
-  }, [userCategories]);
+  }, [userCategories, setUserCategories]);
 
   return (
     <>

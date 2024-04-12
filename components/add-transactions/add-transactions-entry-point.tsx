@@ -1,7 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import Link from "next/link";
-import { getEllipsed } from "@/utils/const";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Undo2 } from "lucide-react";
