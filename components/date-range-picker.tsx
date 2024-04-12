@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { DEVICE_TYPE } from "@/types/device";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import * as React from "react";
@@ -61,7 +62,7 @@ export function CalendarDateRangePicker({
               onSelect={(e) => {
                 setDate(e);
               }}
-              numberOfMonths={viewport === "mobile" ? 1 : 2}
+              numberOfMonths={viewport === DEVICE_TYPE.mobile ? 1 : 2}
             />
             <Button
               variant="secondary"

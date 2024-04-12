@@ -60,6 +60,7 @@ import type {
 } from "@/types";
 import { useSession } from "next-auth/react";
 import { FilterInputs } from "./filter-inputs";
+import { DEVICE_TYPE } from "@/types/device";
 
 interface ParsedRow {
   original: TransactionObjBack;
@@ -386,38 +387,40 @@ export const TransactionsTable = <TData,>({
       </ScrollArea>
 
       <div className="flex flex-col items-center justify-end gap-2 py-4 space-x-2 sm:!flex-row">
-        <div className="flex items-center justify-between w-full">
-          <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
-            <div className="flex items-center space-x-2">
-              <p className="text-sm font-medium whitespace-nowrap">
-                Rows per page
-              </p>
-              <Select
-                value={`${table.getState().pagination.pageSize}`}
-                onValueChange={(value) => {
-                  table.setPageSize(Number(value));
-                }}
-              >
-                <SelectTrigger className="h-8 w-[70px]">
-                  <SelectValue
-                    placeholder={table.getState().pagination.pageSize}
-                  />
-                </SelectTrigger>
-                <SelectContent side="top">
-                  {pageSizeOptions.map((pageSize) => (
-                    <SelectItem key={pageSize} value={`${pageSize}`}>
-                      {pageSize}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+        {viewport === DEVICE_TYPE.desktop && (
+          <div className="flex items-center justify-between w-full">
+            <div className="flex-1 text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+            <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
+              <div className="flex items-center space-x-2">
+                <p className="text-sm font-medium whitespace-nowrap">
+                  Rows per page
+                </p>
+                <Select
+                  value={`${table.getState().pagination.pageSize}`}
+                  onValueChange={(value) => {
+                    table.setPageSize(Number(value));
+                  }}
+                >
+                  <SelectTrigger className="h-8 w-[70px]">
+                    <SelectValue
+                      placeholder={table.getState().pagination.pageSize}
+                    />
+                  </SelectTrigger>
+                  <SelectContent side="top">
+                    {pageSizeOptions.map((pageSize) => (
+                      <SelectItem key={pageSize} value={`${pageSize}`}>
+                        {pageSize}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="flex items-center justify-between w-full sm:w-[calc(100%-300px)] gap-2 sm:justify-end">
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
             Page {table.getState().pagination.pageIndex + 1} of{" "}
