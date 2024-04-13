@@ -5,17 +5,12 @@ import { RegisterEmailForm } from "../forms/user-register-form/register-email-fo
 import { useToast } from "../ui/use-toast";
 import { useFetch } from "@/hooks/use-fetch";
 import { RegisterMailFormValue } from "@/schemas/register-mail-schema";
-import { URL_CHANGE_EMAIL } from "@/utils/const";
+import { URL_NEW_EMAIL } from "@/utils/const";
 import { signOut } from "next-auth/react";
+import type { ChangeEmailResponse } from "@/types";
 
 interface ChangeEmailBlockProps {
   userId: string;
-}
-
-interface ChangeEmailResponse {
-  ok: boolean;
-  message?: string;
-  error?: string;
 }
 
 export const ChangeEmailBlock = ({ userId }: ChangeEmailBlockProps) => {
@@ -25,27 +20,27 @@ export const ChangeEmailBlock = ({ userId }: ChangeEmailBlockProps) => {
 
   const onSubmit = async (data: RegisterMailFormValue) => {
     const { update, id: toastId } = toast({
-      title: "Changing email...",
-      description: "Please wait while the email is being changed",
+      title: "Sending email...",
+      description: "Wait while the email is being sent",
       variant: "default",
     });
     setLoading(true);
     const response = await fetchPetition<ChangeEmailResponse>({
-      url: URL_CHANGE_EMAIL,
+      url: URL_NEW_EMAIL,
       method: "POST",
       body: { userId, email: data.email },
     });
     if (response.error) {
       update({
         id: toastId,
-        title: "Error changing the email",
+        title: "Error sending the email",
         description: response.error,
         variant: "destructive",
       });
     } else if (response.message) {
       update({
         id: toastId,
-        title: "Email changed successfully",
+        title: "Email sent successfully",
         description: response.message,
         variant: "success",
       });
@@ -57,9 +52,10 @@ export const ChangeEmailBlock = ({ userId }: ChangeEmailBlockProps) => {
   return (
     <div>
       <p className="pb-4 text-muted-foreground">
-        Please note, after updating your email address, you will be required to
-        sign-in again using the new email address to ensure the security and
-        integrity of your account
+        To update your email, you&apos;ll receive a verification link at the new
+        address. Clicking this link will confirm the change and associate the
+        new email with your account. You will then need to log in again using
+        the new email.
       </p>
       <RegisterEmailForm
         isLoading={loading}
