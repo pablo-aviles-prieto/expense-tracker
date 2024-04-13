@@ -40,6 +40,14 @@ export type DecodedRegisterJWT = {
   jti: string;
 };
 
+export type DecodedChangeEmailJWT = {
+  email: string;
+  userId: string;
+  iat: number;
+  exp: number;
+  jti: string;
+};
+
 /**
  * Updates the transactionsDate for a user.
  *
@@ -275,6 +283,48 @@ export const verifyRegisterToken = async (token: string) => {
     // Check if the token has expired
     if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
       throw new Error(errorMessages.registerTokenExpired);
+    }
+
+    return decodedToken;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const generateChangeMailToken = async ({
+  email,
+  userId,
+}: {
+  email: string;
+  userId: string;
+}) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT secret key is not defined");
+  }
+
+  return encode({
+    token: { email, userId },
+    secret,
+    maxAge: 3600,
+  });
+};
+
+export const verifyChangeMailToken = async (token: string) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT secret key is not defined");
+  }
+
+  try {
+    const decodedToken = (await decode({
+      token,
+      secret,
+    })) as DecodedChangeEmailJWT;
+
+    // Check if the token has expired
+    if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
+      throw new Error(errorMessages.changeEmailTokenExpired);
     }
 
     return decodedToken;

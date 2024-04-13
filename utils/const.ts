@@ -37,10 +37,13 @@ export const errorMessages = {
     "There was an error sending the recovery password email. Try again later",
   resetTokenExpired: "The reset password link has expired",
   registerTokenExpired: "The register link has expired",
+  changeEmailTokenExpired: "The change email link has expired",
   resetPassword:
     "There was an error while resetting the password. Try again later",
   registerEmail: "There was an error registering the email. Try again later",
   changeEmail: "There was an error changing the email. Try again later",
+  sendChangeEmail:
+    "There was an error sending the the email to change it. Try again later",
   changeName: "There was an error changing the name. Try again later",
   updatingPreferences:
     "There was an error updating the preferences on database. Try again later",
@@ -98,6 +101,7 @@ export const URL_RESET_PASSWORD = `/api/auth/reset-password`;
 export const URL_REGISTER_EMAIL = `/api/user/register-email`;
 export const URL_REGISTER_USER = `/api/user/register`;
 export const URL_CHANGE_EMAIL = `/api/user/change-email`;
+export const URL_NEW_EMAIL = `/api/user/new-email`;
 export const URL_CHANGE_NAME = `/api/user/change-name`;
 export const URL_CHANGE_PREFERENCES = `/api/user/change-preferences`;
 export const URL_CONTACT_MAIL = `/api/contact-form`;

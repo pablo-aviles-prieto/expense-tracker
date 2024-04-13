@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 // TODO: modify the change email logic => /api/user/change-email => the user will provide a mail to recieve a mail
 // and in the mail, pass a token and a route, so the user will access that route, and calling /api/user/change-email
 // so we check the token, and if its correct, it makes the email change and logout the user (just in case) and redirect him
-// to log in again to the /auth route
+// to log in again to the /auth route!
 
 // TODO: Add a readme
 // TODO: Check not leaking any key into the client!

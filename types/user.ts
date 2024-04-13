@@ -39,3 +39,9 @@ export interface UpdateUserPreferencesResponse {
   error?: string;
   message?: string;
 }
+
+export interface ChangeEmailResponse {
+  ok: boolean;
+  message?: string;
+  error?: string;
+}
