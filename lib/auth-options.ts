@@ -17,6 +17,7 @@ import { availableCurrency, availableDateFormatTypes } from "@/utils/const";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
+  site: process.env.NEXTAUTH_URL,
   providers: [
     CredentialsProvider({
       id: "user-pw",
