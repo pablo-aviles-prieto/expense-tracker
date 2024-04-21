@@ -8,8 +8,6 @@ import { getServerSession } from "next-auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// TODO: Create a sample video
-
 export const metadata: Metadata = {
   title: "Expense Tracker - Simplify Your Financial Management",
   description:
