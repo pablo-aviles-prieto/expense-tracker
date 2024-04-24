@@ -101,7 +101,7 @@ export const AddTransactionsTable = <TData, TValue>({
       toast({
         variant: "success",
         title: "Transactions uploaded correctly!",
-        description: "There was a problem with your request.",
+        description: "The transactions has been uploaded!",
       });
       router.refresh();
       router.push(`/dashboard/transactions/list`);
