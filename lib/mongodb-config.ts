@@ -13,6 +13,7 @@ const globalWithMongo = global as typeof globalThis & {
 };
 
 if (!uri) {
+  console.log("process.env", process.env);
   throw new Error("Please add your Mongo URI to .env.local");
 }
 
