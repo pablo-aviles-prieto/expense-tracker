@@ -1,69 +1,70 @@
 release:
-  title-prefix: 'v'
-  initial-version: '0.0.1'
-  tag-prefix: 'v'
+  title-prefix: "v"
+  initial-version: "0.0.1"
+  tag-prefix: "v"
   commit-note-replacers:
-    - replace-prefix: 'break(): '
-      new-prefix: ''
-    - replace-prefix: 'feat(): '
-      new-prefix: ''
-    - replace-prefix: 'change: '
-      new-prefix: ''
-    - replace-prefix: 'fix(): '
-      new-prefix: ''
-    - replace-prefix: 'document: '
-      new-prefix: ''
-    - replace-prefix: 'chore(): '
-      new-prefix: ''
+    - replace-prefix: "break(): "
+      new-prefix: ""
+    - replace-prefix: "feat(): "
+      new-prefix: ""
+    - replace-prefix: "change: "
+      new-prefix: ""
+    - replace-prefix: "fix(): "
+      new-prefix: ""
+    - replace-prefix: "document: "
+      new-prefix: ""
+    - replace-prefix: "chore(): "
+      new-prefix: ""
 branch:
-  version-branch-prefix: 'v'
-  bump-version-commit-prefix: 'v'
+  base-branch: "main"
+  version-branch-prefix: "v"
+  bump-version-commit-prefix: "v"
 categories:
-  - title: 'Breaking Changes!'
+  - title: "Breaking Changes!"
     labels:
-      - 'BreakingChange'
+      - "BreakingChange"
     commits:
-      - 'break():'
-    changes-prefix: ':warning: '
-  - title: 'Changes'
+      - "break():"
+    changes-prefix: ":warning: "
+  - title: "Changes"
     labels:
-      - 'Feature'
+      - "Feature"
     commits:
-      - 'feat():'
-    changes-prefix: ':gift: '
-  - title: 'Changes'
+      - "feat():"
+    changes-prefix: ":gift: "
+  - title: "Changes"
     labels:
       - Maintenance
     commits:
-      - 'change:'
-    changes-prefix: ':hammer: '
-  - title: 'Bug Fixes'
+      - "change:"
+    changes-prefix: ":hammer: "
+  - title: "Bug Fixes"
     labels:
-      - 'Bug'
+      - "Bug"
     commits:
-      - 'fix():'
-    changes-prefix: ':ambulance: '
-  - title: 'Changes'
+      - "fix():"
+    changes-prefix: ":ambulance: "
+  - title: "Changes"
     labels:
-      - 'Documentation'
+      - "Documentation"
     commits:
-      - 'document:'
-    changes-prefix: ':blue_book: '
-  - title: 'Chore Updates'
+      - "document:"
+    changes-prefix: ":blue_book: "
+  - title: "Chore Updates"
     labels:
-      - 'Chore'
+      - "Chore"
     commits:
-      - 'chore():'
-    changes-prefix: ':green_book: '
+      - "chore():"
+    changes-prefix: ":green_book: "
 bump:
-  default: 'patch'
+  default: "patch"
   major:
     labels:
-      - 'BreakingChange'
+      - "BreakingChange"
     commits:
-      - 'break():'
+      - "break():"
   minor:
     labels:
-      - 'Feature'
+      - "Feature"
     commits:
-      - 'feat():'
+      - "feat():"

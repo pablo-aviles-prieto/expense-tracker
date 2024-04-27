@@ -25,7 +25,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Bump version and publish release action
-        base-branch: main
         id: bump_version
         uses: MeilCli/bump-release-action@v2.0.1
         with:
