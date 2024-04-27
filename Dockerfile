@@ -1,16 +1,22 @@
-FROM node:18-alpine
-
-RUN mkdir -p /home/app
-WORKDIR /home/app
+FROM node:18-alpine as BUILD_IMAGE
+WORKDIR /app
 
 COPY package*.json .
 
-ENV NODE_ENV=production
-
-RUN npm install
-
+# install dependencies
+RUN npm install --frozen-lockfile
 COPY . .
-
+# build
 RUN npm run build
+# remove dev dependencies
+RUN npm prune --production
 
-CMD ["npm", "run", "start"]
+FROM node:18-alpine
+WORKDIR /app
+
+# copy from build image
+COPY --from=BUILD_IMAGE /app .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
