@@ -1,4 +1,11 @@
 FROM node:18-alpine as BUILD_IMAGE
+
+# Define build-time environment variables
+ARG MONGODB_URI
+
+# Set it as a runtime environment variable
+ENV MONGODB_URI=$MONGODB_URI
+
 WORKDIR /app
 
 COPY package*.json .
@@ -6,6 +13,7 @@ COPY package*.json .
 # install dependencies
 RUN npm install --frozen-lockfile
 COPY . .
+
 # build
 RUN npm run build
 # remove dev dependencies
