@@ -58,5 +58,5 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.bump_version.outputs.next_version }}
           labels: ${{ steps.meta.outputs.labels }}
-          env:
-            MONGODB_URI: ${{ env.MONGODB_URI }}
+        env:
+          MONGODB_URI: ${{ env.MONGODB_URI }}
