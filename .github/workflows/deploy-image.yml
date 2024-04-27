@@ -11,6 +11,9 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   MONGODB_URI: ${{ secrets.MONGODB_URI }}
+  TEST: ${{ secrets.TEST }}
+run: |
+  echo "La contraseña de la base de datos es: $TEST"
 
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
