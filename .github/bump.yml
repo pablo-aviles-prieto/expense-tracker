@@ -1,0 +1,69 @@
+release:
+  title-prefix: 'v'
+  initial-version: '0.0.1'
+  tag-prefix: 'v'
+  commit-note-replacers:
+    - replace-prefix: 'break(): '
+      new-prefix: ''
+    - replace-prefix: 'feat(): '
+      new-prefix: ''
+    - replace-prefix: 'change: '
+      new-prefix: ''
+    - replace-prefix: 'fix(): '
+      new-prefix: ''
+    - replace-prefix: 'document: '
+      new-prefix: ''
+    - replace-prefix: 'chore(): '
+      new-prefix: ''
+branch:
+  version-branch-prefix: 'v'
+  bump-version-commit-prefix: 'v'
+categories:
+  - title: 'Breaking Changes!'
+    labels:
+      - 'BreakingChange'
+    commits:
+      - 'break():'
+    changes-prefix: ':warning: '
+  - title: 'Changes'
+    labels:
+      - 'Feature'
+    commits:
+      - 'feat():'
+    changes-prefix: ':gift: '
+  - title: 'Changes'
+    labels:
+      - Maintenance
+    commits:
+      - 'change:'
+    changes-prefix: ':hammer: '
+  - title: 'Bug Fixes'
+    labels:
+      - 'Bug'
+    commits:
+      - 'fix():'
+    changes-prefix: ':ambulance: '
+  - title: 'Changes'
+    labels:
+      - 'Documentation'
+    commits:
+      - 'document:'
+    changes-prefix: ':blue_book: '
+  - title: 'Chore Updates'
+    labels:
+      - 'Chore'
+    commits:
+      - 'chore():'
+    changes-prefix: ':green_book: '
+bump:
+  default: 'patch'
+  major:
+    labels:
+      - 'BreakingChange'
+    commits:
+      - 'break():'
+  minor:
+    labels:
+      - 'Feature'
+    commits:
+      - 'feat():'
