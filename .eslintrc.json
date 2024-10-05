@@ -1,0 +1,41 @@
+{
+  "ignorePatterns": ["dist"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.{ts,tsx}"],
+      "parserOptions": {
+        "ecmaVersion": 2020
+      },
+      "env": {
+        "browser": true
+      },
+      "plugins": ["react-refresh", "@typescript-eslint", "tailwindcss"],
+      "rules": {
+        "react-refresh/only-export-components": ["warn", { "allowConstantExport": true }],
+        "@typescript-eslint/no-empty-interface": "off",
+        "@typescript-eslint/no-unused-vars": ["warn", { "args": "none" }],
+        "import/no-unresolved": "error",
+        "import/named": "off",
+        "no-console": "warn"
+      },
+      "settings": {
+        "tailwindcss": {
+          "callees": ["classnames", "clsx", "ctl", "cva", "cn", "tw"],
+          "config": "tailwind.config.js",
+          "cssFiles": ["**/*.css", "!**/node_modules", "!**/.*", "!**/dist", "!**/build"],
+          "cssFilesRefreshRate": 5000,
+          "removeDuplicates": true,
+          "skipClassAttribute": false,
+          "whitelist": [],
+          "tags": [],
+          "classRegex": "^class(Name)?$"
+        }
+      }
+    }
+  ]
+}

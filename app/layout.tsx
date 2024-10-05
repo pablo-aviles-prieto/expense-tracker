@@ -49,7 +49,6 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession();
-  console.log('yep');
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
