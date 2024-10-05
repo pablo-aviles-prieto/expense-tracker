@@ -1,11 +1,13 @@
-"use client";
+'use client';
 
-import { PieChart, Pie, ResponsiveContainer, Sector } from "recharts";
-import type { PieChartData } from "../../types/pie-chart";
-import { useState } from "react";
-import { useCurrency } from "@/hooks/use-currency";
-import { getEllipsed } from "@/utils/const";
-import { formatAmount } from "@/utils/format-amount";
+import { useState } from 'react';
+
+import { Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
+
+import { useCurrency } from '@/hooks/use-currency';
+import { getEllipsed } from '@/utils/const';
+import { formatAmount } from '@/utils/format-amount';
+import type { PieChartData } from '../../types/pie-chart';
 
 type PieChartBlockProps = {
   data: PieChartData;
@@ -13,6 +15,7 @@ type PieChartBlockProps = {
 };
 
 type RenderActiveShapeProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props: any;
   pieColor: string;
   currency: string;
@@ -20,11 +23,7 @@ type RenderActiveShapeProps = {
 
 const RADIAN = Math.PI / 180;
 
-const renderActiveShape = ({
-  props,
-  pieColor,
-  currency,
-}: RenderActiveShapeProps) => {
+const renderActiveShape = ({ props, pieColor, currency }: RenderActiveShapeProps) => {
   const {
     cx,
     cy,
@@ -46,13 +45,13 @@ const renderActiveShape = ({
   const my = cy + (outerRadius + 30) * sin;
   const ex = mx + (cos >= 0 ? 1 : -1) * 22;
   const ey = my;
-  const textAnchor = cos >= 0 ? "start" : "end";
+  const textAnchor = cos >= 0 ? 'start' : 'end';
 
   return (
     <g>
-      <foreignObject x={cx - 50} y={cy - 8} width="95" height="40">
+      <foreignObject x={cx - 50} y={cy - 8} width='95' height='40'>
         <div
-          className={`w-full text-sm text-[14px] text-center ${getEllipsed}`}
+          className={`w-full text-center text-[14px] text-sm ${getEllipsed}`}
           style={{ color: fill.slice(0, -2) }}
         >
           {payload.name}
@@ -76,25 +75,15 @@ const renderActiveShape = ({
         outerRadius={outerRadius + 10}
         fill={fill}
       />
-      <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={fill}
-        fill="none"
-      />
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+      <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill='none' />
+      <circle cx={ex} cy={ey} r={2} fill={fill} stroke='none' />
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         textAnchor={textAnchor}
-        fill="#727272"
+        fill='#727272'
       >{`${formatAmount(value)}${currency}`}</text>
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        dy={18}
-        textAnchor={textAnchor}
-        fill="#999"
-      >
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill='#999'>
         {`(${formatAmount(percent * 100)}%)`}
       </text>
     </g>
@@ -105,25 +94,25 @@ export const PieChartBlock = ({ data, pieColor }: PieChartBlockProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { currency } = useCurrency();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
   };
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width='100%' height={300}>
       <PieChart>
         <Pie
           activeIndex={activeIndex}
-          activeShape={(props: any) =>
-            renderActiveShape({ props, pieColor, currency })
-          }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          activeShape={(props: any) => renderActiveShape({ props, pieColor, currency })}
           data={data}
-          cx="50%"
-          cy="50%"
+          cx='50%'
+          cy='50%'
           innerRadius={50}
           outerRadius={60}
           fill={`${pieColor}80`}
-          dataKey="value"
+          dataKey='value'
           onMouseEnter={onPieEnter}
         />
       </PieChart>

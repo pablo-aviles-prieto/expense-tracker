@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
-import type { EnhancedCategory } from "./categories";
-import type { User } from "./user";
+import mongoose from 'mongoose';
+
+import type { EnhancedCategory } from './categories';
+import type { User } from './user';
 
 export interface Category {
   id: number | string;

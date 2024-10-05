@@ -1,18 +1,14 @@
-"use client";
-import { DashboardNav } from "@/components/layout/dashboard-nav";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { navItems } from "@/utils/const";
-import { MenuIcon } from "lucide-react";
-import { useState } from "react";
+'use client';
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
+import { useState } from 'react';
 
-export function MobileSidebar({}: SidebarProps) {
+import { MenuIcon } from 'lucide-react';
+
+import { DashboardNav } from '@/components/layout/dashboard-nav';
+import { Sheet, SheetContent, SheetDescription, SheetTrigger } from '@/components/ui/sheet';
+import { navItems } from '@/utils/const';
+
+export function MobileSidebar() {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -20,16 +16,12 @@ export function MobileSidebar({}: SidebarProps) {
         <SheetTrigger asChild>
           <MenuIcon />
         </SheetTrigger>
-        <SheetContent side="left" className="!px-0">
-          <SheetDescription className="sr-only">
-            Mobile side drawer
-          </SheetDescription>
-          <div className="py-4 space-y-4">
-            <div className="px-3 py-2">
-              <h2 className="px-4 mb-2 text-lg font-semibold tracking-tight">
-                Overview
-              </h2>
-              <div className="space-y-1">
+        <SheetContent side='left' className='!px-0'>
+          <SheetDescription className='sr-only'>Mobile side drawer</SheetDescription>
+          <div className='space-y-4 py-4'>
+            <div className='px-3 py-2'>
+              <h2 className='mb-2 px-4 text-lg font-semibold tracking-tight'>Overview</h2>
+              <div className='space-y-1'>
                 <DashboardNav items={navItems} setOpen={setOpen} />
               </div>
             </div>

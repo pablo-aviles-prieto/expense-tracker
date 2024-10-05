@@ -1,10 +1,11 @@
-import type { EnhancedSubscription } from "@/types";
-import { errorMessages } from "@/utils/const";
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { CreateSubSchema } from "@/schemas/create-subscription-schema";
-import { addSubscriptionToUser } from "@/services/user";
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+import { CreateSubSchema } from '@/schemas/create-subscription-schema';
+import { addSubscriptionToUser } from '@/services/user';
+import type { EnhancedSubscription } from '@/types';
+import { errorMessages } from '@/utils/const';
 
 interface ReqObjI {
   subscriptionData: EnhancedSubscription;
@@ -22,13 +23,10 @@ export const POST = async (req: NextRequest) => {
       secret: process.env.NEXTAUTH_SECRET,
     });
     if (!tokenNext || !tokenNext.id) {
-      return NextResponse.json(
-        { ok: false, error: errorMessages.relogAcc },
-        { status: 400 },
-      );
+      return NextResponse.json({ ok: false, error: errorMessages.relogAcc }, { status: 400 });
     }
     const parsedSubData = { ...subscriptionData };
-    // @ts-ignore
+    // @ts-expect-error deleting _id property
     delete parsedSubData._id;
 
     const updatedUser = await addSubscriptionToUser({
@@ -38,18 +36,14 @@ export const POST = async (req: NextRequest) => {
 
     return NextResponse.json({ ok: true, updatedUser }, { status: 201 });
   } catch (err) {
-    console.log("ERROR ADDING SUBSCRIPTION TO THE USER", err);
+    console.log('ERROR ADDING SUBSCRIPTION TO THE USER', err);
     if (err instanceof z.ZodError) {
       return NextResponse.json(
         { ok: false, error: errorMessages.incorrectSubscriptionData },
-        { status: 400 },
+        { status: 400 }
       );
     }
-    const errorMessage =
-      err instanceof Error ? err.message : errorMessages.addingSubscription;
-    return NextResponse.json(
-      { ok: false, error: errorMessage },
-      { status: 500 },
-    );
+    const errorMessage = err instanceof Error ? err.message : errorMessages.addingSubscription;
+    return NextResponse.json({ ok: false, error: errorMessage }, { status: 500 });
   }
 };
