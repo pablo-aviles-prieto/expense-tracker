@@ -10,9 +10,10 @@ const config = {
   tabWidth: 2,
   singleQuote: true,
   jsxSingleQuote: true,
-  printWidth: 80,
+  printWidth: 100,
+  arrowParens: 'avoid',
 
   importOrder: ['^react$', '', '<THIRD_PARTY_MODULES>', '', '^@/', '^~/', '^@/(.*)$', '^[./]'],
-}
+};
 
-export default config
+export default config;
