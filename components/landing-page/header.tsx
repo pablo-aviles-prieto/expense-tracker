@@ -13,7 +13,7 @@ export const Header = () => {
             <Icons.login className='size-4' /> Login
           </Typography>
           <Typography variant='h4' className='flex items-center gap-x-2'>
-            <Icons.signup className='size-4' /> Register
+            <Icons.signup className='h-4 w-4' /> Register
           </Typography>
         </div>
       </div>
