@@ -1,6 +1,6 @@
-import { BlobBackground } from '@/components/landing-page/blob-bground';
 import { Header } from '@/components/landing-page/header';
-import { HeroSection } from '@/components/landing-page/hero';
+import { BlobBackground } from '@/components/landing-page/hero-section/blob-bground';
+import { HeroSection } from '@/components/landing-page/hero-section/hero';
 
 export default async function LandingPage() {
   return (
