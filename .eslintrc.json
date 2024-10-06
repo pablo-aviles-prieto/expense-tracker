@@ -3,7 +3,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "next/core-web-vitals"
+    "next/core-web-vitals",
+    "plugin:tailwindcss/recommended"
   ],
   "overrides": [
     {
@@ -16,6 +17,8 @@
       },
       "plugins": ["react-refresh", "@typescript-eslint", "tailwindcss"],
       "rules": {
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
         "react-refresh/only-export-components": ["warn", { "allowConstantExport": true }],
         "@typescript-eslint/no-empty-interface": "off",
         "@typescript-eslint/no-unused-vars": ["warn", { "args": "none" }],
