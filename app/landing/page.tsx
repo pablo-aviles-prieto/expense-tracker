@@ -1,9 +1,10 @@
-import { Header } from "@/components/landing-page/header";
+import { Header } from '@/components/landing-page/header';
 
 export default async function LandingPage() {
   return (
-    <section>
+    <>
       <Header />
-    </section>
+      <section className='mx-auto max-w-7xl'></section>
+    </>
   );
 }
