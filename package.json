@@ -15,7 +15,8 @@
     "seed:all": "for file in seed-compiled-files/seeds/*.js; do node $file; done",
     "seed:run-single": "npm run seed:compile && npm run seed:clear-trans && npm run seed:clean",
     "seed:run-all": "npm run seed:compile && npm run seed:all && npm run seed:clean",
-    "dev:public": "next dev -H 0.0.0.0"
+    "dev:public": "next dev -H 0.0.0.0",
+    "prepare": "husky"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^2.3.3",
