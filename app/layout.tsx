@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 
 import Providers from '@/components/layout/providers';
 import { Toaster } from '@/components/ui/toaster';
@@ -8,7 +9,13 @@ import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import 'filepond/dist/filepond.min.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+
+const riftonFont = localFont({
+  src: '../assets/fonts/rifton/rifton-regular.otf',
+  display: 'swap',
+  variable: '--font-rifton',
+});
 
 export const metadata: Metadata = {
   title: 'Expense Tracker - Simplify Your Financial Management',
@@ -51,7 +58,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const session = await getServerSession();
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${inter.className} overflow-hidden`}>
+      <body
+        className={`${inter.className} ${inter.variable} ${riftonFont.variable} overflow-hidden`}
+      >
         <Providers session={session}>
           <Toaster />
           {children}
