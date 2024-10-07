@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 export async function ActionButton() {
   return (
-    <Link href='/auth'>
+    <Link href='/auth' className='inline-flex'>
       <AnimatedGradientText>
         <span
           className={cn(

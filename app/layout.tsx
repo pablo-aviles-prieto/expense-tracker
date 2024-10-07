@@ -58,9 +58,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const session = await getServerSession();
   return (
     <html lang='en' suppressHydrationWarning>
-      <body
-        className={`${inter.className} ${inter.variable} ${riftonFont.variable} overflow-hidden`}
-      >
+      <body className={`${inter.className} ${inter.variable} ${riftonFont.variable}`}>
         <Providers session={session}>
           <Toaster />
           {children}
