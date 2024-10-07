@@ -1,14 +1,22 @@
 import { ReactNode } from 'react';
 
+import { cn } from '@/lib/utils';
+
 interface BlobBackgroundProps {
   children: ReactNode;
+  className?: string;
+  blobBground?: string;
 }
 
-export const BlobBackground = ({ children }: BlobBackgroundProps) => {
+export const BlobBackground = ({
+  children,
+  className = '',
+  blobBground = '',
+}: BlobBackgroundProps) => {
   return (
-    <div className='relative min-h-screen overflow-hidden bg-black'>
+    <section className={cn('relative min-h-screen overflow-hidden bg-black', className)}>
       <div
-        className='absolute inset-16 md:inset-48'
+        className={cn('absolute inset-16 md:inset-48', blobBground)}
         style={{
           background: `
             radial-gradient(circle at 20% 20%, rgba(119, 204, 0, 0.6), transparent),
@@ -26,6 +34,6 @@ export const BlobBackground = ({ children }: BlobBackgroundProps) => {
         // }}
       />
       <div className='relative z-10 text-slate-100'>{children}</div>
-    </div>
+    </section>
   );
 };

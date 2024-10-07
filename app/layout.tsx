@@ -12,7 +12,7 @@ import 'filepond/dist/filepond.min.css';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 const riftonFont = localFont({
-  src: '../assets/fonts/rifton/rifton-regular.otf',
+  src: '../public/fonts/rifton/rifton-regular.otf',
   display: 'swap',
   variable: '--font-rifton',
 });
