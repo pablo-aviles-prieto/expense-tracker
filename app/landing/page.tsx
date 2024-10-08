@@ -14,16 +14,17 @@ export default function LandingPage() {
           <HeroSection />
         </div>
       </BlobBackground>
-      <section className='relative mx-auto max-w-xs'>
+      <ImagesSection />
+      {/* <section className='relative mx-auto max-w-xs'>
         <ImagesSection />
         <Image
           alt='iphone15 mockup'
           src='/images/landing/iphone15-mockup.png'
-          className='absolute top-0 size-full h-[590px]'
+          className='absolute top-0 h-[590px] w-full'
           width={287}
           height={623}
         />
-      </section>
+      </section> */}
       <section className='h-[1000px]'>
         <p>Hey</p>
       </section>
