@@ -14,7 +14,7 @@ export const ImagesSection = () => {
     () => {
       gsap.registerPlugin(ScrollTrigger);
 
-      const timeline = gsap.timeline({
+      const threeImagesTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: 200,
@@ -24,7 +24,7 @@ export const ImagesSection = () => {
         },
       });
 
-      timeline
+      threeImagesTimeline
         .fromTo(
           '.left-image',
           { x: -150, y: -350, opacity: 1 },
@@ -46,12 +46,36 @@ export const ImagesSection = () => {
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=300px',
+        end: '+=800px',
         pin: true,
         pinSpacing: false,
         scrub: true,
         markers: true,
       });
+
+      // Additional timeline for the dashboard-info to appear and right-image to move to the right
+      const dashboardImageTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: '+=100px',
+          scrub: true,
+          markers: true,
+        },
+      });
+
+      // Animate the opacity and movement of the dashboard info and right-image
+      dashboardImageTimeline
+        .fromTo(
+          '.dashboard-info',
+          { opacity: 0, x: -50 }, // Start invisible and slightly to the left
+          { opacity: 1, x: 0, duration: 1 } // Fade in and move to original position
+        )
+        .to(
+          '.right-image',
+          { x: 300, opacity: 0, duration: 1 }, // Move right-image to the right and fade it out
+          '<' // Start this animation at the same time as the previous one
+        );
     },
     { scope: containerRef }
   );
@@ -93,6 +117,10 @@ export const ImagesSection = () => {
         width={287}
         height={623}
       />
+
+      <p className='dashboard-info absolute -left-[250px] top-1/2 max-w-[200px] text-balance'>
+        In the dashboard you can see all the data
+      </p>
     </div>
   );
 };

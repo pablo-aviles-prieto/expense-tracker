@@ -7,7 +7,7 @@ import { ImagesSection } from '@/components/landing-page/images-section';
 
 export default function LandingPage() {
   return (
-    <section className='overflow-auto bg-black'>
+    <section className='overflow-auto overflow-x-hidden bg-black'>
       <BlobBackground blobBground='inset-[5rem] bottom-[20rem] md:inset-[15rem] md:bottom-[20rem]'>
         <Header />
         <div className='mx-auto max-w-7xl'>
