@@ -27,13 +27,19 @@ export const ImagesSection = () => {
       timeline
         .fromTo(
           '.left-image',
-          { x: -200, y: -350, opacity: 1 },
-          { x: 150, y: 10, opacity: 1, duration: 1 }
+          { x: -150, y: -350, opacity: 1 },
+          { x: 300, y: 10, opacity: 1, duration: 1 }
+        )
+        .fromTo(
+          '.center-image',
+          { x: 0, y: -350, opacity: 1 },
+          { x: -0, y: 10, opacity: 1, duration: 1 },
+          '<'
         )
         .fromTo(
           '.right-image',
-          { x: 350, y: -350, opacity: 1 },
-          { x: -150, y: 10, opacity: 1, duration: 1 },
+          { x: 150, y: -350, opacity: 1 },
+          { x: -300, y: 10, opacity: 1, duration: 1 },
           '<'
         );
     },
@@ -43,15 +49,22 @@ export const ImagesSection = () => {
   return (
     <div ref={containerRef} className='images-wrapper flex items-center justify-center gap-x-4'>
       <Image
-        className='left-image z-50 rounded-lg'
-        src='/images/landing/image1.png'
+        className='left-image rounded-lg'
+        src='/images/landing/image3.png'
         alt='Dashboard image'
         width={287}
         height={623}
       />
       <Image
-        className='right-image z-50 rounded-lg'
+        className='center-image rounded-lg'
         src='/images/landing/image2.png'
+        alt='Dashboard image'
+        width={287}
+        height={623}
+      />
+      <Image
+        className='right-image rounded-lg'
+        src='/images/landing/image1.png'
         alt='Dashboard image'
         width={287}
         height={623}

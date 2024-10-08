@@ -1,8 +1,9 @@
+import Image from 'next/image';
+
 import { Header } from '@/components/landing-page/header';
 import { BlobBackground } from '@/components/landing-page/hero-section/blob-bground';
 import { HeroSection } from '@/components/landing-page/hero-section/hero';
 import { ImagesSection } from '@/components/landing-page/images-section';
-import Iphone15Pro from '@/components/ui/iphone-15-pro';
 
 export default function LandingPage() {
   return (
@@ -15,7 +16,13 @@ export default function LandingPage() {
       </BlobBackground>
       <section className='relative mx-auto max-w-xs'>
         <ImagesSection />
-        <Iphone15Pro className='absolute top-0 size-full' src='/images/landing/image1.png' />
+        <Image
+          alt='iphone15 mockup'
+          src='/images/landing/iphone15-mockup.png'
+          className='absolute top-0 size-full h-[590px]'
+          width={287}
+          height={623}
+        />
       </section>
       <section className='h-[1000px]'>
         <p>Hey</p>
