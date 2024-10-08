@@ -20,7 +20,7 @@ export const ImagesSection = () => {
           start: 200,
           end: 500,
           scrub: true,
-          markers: true,
+          // markers: true,
         },
       });
 
@@ -43,14 +43,14 @@ export const ImagesSection = () => {
           '<'
         );
 
-      // Pin the section after the animation
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=300px', // Adjust this value based on how long you want the section pinned
+        end: '+=300px',
         pin: true,
         pinSpacing: false,
         scrub: true,
+        markers: true,
       });
     },
     { scope: containerRef }
@@ -59,7 +59,7 @@ export const ImagesSection = () => {
   return (
     <div
       ref={containerRef}
-      className='relative mx-auto flex max-w-xs items-center justify-center gap-x-4'
+      className='relative mx-auto flex h-screen max-w-xs items-center justify-center gap-x-4'
     >
       <div className='images-wrapper flex items-center justify-center gap-x-4'>
         <Image
@@ -89,7 +89,7 @@ export const ImagesSection = () => {
       <Image
         alt='iphone15 mockup'
         src='/images/landing/iphone15-mockup.png'
-        className='absolute top-0 h-[590px] w-full'
+        className='absolute left-1/2 top-1/2 h-[590px] w-full -translate-x-1/2 -translate-y-1/2'
         width={287}
         height={623}
       />
