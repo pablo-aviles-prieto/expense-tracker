@@ -23,7 +23,6 @@ export const ImagesSection = () => {
           // markers: true,
         },
       });
-
       threeImagesTimeline
         .fromTo(
           '.left-image',
@@ -43,27 +42,16 @@ export const ImagesSection = () => {
           '<'
         );
 
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: 'top top',
-        end: '+=800px',
-        pin: true,
-        pinSpacing: false,
-        scrub: true,
-        markers: true,
-      });
-
       // Additional timeline for the dashboard-info to appear and right-image to move to the right
       const dashboardImageTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: 'top top',
+          start: '-=100 top', // Start 200px from the top of the container when the viewport's top reaches it
           end: '+=100px',
           scrub: true,
           markers: true,
         },
       });
-
       // Animate the opacity and movement of the dashboard info and right-image
       dashboardImageTimeline
         .fromTo(
@@ -76,6 +64,18 @@ export const ImagesSection = () => {
           { x: 300, opacity: 0, duration: 1 }, // Move right-image to the right and fade it out
           '<' // Start this animation at the same time as the previous one
         );
+
+      // Makes the iphone15 mockup sticky while scrolling
+      // Keeping as last scroll trigger to not interfere on the scroll order
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top top',
+        end: '+=800px',
+        pin: true,
+        pinSpacing: false,
+        scrub: false,
+        markers: true,
+      });
     },
     { scope: containerRef }
   );
