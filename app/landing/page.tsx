@@ -25,9 +25,8 @@ export default function LandingPage() {
           height={623}
         />
       </section> */}
-      <section className='h-[1000px]'>
-        <p>Hey</p>
-      </section>
+      <section className='spacing-the-scroll-animation h-[2000px]' />
+      <section>Sup mate</section>
     </section>
   );
 }

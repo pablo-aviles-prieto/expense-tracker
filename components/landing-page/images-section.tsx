@@ -14,55 +14,90 @@ export const ImagesSection = () => {
     () => {
       gsap.registerPlugin(ScrollTrigger);
 
-      const threeImagesTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 200,
-          end: 500,
-          scrub: true,
-          // markers: true,
-        },
-      });
-      threeImagesTimeline
+      // Animating the 3 images into the iphone15 mockup
+      const threeImagesTimeline = gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 200,
+            end: 500,
+            scrub: true,
+            // markers: true,
+          },
+        })
         .fromTo(
-          '.left-image',
+          '.left-image-subscriptions',
           { x: -150, y: -350, opacity: 1 },
           { x: 300, y: 10, opacity: 1, duration: 1 }
         )
         .fromTo(
-          '.center-image',
+          '.center-image-transactions',
           { x: 0, y: -350, opacity: 1 },
           { x: -0, y: 10, opacity: 1, duration: 1 },
           '<'
         )
         .fromTo(
-          '.right-image',
+          '.right-image-dashboard',
           { x: 150, y: -350, opacity: 1 },
           { x: -300, y: 10, opacity: 1, duration: 1 },
           '<'
         );
 
-      // Additional timeline for the dashboard-info to appear and right-image to move to the right
-      const dashboardImageTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: '-=100 top', // Start 200px from the top of the container when the viewport's top reaches it
-          end: '+=100px',
-          scrub: true,
-          markers: true,
-        },
-      });
-      // Animate the opacity and movement of the dashboard info and right-image
-      dashboardImageTimeline
+      // Displaying the dashboard-info-text
+      const dashboardTextAppearing = gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: '-=200 top',
+            end: '+=100px',
+            scrub: true,
+            // markers: true,
+          },
+        })
         .fromTo(
-          '.dashboard-info',
-          { opacity: 0, x: -50 }, // Start invisible and slightly to the left
+          '.dashboard-info-text',
+          { opacity: 0, x: -100 }, // Start invisible and slightly to the left
           { opacity: 1, x: 0, duration: 1 } // Fade in and move to original position
-        )
-        .to(
-          '.right-image',
-          { x: 300, opacity: 0, duration: 1 }, // Move right-image to the right and fade it out
-          '<' // Start this animation at the same time as the previous one
+        );
+
+      // Fading out right-image-dashboard and dashboard-info-text and displaying transactions-info-text
+      const dashboardImageFadingTimeline = gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: '+=200 top', // Start 200px from the top of the container when the viewport's top reaches it
+            end: '+=200px', // Finishing the animation 400px later
+            scrub: true,
+            markers: true,
+          },
+        })
+        .to('.right-image-dashboard', { x: -600, opacity: 0, duration: 1 })
+        .to('.dashboard-info-text', { opacity: 0, x: -100 }, '<')
+        .fromTo(
+          '.transactions-info-text',
+          { opacity: 0, x: 100 },
+          { opacity: 1, x: 0, duration: 1 },
+          '<'
+        );
+
+      // Displaying the subscriptions-info-text, fading out center-image-transactions and transactions-info-text
+      const transactionsImageFadingTimeline = gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: '+=700 top', // Start 200px from the top of the container when the viewport's top reaches it
+            end: '+=200px', // Finishing the animation 400px later
+            scrub: true,
+            markers: true,
+          },
+        })
+        .to('.center-image-transactions', { x: 300, opacity: 0, duration: 1 })
+        .to('.transactions-info-text', { opacity: 0, x: 100 }, '<')
+        .fromTo(
+          '.subscriptions-info-text',
+          { opacity: 0, x: -100 },
+          { opacity: 1, x: 0, duration: 1 },
+          '<'
         );
 
       // Makes the iphone15 mockup sticky while scrolling
@@ -70,11 +105,11 @@ export const ImagesSection = () => {
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=800px',
+        end: '+=1300px',
         pin: true,
         pinSpacing: false,
         scrub: false,
-        markers: true,
+        // markers: true,
       });
     },
     { scope: containerRef }
@@ -87,21 +122,21 @@ export const ImagesSection = () => {
     >
       <div className='images-wrapper flex items-center justify-center gap-x-4'>
         <Image
-          className='left-image rounded-lg'
+          className='left-image-subscriptions rounded-lg'
           src='/images/landing/image3.png'
           alt='Dashboard image'
           width={287}
           height={623}
         />
         <Image
-          className='center-image rounded-lg'
+          className='center-image-transactions rounded-lg'
           src='/images/landing/image2.png'
           alt='Dashboard image'
           width={287}
           height={623}
         />
         <Image
-          className='right-image rounded-lg'
+          className='right-image-dashboard rounded-lg'
           src='/images/landing/image1.png'
           alt='Dashboard image'
           width={287}
@@ -118,8 +153,14 @@ export const ImagesSection = () => {
         height={623}
       />
 
-      <p className='dashboard-info absolute -left-[250px] top-1/2 max-w-[200px] text-balance'>
-        In the dashboard you can see all the data
+      <p className='dashboard-info-text absolute -left-[275px] top-1/2 max-w-[250px] text-balance'>
+        Get a quick overview of your transactions in the dashboard
+      </p>
+      <p className='transactions-info-text absolute -right-[275px] top-1/2 max-w-[250px] text-balance'>
+        Add transactions fast with a form or multiple via CSV upload
+      </p>
+      <p className='subscriptions-info-text absolute -left-[275px] top-1/2 max-w-[250px] text-balance'>
+        Track and manage subscriptions in one place. Set reminders for renewals.
       </p>
     </div>
   );
