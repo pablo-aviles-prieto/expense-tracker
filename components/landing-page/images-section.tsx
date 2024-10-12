@@ -15,7 +15,7 @@ export const ImagesSection = () => {
       gsap.registerPlugin(ScrollTrigger);
 
       // Animating the 3 images into the iphone15 mockup
-      const threeImagesTimeline = gsap
+      gsap
         .timeline({
           scrollTrigger: {
             trigger: containerRef.current,
@@ -44,7 +44,7 @@ export const ImagesSection = () => {
         );
 
       // Displaying the dashboard-info-text
-      const dashboardTextAppearing = gsap
+      gsap
         .timeline({
           scrollTrigger: {
             trigger: containerRef.current,
@@ -61,7 +61,7 @@ export const ImagesSection = () => {
         );
 
       // Fading out right-image-dashboard and dashboard-info-text and displaying transactions-info-text
-      const dashboardImageFadingTimeline = gsap
+      gsap
         .timeline({
           scrollTrigger: {
             trigger: containerRef.current,
@@ -81,7 +81,7 @@ export const ImagesSection = () => {
         );
 
       // Displaying the subscriptions-info-text, fading out center-image-transactions and transactions-info-text
-      const transactionsImageFadingTimeline = gsap
+      gsap
         .timeline({
           scrollTrigger: {
             trigger: containerRef.current,
@@ -101,7 +101,7 @@ export const ImagesSection = () => {
         );
 
       // Makes the iphone15 mockup sticky while scrolling
-      // Keeping as last scroll trigger to not interfere on the scroll order
+      // Keeping in last position scroll trigger to not interfere on the scroll order
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top top',
@@ -159,8 +159,9 @@ export const ImagesSection = () => {
       <p className='transactions-info-text absolute -right-[275px] top-1/2 max-w-[250px] text-balance'>
         Add transactions fast with a form or multiple via CSV upload
       </p>
-      <p className='subscriptions-info-text absolute -left-[275px] top-1/2 max-w-[250px] text-balance'>
-        Track and manage subscriptions in one place. Set reminders for renewals.
+      <p className='subscriptions-info-text absolute -left-[275px] top-1/2 max-w-[250px]'>
+        Manage your subscriptions in one place.
+        <span className='block'>Set reminders for renewals.</span>
       </p>
     </div>
   );
