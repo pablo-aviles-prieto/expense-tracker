@@ -153,7 +153,7 @@ export const ImagesSection = () => {
         height={623}
       />
 
-      <p className='dashboard-info-text absolute -left-[275px] top-1/2 max-w-[250px] text-balance'>
+      {/* <p className='dashboard-info-text absolute -left-[275px] top-1/2 max-w-[250px] text-balance'>
         Get a quick overview of your transactions in the dashboard
       </p>
       <p className='transactions-info-text absolute -right-[275px] top-1/2 max-w-[250px] text-balance'>
@@ -162,7 +162,41 @@ export const ImagesSection = () => {
       <p className='subscriptions-info-text absolute -left-[275px] top-1/2 max-w-[250px]'>
         Manage your subscriptions in one place.
         <span className='block'>Set reminders for renewals.</span>
-      </p>
+      </p> */}
+
+      <div className='dashboard-info-text absolute -left-[275px] top-1/2 max-w-[250px]'>
+        <p className='text-balance'>Get a quick overview of your transactions in the dashboard</p>
+        <Image
+          alt='arrow'
+          src='/images/landing/red-right-arrow.webp'
+          className='absolute -right-[80px] -top-[40px]'
+          width={110}
+          height={75}
+        />
+      </div>
+      <div className='transactions-info-text absolute -right-[255px] top-[185px] max-w-[250px]'>
+        <p className='text-balance'>Add transactions fast with a form or multiple via CSV upload</p>
+        <Image
+          alt='arrow'
+          src='/images/landing/orange-left-arrow.webp'
+          className='absolute -left-[55px] top-[30px]'
+          width={95}
+          height={75}
+        />
+      </div>
+      <div className='subscriptions-info-text absolute -left-[275px] top-[350px] max-w-[250px]'>
+        <p>
+          Manage your subscriptions in one place.
+          <span className='block'>Set reminders for renewals.</span>
+        </p>
+        <Image
+          alt='arrow'
+          src='/images/landing/white-right-arrow.webp'
+          className='absolute -right-[70px] -top-[95px]'
+          width={120}
+          height={75}
+        />
+      </div>
     </div>
   );
 };
