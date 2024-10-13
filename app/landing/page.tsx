@@ -15,18 +15,8 @@ export default function LandingPage() {
         </div>
       </BlobBackground>
       <ImagesSection />
-      {/* <section className='relative mx-auto max-w-xs'>
-        <ImagesSection />
-        <Image
-          alt='iphone15 mockup'
-          src='/images/landing/iphone15-mockup.png'
-          className='absolute top-0 h-[590px] w-full'
-          width={287}
-          height={623}
-        />
-      </section> */}
-      <section className='spacing-the-scroll-animation h-[2000px]' />
-      <section>Sup mate</section>
+      <section className='spacing-the-scroll-animation h-[1500px]' />
+      <section className='h-[400px] text-center'>Features</section>
     </section>
   );
 }
