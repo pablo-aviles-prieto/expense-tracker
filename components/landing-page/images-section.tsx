@@ -1,14 +1,33 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 
+const IPHONE_MOCKUP_HEIGHT = 590;
+
 export const ImagesSection = () => {
   const containerRef = useRef(null);
+  const [viewportHeight, setViewportHeight] = useState(0);
+
+  useEffect(() => {
+    const updateViewportHeight = () => {
+      setViewportHeight(window.innerHeight);
+    };
+
+    updateViewportHeight();
+    window.addEventListener('resize', updateViewportHeight);
+
+    return () => {
+      window.removeEventListener('resize', updateViewportHeight);
+    };
+  }, []);
+
+  // Checking if the viewport height is high enough to display the iphone height + 90px on top and bottom
+  const hasEnoughHeight = viewportHeight >= IPHONE_MOCKUP_HEIGHT + 90 * 2;
 
   useGSAP(
     () => {
@@ -174,12 +193,11 @@ export const ImagesSection = () => {
       </div>
 
       {/* iPhone mockup */}
-      <Image
+      <img
         alt='iphone15 mockup'
         src='/images/landing/iphone15-mockup.png'
-        className='absolute left-1/2 top-1/2 h-[590px] w-full -translate-x-1/2 -translate-y-1/2'
-        width={287}
-        height={623}
+        className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2'
+        style={{ height: IPHONE_MOCKUP_HEIGHT }}
       />
 
       <div className='dashboard-info-text absolute -left-[200px] top-1/2 max-w-[200px]'>
@@ -197,6 +215,20 @@ export const ImagesSection = () => {
           className='dashboard-frame absolute -right-[291px] -top-[35px] h-[315px] w-[268px] rounded-xl rounded-bl-[25px] rounded-br-3xl border-2'
           style={{ borderColor: '#e91223' }}
         />
+        {hasEnoughHeight && (
+          <div className='visible absolute -bottom-[290px] -right-[300px] max-w-[250px] md:invisible'>
+            <Image
+              alt='arrow'
+              src='/images/landing/red-up-arrow.webp'
+              className='absolute -top-[65px] right-[30px]'
+              width={70}
+              height={75}
+            />
+            <p className='text-balance'>
+              Get a quick overview of your transactions in the dashboard
+            </p>
+          </div>
+        )}
       </div>
       <div className='transactions-info-text absolute -right-[255px] top-[calc(50%-265px)] max-w-[225px]'>
         <p className='invisible text-balance md:visible'>
