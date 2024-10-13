@@ -17,6 +17,8 @@ export default function LandingPage() {
       <ImagesSection />
       <section className='spacing-the-scroll-animation h-[1500px]' />
       <section className='h-[400px] text-center'>Features</section>
+      <section className='h-[400px] text-center'>Open source code</section>
+      <section className='h-[400px] text-center'>Contact/suggestions</section>
     </section>
   );
 }
