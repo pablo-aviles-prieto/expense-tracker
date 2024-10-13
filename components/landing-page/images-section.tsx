@@ -144,7 +144,7 @@ export const ImagesSection = () => {
         pin: true,
         pinSpacing: false,
         scrub: false,
-        // markers: true,
+        markers: true,
       });
     },
     { scope: containerRef }
@@ -156,26 +156,20 @@ export const ImagesSection = () => {
       className='relative mx-auto flex h-screen max-w-xs items-center justify-center gap-x-4'
     >
       <div className='images-wrapper flex items-center justify-center gap-x-4'>
-        <Image
-          className='left-image-subscriptions rounded-lg'
+        <img
+          className='left-image-subscriptions h-[565px] w-[281px] rounded-lg'
           src='/images/landing/image3.png'
           alt='Dashboard image'
-          width={287}
-          height={623}
         />
-        <Image
-          className='center-image-transactions rounded-lg'
+        <img
+          className='center-image-transactions h-[565px] w-[281px] rounded-lg'
           src='/images/landing/image2.png'
-          alt='Dashboard image'
-          width={287}
-          height={623}
+          alt='Transactions image'
         />
-        <Image
-          className='right-image-dashboard rounded-lg'
+        <img
+          className='right-image-dashboard h-[565px] w-[281px] rounded-lg'
           src='/images/landing/image1.png'
-          alt='Dashboard image'
-          width={287}
-          height={623}
+          alt='Subscriptions image'
         />
       </div>
 
@@ -188,43 +182,47 @@ export const ImagesSection = () => {
         height={623}
       />
 
-      <div className='dashboard-info-text absolute -left-[275px] top-1/2 max-w-[250px]'>
-        <p className='text-balance'>Get a quick overview of your transactions in the dashboard</p>
+      <div className='dashboard-info-text absolute -left-[200px] top-1/2 max-w-[200px]'>
+        <p className='invisible text-balance md:visible'>
+          Get a quick overview of your transactions in the dashboard
+        </p>
         <Image
           alt='arrow'
           src='/images/landing/red-right-arrow.webp'
-          className='absolute -right-[80px] -top-[40px]'
+          className='invisible absolute -right-[50px] -top-[40px] md:visible'
           width={110}
           height={75}
         />
         <div
-          className='dashboard-frame absolute -right-[317px] -top-[35px] h-[315px] w-[268px] rounded-xl rounded-bl-[25px] rounded-br-3xl border-2'
+          className='dashboard-frame absolute -right-[291px] -top-[35px] h-[315px] w-[268px] rounded-xl rounded-bl-[25px] rounded-br-3xl border-2'
           style={{ borderColor: '#e91223' }}
         />
       </div>
-      <div className='transactions-info-text absolute -right-[255px] top-[185px] max-w-[250px]'>
-        <p className='text-balance'>Add transactions fast with a form or multiple via CSV upload</p>
+      <div className='transactions-info-text absolute -right-[255px] top-[calc(50%-265px)] max-w-[225px]'>
+        <p className='invisible text-balance md:visible'>
+          Add transactions fast with a form or multiple via CSV upload
+        </p>
         <Image
           alt='arrow'
           src='/images/landing/orange-left-arrow.webp'
-          className='absolute -left-[50px] top-[30px]'
+          className='invisible absolute -left-[75px] top-[55px] md:visible'
           width={95}
           height={75}
         />
         <div
-          className='transactions-frame absolute -left-[286px] top-[85px] h-[35px] w-[245px] rounded-lg border-2'
+          className='transactions-frame absolute -left-[311px] top-[113px] h-[35px] w-[245px] rounded-lg border-2'
           style={{ borderColor: '#f68420' }}
         />
       </div>
-      <div className='subscriptions-info-text absolute -left-[255px] top-[300px] max-w-[250px]'>
-        <p>
+      <div className='subscriptions-info-text absolute -left-[215px] top-[calc(50%-123px)] max-w-[210px]'>
+        <p className='invisible md:visible'>
           Manage your subscriptions in one place.
           <span className='block'>Set reminders for renewals.</span>
         </p>
         <Image
           alt='arrow'
           src='/images/landing/white-right-arrow.webp'
-          className='absolute -right-[45px] -top-[95px]'
+          className='invisible absolute -right-[47px] -top-[92px] md:visible'
           width={120}
           height={75}
         />
