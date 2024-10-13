@@ -110,7 +110,7 @@ export const ImagesSection = () => {
             start: '+=700 top', // Start 200px from the top of the container when the viewport's top reaches it
             end: '+=200px', // Finishing the animation 400px later
             scrub: true,
-            markers: true,
+            // markers: true,
           },
         })
         .to('.center-image-transactions', { x: 300, opacity: 0, duration: 1 })
@@ -129,7 +129,7 @@ export const ImagesSection = () => {
             start: '+=900 top',
             end: '+=200px',
             scrub: true,
-            markers: true,
+            // markers: true,
           },
         })
         .fromTo('.subscriptions-frame', { opacity: 0 }, { opacity: 1 })
@@ -207,12 +207,12 @@ export const ImagesSection = () => {
         <Image
           alt='arrow'
           src='/images/landing/orange-left-arrow.webp'
-          className='absolute -left-[55px] top-[30px]'
+          className='absolute -left-[50px] top-[30px]'
           width={95}
           height={75}
         />
         <div
-          className='transactions-frame absolute -left-[287px] top-[85px] h-[35px] w-[245px] rounded-lg border-2'
+          className='transactions-frame absolute -left-[286px] top-[85px] h-[35px] w-[245px] rounded-lg border-2'
           style={{ borderColor: '#f68420' }}
         />
       </div>
