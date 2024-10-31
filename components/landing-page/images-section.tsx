@@ -169,6 +169,8 @@ export const ImagesSection = () => {
     { scope: containerRef }
   );
 
+  // TODO: extract each block of text, arrow and frame into their own components
+  // TODO: Finish the texts for subscriptions and transactions in mobile, adding their arrows
   return (
     <div
       ref={containerRef}
