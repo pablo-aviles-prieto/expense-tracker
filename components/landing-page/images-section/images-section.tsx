@@ -5,13 +5,19 @@ import { useEffect, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import Image from 'next/image';
+
+import { DashboardInfo } from './dashboard-info';
+import { SubscriptionsInfo } from './subscriptions-info';
+import { TransactionsInfo } from './transactions-info';
 
 const IPHONE_MOCKUP_HEIGHT = 590;
 
 export const ImagesSection = () => {
   const containerRef = useRef(null);
   const [viewportHeight, setViewportHeight] = useState(0);
+
+  // Checking if the viewport height is high enough to display the iphone height + 90px on top and bottom
+  const hasEnoughHeight = viewportHeight >= IPHONE_MOCKUP_HEIGHT + 90 * 2;
 
   useEffect(() => {
     const updateViewportHeight = () => {
@@ -25,9 +31,6 @@ export const ImagesSection = () => {
       window.removeEventListener('resize', updateViewportHeight);
     };
   }, []);
-
-  // Checking if the viewport height is high enough to display the iphone height + 90px on top and bottom
-  const hasEnoughHeight = viewportHeight >= IPHONE_MOCKUP_HEIGHT + 90 * 2;
 
   useGSAP(
     () => {
@@ -169,8 +172,7 @@ export const ImagesSection = () => {
     { scope: containerRef }
   );
 
-  // TODO: extract each block of text, arrow and frame into their own components
-  // TODO: Finish the texts for subscriptions and transactions in mobile, adding their arrows
+  // TODO: Finish the texts for subscriptions and transactions in mobile, adding their arrows!
   return (
     <div
       ref={containerRef}
@@ -202,69 +204,9 @@ export const ImagesSection = () => {
         style={{ height: IPHONE_MOCKUP_HEIGHT }}
       />
 
-      <div className='dashboard-info-text absolute -left-[200px] top-1/2 max-w-[200px]'>
-        <p className='invisible text-balance md:visible'>
-          Get a quick overview of your transactions in the dashboard
-        </p>
-        <Image
-          alt='arrow'
-          src='/images/landing/red-right-arrow.webp'
-          className='invisible absolute -right-[50px] -top-[40px] md:visible'
-          width={110}
-          height={75}
-        />
-        <div
-          className='dashboard-frame absolute -right-[291px] -top-[35px] h-[315px] w-[268px] rounded-xl rounded-bl-[25px] rounded-br-3xl border-2'
-          style={{ borderColor: '#e91223' }}
-        />
-        {hasEnoughHeight && (
-          <div className='visible absolute -bottom-[290px] -right-[300px] max-w-[250px] md:invisible'>
-            <Image
-              alt='arrow'
-              src='/images/landing/red-up-arrow.webp'
-              className='absolute -top-[65px] right-[30px]'
-              width={70}
-              height={75}
-            />
-            <p className='text-balance'>
-              Get a quick overview of your transactions in the dashboard
-            </p>
-          </div>
-        )}
-      </div>
-      <div className='transactions-info-text absolute -right-[255px] top-[calc(50%-265px)] max-w-[225px]'>
-        <p className='invisible text-balance md:visible'>
-          Add transactions fast with a form or multiple via CSV upload
-        </p>
-        <Image
-          alt='arrow'
-          src='/images/landing/orange-left-arrow.webp'
-          className='invisible absolute -left-[75px] top-[55px] md:visible'
-          width={95}
-          height={75}
-        />
-        <div
-          className='transactions-frame absolute -left-[311px] top-[113px] h-[35px] w-[245px] rounded-lg border-2'
-          style={{ borderColor: '#f68420' }}
-        />
-      </div>
-      <div className='subscriptions-info-text absolute -left-[215px] top-[calc(50%-123px)] max-w-[210px]'>
-        <p className='invisible md:visible'>
-          Manage your subscriptions in one place.
-          <span className='block'>Set reminders for renewals.</span>
-        </p>
-        <Image
-          alt='arrow'
-          src='/images/landing/white-right-arrow.webp'
-          className='invisible absolute -right-[47px] -top-[92px] md:visible'
-          width={120}
-          height={75}
-        />
-        <div
-          className='subscriptions-frame absolute -right-[307px] -top-[74px] h-[44px] w-[278px] rounded-lg border-2'
-          style={{ borderColor: '#e8e8e8' }}
-        />
-      </div>
+      <DashboardInfo hasEnoughHeight={hasEnoughHeight} />
+      <TransactionsInfo />
+      <SubscriptionsInfo />
     </div>
   );
 };

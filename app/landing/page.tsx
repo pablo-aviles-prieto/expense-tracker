@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Header } from '@/components/landing-page/header';
 import { BlobBackground } from '@/components/landing-page/hero-section/blob-bground';
 import { HeroSection } from '@/components/landing-page/hero-section/hero';
-import { ImagesSection } from '@/components/landing-page/images-section';
+import { ImagesSection } from '@/components/landing-page/images-section/images-section';
 
 export default function LandingPage() {
   return (
