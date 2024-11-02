@@ -12,7 +12,7 @@ export const Header = () => {
           <Typography variant='h5' className='flex items-center gap-x-2'>
             <Icons.login className='size-4' /> Log in
           </Typography>
-          {/* Convert this into a button and remove icons like fanfix */}
+          {/* TODO: Convert this into a button and remove icons like fanfix */}
           <Typography variant='h5' className='flex items-center gap-x-1'>
             <Icons.signup className='size-4' /> Sign up
           </Typography>
