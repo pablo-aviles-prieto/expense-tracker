@@ -31,8 +31,8 @@ export const Features = () => {
       >
         Empower Your Finances
       </Typography>
-      {FEATURES_DATA.map(feature => (
-        <FeatureCard key={feature.title} {...feature} />
+      {FEATURES_DATA.map((feature, idx) => (
+        <FeatureCard key={feature.title} delay={idx * 0.2} index={idx} {...feature} />
       ))}
     </section>
   );
