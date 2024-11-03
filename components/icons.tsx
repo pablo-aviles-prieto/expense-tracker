@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   ArrowRight,
+  BarChart3,
   CalendarCheck,
   CalendarX,
   Check,
@@ -228,4 +229,5 @@ export const Icons = {
   logout: LogOut,
   mail: Mail,
   signup: UserPlus,
+  chart: BarChart3,
 };
