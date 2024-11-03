@@ -4,7 +4,7 @@ import { ActionButton } from './action-button';
 
 export const HeroSection = () => {
   return (
-    <div className='mx-auto my-20 max-w-5xl text-balance text-center'>
+    <div className='mx-auto max-w-5xl text-balance text-center'>
       <Typography className='font-rifton text-xl sm:text-3xl md:text-4xl xl:text-5xl'>
         Manage your transactions and subscriptions with ease
       </Typography>
