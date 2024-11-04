@@ -143,13 +143,13 @@
 
 @media (min-width: 768px) {
   .titled-image-container {
-    perspective: 2500px;
+    perspective: 3000px;
   }
 }
 
 @media (min-width: 1280px) {
   .titled-image-container {
-    perspective: 3500px;
+    perspective: 4500px;
   }
 }
 

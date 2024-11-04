@@ -11,7 +11,7 @@ import { SectionBlock } from '../section-block-wrapper';
 const DEFAULT_DURATION = 0.5;
 const DEFAULT_BOX_COLOR = '#5046e6';
 
-// TODO: Use block of box reveals for each input instead for the whole form
+// TODO: Use block of box reveals for each input instead for the whole form!
 export const ContactSection = () => {
   const [isSendingMail, setIsSendingMail] = useState(false);
 
