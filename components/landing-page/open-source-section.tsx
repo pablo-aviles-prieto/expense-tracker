@@ -1,6 +1,7 @@
 import { Typography } from '../ui/typography';
 import { SectionBlock } from './section-block-wrapper';
 
+// TODO: Try to make sharper the image at least in > 1280px
 export const OpenSourceSection = () => {
   return (
     <SectionBlock title='open source code' className='px-0'>
