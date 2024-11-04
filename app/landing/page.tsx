@@ -1,3 +1,4 @@
+import { ContactSection } from '@/components/landing-page/contact-section/contact-section';
 import { FeaturesSection } from '@/components/landing-page/features-section/features';
 import { Header } from '@/components/landing-page/header';
 import { BlobBackground } from '@/components/landing-page/hero-section/blob-bground';
@@ -20,7 +21,8 @@ export default function LandingPage() {
       </section>
       <FeaturesSection />
       <OpenSourceSection />
-      <section className='h-[400px] text-center'>Contact/suggestions via mail/github</section>
+      <ContactSection />
+      {/* <section className='h-[400px] text-center'>Contact/suggestions via mail/github</section> */}
     </section>
   );
 }

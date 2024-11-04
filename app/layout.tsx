@@ -9,7 +9,7 @@ import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import 'filepond/dist/filepond.min.css';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
 const riftonFont = localFont({
   src: '../public/fonts/rifton/rifton-regular.otf',
@@ -58,7 +58,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const session = await getServerSession();
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${inter.className} ${inter.variable} ${riftonFont.variable}`}>
+      <body className={`${inter.className} ${riftonFont.variable} ${inter.variable}`}>
         <Providers session={session}>
           <Toaster />
           {children}

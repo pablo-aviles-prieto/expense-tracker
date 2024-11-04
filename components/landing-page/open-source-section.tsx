@@ -5,7 +5,7 @@ export const OpenSourceSection = () => {
   return (
     <SectionBlock title='open source code' className='px-0'>
       <div className='mx-auto w-full'>
-        <Typography variant='h5' className='container text-pretty'>
+        <Typography variant='h5' className='container'>
           The code is fully open-source, allowing complete transparency into how the app works
           behind the scenes. You’re welcome to explore the repository, make suggestions, and
           contribute through pull requests or issues. Let’s build a better tool together!
