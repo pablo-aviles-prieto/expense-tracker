@@ -1,4 +1,4 @@
-import { Typography } from '@/components/ui/typography';
+import { SectionBlock } from '../section-block-wrapper';
 import { FeatureCard, FeatureCardProps } from './feature-card';
 
 const FEATURES_DATA: FeatureCardProps[] = [
@@ -22,18 +22,14 @@ const FEATURES_DATA: FeatureCardProps[] = [
   },
 ];
 
-export const Features = () => {
+export const FeaturesSection = () => {
   return (
-    <section className='container grid grid-cols-1 gap-8 md:grid-cols-3'>
-      <Typography
-        variant='h1'
-        className='col-span-full text-center text-xl sm:text-2xl md:text-4xl'
-      >
-        Empower Your Finances
-      </Typography>
-      {FEATURES_DATA.map((feature, idx) => (
-        <FeatureCard key={feature.title} delay={idx * 0.2} index={idx} {...feature} />
-      ))}
-    </section>
+    <SectionBlock title='Empower Your Finances'>
+      <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
+        {FEATURES_DATA.map((feature, idx) => (
+          <FeatureCard key={feature.title} delay={idx * 0.2} index={idx} {...feature} />
+        ))}
+      </div>
+    </SectionBlock>
   );
 };
