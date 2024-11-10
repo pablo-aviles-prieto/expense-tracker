@@ -2,30 +2,65 @@
 
 import { useState } from 'react';
 
-import { ContactMailForm } from '@/components/forms/contact-mail-form/contact-mail-form';
 import BoxReveal from '@/components/ui/box-reveal';
 import { Typography } from '@/components/ui/typography';
+import { toast } from '@/components/ui/use-toast';
+import { useFetch } from '@/hooks/use-fetch';
 import { ContactMailFormValue } from '@/schemas/contact-mail-schema';
+import { URL_CONTACT_MAIL } from '@/utils/const';
 import { SectionBlock } from '../section-block-wrapper';
+import { ContactSectionForm } from './form-contact/contact-mail-form';
 
 const DEFAULT_DURATION = 0.5;
 const DEFAULT_BOX_COLOR = '#5046e6';
 
-// TODO: Use block of box reveals for each input instead for the whole form!
+interface ContactMailResponse {
+  ok: boolean;
+  error?: string;
+  message?: string;
+}
+
 export const ContactSection = () => {
   const [isSendingMail, setIsSendingMail] = useState(false);
+  const { fetchPetition } = useFetch();
 
   const onSubmit = async (data: ContactMailFormValue) => {
+    const { update, id: toastId } = toast({
+      title: 'Sending the email...',
+      description: 'Please wait while the email is being sent',
+      variant: 'default',
+    });
     setIsSendingMail(true);
-    console.log('data', data);
+
+    const response = await fetchPetition<ContactMailResponse>({
+      method: 'POST',
+      url: URL_CONTACT_MAIL,
+      body: { contact: data },
+    });
+
+    if (response.error) {
+      update({
+        id: toastId,
+        title: 'Error sending the email',
+        description: response.error,
+        variant: 'destructive',
+      });
+    } else if (response.message) {
+      update({
+        id: toastId,
+        title: 'Email sent succesfully',
+        description: response.message,
+        variant: 'success',
+      });
+    }
     setIsSendingMail(false);
   };
 
   return (
     <SectionBlock title='Get in touch' className='pb-12'>
-      <div>
+      <div className='mx-auto w-full lg:w-1/2'>
         <BoxReveal boxColor={DEFAULT_BOX_COLOR} duration={DEFAULT_DURATION}>
-          <Typography variant='h4'>
+          <Typography className='text-balance md:text-center' variant='h4'>
             I’d love to hear from you! Whether you have a suggestion, found an issue, or just want
             to say hi, reach out via the contact form.{' '}
             <a
@@ -38,10 +73,13 @@ export const ContactSection = () => {
             </a>
           </Typography>
         </BoxReveal>
-        <div className='mx-auto flex w-1/2 items-center justify-center'>
-          <BoxReveal width='100%' boxColor={DEFAULT_BOX_COLOR} duration={DEFAULT_DURATION}>
-            <ContactMailForm onSubmit={onSubmit} isSendingMail={isSendingMail} />
-          </BoxReveal>
+        <div className='mx-auto mt-6 flex w-full items-center justify-center'>
+          <ContactSectionForm
+            onSubmit={onSubmit}
+            isSendingMail={isSendingMail}
+            boxColor={DEFAULT_BOX_COLOR}
+            boxDuration={DEFAULT_DURATION}
+          />
         </div>
       </div>
     </SectionBlock>

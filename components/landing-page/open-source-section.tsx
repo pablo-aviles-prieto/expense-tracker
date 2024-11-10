@@ -1,7 +1,7 @@
 import { Typography } from '../ui/typography';
 import { SectionBlock } from './section-block-wrapper';
 
-// TODO: Try to make sharper the image at least in > 1280px!
+// TODO: Try to make sharper the image at least in > 1280px
 // Maybe using the png version isntead of webp?
 export const OpenSourceSection = () => {
   return (
