@@ -43,6 +43,7 @@ export const ContactSectionForm = ({ onSubmit, isSendingMail, boxDuration, boxCo
     form.reset();
   };
 
+  // TOOD: Make a BoxReaveal for the  label and the input separately
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className='w-full space-y-2 px-1'>
@@ -125,12 +126,14 @@ export const ContactSectionForm = ({ onSubmit, isSendingMail, boxDuration, boxCo
             )}
           />
         </BoxReveal>
-        <BoxReveal width='100%' boxColor={boxColor} duration={boxDuration}>
-          <Button disabled={isSendingMail} className='!mt-8 w-full' type='submit'>
-            {isSendingMail && <ClockLoader className='mr-2' />}
-            {isSendingMail ? 'Sending' : 'Send'} mail
-          </Button>
-        </BoxReveal>
+        <div className='mt-8 w-full'>
+          <BoxReveal width='100%' boxColor={boxColor} duration={boxDuration}>
+            <Button disabled={isSendingMail} className='w-full' type='submit'>
+              {isSendingMail && <ClockLoader className='mr-2' />}
+              {isSendingMail ? 'Sending' : 'Send'} mail
+            </Button>
+          </BoxReveal>
+        </div>
       </form>
     </Form>
   );
