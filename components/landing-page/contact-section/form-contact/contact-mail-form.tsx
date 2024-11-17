@@ -43,7 +43,6 @@ export const ContactSectionForm = ({ onSubmit, isSendingMail, boxDuration, boxCo
     form.reset();
   };
 
-  // TOOD: Make a BoxReaveal for the  label and the input separately
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className='w-full space-y-2 px-1'>
