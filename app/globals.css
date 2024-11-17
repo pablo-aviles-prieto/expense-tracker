@@ -125,11 +125,61 @@
 }
 
 /* Override background color when processing is complete */
-.file-wrapper [data-filepond-item-state="processing-complete"] .filepond--file {
+.file-wrapper [data-filepond-item-state='processing-complete'] .filepond--file {
   background-color: rgb(54, 151, 99);
 }
 
 /* Override background color when there is an error */
-.file-wrapper [data-filepond-item-state="processing-error"] .filepond--file {
+.file-wrapper [data-filepond-item-state='processing-error'] .filepond--file {
   background-color: rgb(196, 78, 71);
+}
+
+.titled-image-container {
+  position: relative;
+  perspective: 1500px;
+  perspective-origin: 100% 0;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .titled-image-container {
+    perspective: 3000px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .titled-image-container {
+    perspective: 4500px;
+  }
+}
+
+/* Bottom fade */
+.titled-image-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 1));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Right fade */
+.titled-image-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 20%;
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 1));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tilted-image {
+  transform: translateX(2%) scale(1.2) rotateX(47deg) rotateY(31deg) rotate(324deg);
+  transform-origin: top left;
 }

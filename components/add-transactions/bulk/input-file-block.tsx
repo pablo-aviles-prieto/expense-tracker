@@ -1,25 +1,21 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { FilePond } from "react-filepond";
-import type { FilePondFile, FilePondInitialFile } from "filepond";
-import { URL_GET_CSV_HEADERS } from "@/utils/const";
-import type { ResponseFileHeaders } from "@/types";
-import { useToast } from "../../ui/use-toast";
+import { useEffect, useState } from 'react';
+
+import type { FilePondFile, FilePondInitialFile } from 'filepond';
+import { FilePond } from 'react-filepond';
+
+import type { ResponseFileHeaders } from '@/types';
+import { URL_GET_CSV_HEADERS } from '@/utils/const';
+import { useToast } from '../../ui/use-toast';
 
 type InputFileBlock = {
   files: (FilePondInitialFile | Blob | File)[];
-  setFiles: React.Dispatch<
-    React.SetStateAction<(FilePondInitialFile | File | Blob)[]>
-  >;
+  setFiles: React.Dispatch<React.SetStateAction<(FilePondInitialFile | File | Blob)[]>>;
   setCSVHeaders: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-export const InputFileBlock = ({
-  files,
-  setFiles,
-  setCSVHeaders,
-}: InputFileBlock) => {
+export const InputFileBlock = ({ files, setFiles, setCSVHeaders }: InputFileBlock) => {
   const [isReady, setIsReady] = useState(false);
   const { toast } = useToast();
 
@@ -28,24 +24,25 @@ export const InputFileBlock = ({
   }, []);
 
   const handleUpdateFiles = (fileItems: FilePondFile[]) => {
-    const updatedFiles: Array<FilePondInitialFile | File | Blob> =
-      fileItems.map((fileItem) => fileItem.file);
+    const updatedFiles: Array<FilePondInitialFile | File | Blob> = fileItems.map(
+      fileItem => fileItem.file
+    );
     setFiles(updatedFiles);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFileProcessedForHeaders = (response: any) => {
-    const { ok: responseOk, headers }: ResponseFileHeaders =
-      JSON.parse(response);
+    const { ok: responseOk, headers }: ResponseFileHeaders = JSON.parse(response);
     if (responseOk && headers) {
       setCSVHeaders(headers);
-      return "success";
+      return 'success';
     }
-    return "failure";
+    return 'failure';
   };
 
   return (
     <div
-      className="file-wrapper max-w-[400px] mx-auto pt-4"
+      className='file-wrapper mx-auto max-w-[400px] pt-4'
       style={isReady ? { opacity: 1 } : undefined}
     >
       <FilePond
@@ -56,31 +53,31 @@ export const InputFileBlock = ({
         onupdatefiles={handleUpdateFiles}
         credits={false}
         labelIdle='Drag & Drop your CSV files or <span class="filepond--label-action"> Browse </span>'
-        labelFileProcessing="Parsing"
-        labelFileProcessingComplete="Parse completed"
-        labelTapToCancel="Please wait..."
-        name="files"
+        labelFileProcessing='Parsing'
+        labelFileProcessingComplete='Parse completed'
+        labelTapToCancel='Please wait...'
+        name='files'
         server={{
           process: {
             url: URL_GET_CSV_HEADERS,
-            method: "POST",
+            method: 'POST',
             withCredentials: false,
             onload: handleFileProcessedForHeaders,
-            onerror: (response) => {
+            onerror: response => {
               try {
                 const parsedRes = JSON.parse(response);
                 toast({
-                  title: "There was an error uploading the file",
+                  title: 'There was an error uploading the file',
                   description: parsedRes.error,
-                  variant: "destructive",
+                  variant: 'destructive',
                 });
               } catch (error) {
                 // Meaning its not an object stringified
-                console.log("ERROR UPLOADING THE CSV:", response);
+                console.log('ERROR UPLOADING THE CSV:', response);
                 toast({
-                  title: "There was an error uploading the file",
+                  title: 'There was an error uploading the file',
                   description: `Please, contact to support or try again later`,
-                  variant: "destructive",
+                  variant: 'destructive',
                 });
               }
             },

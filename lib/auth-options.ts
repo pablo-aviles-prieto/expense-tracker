@@ -1,38 +1,31 @@
-import {
-  User as NextAuthUser,
-  DefaultSession,
-  Account,
-  Profile,
-} from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import clientPromise from "@/lib/mongodb-config";
-import { ICategories, IUser } from "@/models";
-import { JWT, encode } from "next-auth/jwt";
-import { CustomSessionI, TransactionsDateObj } from "@/types";
-import { compare } from "bcryptjs";
-import { isAuthProvider } from "@/utils/is-auth-provider";
-import { availableCurrency, availableDateFormatTypes } from "@/utils/const";
+import { MongoDBAdapter } from '@auth/mongodb-adapter';
+import { compare } from 'bcryptjs';
+import { Account, DefaultSession, User as NextAuthUser, Profile } from 'next-auth';
+import { encode, JWT } from 'next-auth/jwt';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
+
+import clientPromise from '@/lib/mongodb-config';
+import { ICategories, IUser } from '@/models';
+import { CustomSessionI, TransactionsDateObj } from '@/types';
+import { availableCurrency, availableDateFormatTypes } from '@/utils/const';
+import { isAuthProvider } from '@/utils/is-auth-provider';
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
   site: process.env.NEXTAUTH_URL,
   providers: [
     CredentialsProvider({
-      id: "user-pw",
-      name: "user/password",
+      id: 'user-pw',
+      name: 'user/password',
       async authorize(credentials, req) {
         const client = await clientPromise;
         const user = (await client
           .db()
-          .collection("users")
+          .collection('users')
           .findOne({ email: credentials?.email })) as IUser | null;
         if (!user) return null;
-        const passwordMatches = await compare(
-          credentials?.password || "",
-          user.password,
-        );
+        const passwordMatches = await compare(credentials?.password || '', user.password);
         if (!passwordMatches) return null;
         const returnedUser = {
           ...user,
@@ -41,21 +34,21 @@ export const authOptions = {
         return returnedUser;
       },
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID ?? "",
-      clientSecret: process.env.GOOGLE_SECRET ?? "",
+      clientId: process.env.GOOGLE_ID ?? '',
+      clientSecret: process.env.GOOGLE_SECRET ?? '',
     }),
   ],
   secret: process.env.JWT_SECRET,
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   theme: {
-    colorScheme: "dark",
+    colorScheme: 'dark',
   },
   jwt: {
     secret: process.env.JWT_SECRET,
@@ -69,7 +62,8 @@ export const authOptions = {
     }: {
       token: JWT;
       trigger: string;
-      user?: CustomSessionI["user"];
+      user?: CustomSessionI['user'];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       session: any;
     }) {
       // This callback is called whenever a JWT is created or updated.
@@ -84,16 +78,16 @@ export const authOptions = {
         token.dateFormat = user.dateFormat;
         token.theme = user.theme;
       }
-      if (trigger === "update" && session?.transDates) {
+      if (trigger === 'update' && session?.transDates) {
         token.transactionsDate = session.transDates;
       }
-      if (trigger === "update" && session?.currency) {
+      if (trigger === 'update' && session?.currency) {
         token.currency = session.currency;
       }
-      if (trigger === "update" && session?.dateFormat) {
+      if (trigger === 'update' && session?.dateFormat) {
         token.dateFormat = session.dateFormat;
       }
-      if (trigger === "update" && session?.theme) {
+      if (trigger === 'update' && session?.theme) {
         token.theme = session.theme;
       }
       return token;
@@ -104,7 +98,7 @@ export const authOptions = {
       if (session.user) {
         const jwtString = await encode({
           token,
-          secret: process.env.JWT_SECRET || "",
+          secret: process.env.JWT_SECRET || '',
         });
         const customSession: Partial<CustomSessionI> & DefaultSession = {
           ...session,
@@ -139,17 +133,13 @@ export const authOptions = {
         const client = await clientPromise;
         const db = client.db();
 
-        const existingUser = await db
-          .collection("users")
-          .findOne({ email: user.email });
+        const existingUser = await db.collection('users').findOne({ email: user.email });
         if (!existingUser) {
           const commonCategoriesCursor: ICategories[] = await db
-            .collection<ICategories>("categories")
+            .collection<ICategories>('categories')
             .find({ common: true })
             .toArray();
-          const commonCategories = commonCategoriesCursor.map(
-            (category) => category._id,
-          );
+          const commonCategories = commonCategoriesCursor.map(category => category._id);
 
           const { id, ...dataUser } = user;
           const newUser = {
@@ -158,36 +148,34 @@ export const authOptions = {
             dateFormat: availableDateFormatTypes.EU,
             signupDate: new Date().toISOString(),
             categories: commonCategories,
-            theme: "system",
+            theme: 'system',
           };
-          const createdUser = await db.collection("users").insertOne(newUser);
+          const createdUser = await db.collection('users').insertOne(newUser);
 
           const newAccount = {
             ...account,
             userId: createdUser.insertedId,
           };
-          await db.collection("accounts").insertOne(newAccount);
+          await db.collection('accounts').insertOne(newAccount);
         } else {
           // Checking if the account exists in the account/providers table, if it does, just update it,
           // if it doesnt, have to create it, meaning the user firstly created the account manually
           // and now is trying to access via an email provider
-          const accountUser = await db
-            .collection("accounts")
-            .findOne({ userId: existingUser._id });
+          const accountUser = await db.collection('accounts').findOne({ userId: existingUser._id });
           // If the user exist, it updates the expires_at prop
           if (accountUser) {
             await db
-              .collection("accounts")
+              .collection('accounts')
               .updateOne(
                 { userId: existingUser._id },
-                { $set: { expires_at: account.expires_at } },
+                { $set: { expires_at: account.expires_at } }
               );
           } else {
             const newAccount = {
               ...account,
               userId: existingUser._id,
             };
-            await db.collection("accounts").insertOne(newAccount);
+            await db.collection('accounts').insertOne(newAccount);
           }
         }
       }
@@ -196,6 +184,6 @@ export const authOptions = {
   },
   debug: false,
   pages: {
-    signIn: "/",
+    signIn: '/',
   },
 };

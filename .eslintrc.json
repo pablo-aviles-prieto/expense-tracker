@@ -1,10 +1,44 @@
 {
-  "extends": "next/core-web-vitals",
-  "plugins": ["@typescript-eslint"],
-  "rules": {
-    "@typescript-eslint/no-unused-vars": ["warn", { "args": "none" }],
-    "import/no-unresolved": "error",
-    "import/named": "off",
-    "no-console": "warn"
-  }
+  "ignorePatterns": ["dist"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals",
+    "plugin:tailwindcss/recommended"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.{ts,tsx}"],
+      "parserOptions": {
+        "ecmaVersion": 2020
+      },
+      "env": {
+        "browser": true
+      },
+      "plugins": ["react-refresh", "@typescript-eslint", "tailwindcss"],
+      "rules": {
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "react-refresh/only-export-components": "off",
+        "@typescript-eslint/no-empty-interface": "off",
+        "@typescript-eslint/no-unused-vars": ["warn", { "args": "none" }],
+        "import/no-unresolved": "error",
+        "import/named": "off",
+        "no-console": "off"
+      },
+      "settings": {
+        "tailwindcss": {
+          "callees": ["classnames", "clsx", "ctl", "cva", "cn", "tw"],
+          "config": "tailwind.config.js",
+          "cssFiles": ["**/*.css", "!**/node_modules", "!**/.*", "!**/dist", "!**/build"],
+          "cssFilesRefreshRate": 5000,
+          "removeDuplicates": true,
+          "skipClassAttribute": false,
+          "whitelist": [],
+          "tags": [],
+          "classRegex": "^class(Name)?$"
+        }
+      }
+    }
+  ]
 }

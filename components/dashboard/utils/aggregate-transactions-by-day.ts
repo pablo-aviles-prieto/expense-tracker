@@ -1,11 +1,10 @@
-import type { TransactionObjBack } from "@/types";
+import type { TransactionObjBack } from '@/types';
 
-type AccTypeKey = "incomes" | "expenses" | "date";
+type AccTypeKey = 'incomes' | 'expenses' | 'date';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AccType = Record<string, Record<AccTypeKey, any>>;
 
-export const aggregateTransactionsByDay = (
-  transactions: TransactionObjBack[],
-) => {
+export const aggregateTransactionsByDay = (transactions: TransactionObjBack[]) => {
   const dailyTotals = transactions.reduce((acc: AccType, transaction) => {
     const day = transaction.date;
     if (!acc[day]) {
@@ -19,11 +18,9 @@ export const aggregateTransactionsByDay = (
     return acc;
   }, {});
 
-  const sortedDailyData = Object.values(dailyTotals).sort((a, b) =>
-    a.date.localeCompare(b.date),
-  );
+  const sortedDailyData = Object.values(dailyTotals).sort((a, b) => a.date.localeCompare(b.date));
 
-  return sortedDailyData.map((entry) => ({
+  return sortedDailyData.map(entry => ({
     name: entry.date,
     incomes: Number(entry.incomes.toFixed(2)),
     expenses: Number(entry.expenses.toFixed(2)),
