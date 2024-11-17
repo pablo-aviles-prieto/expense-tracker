@@ -15,6 +15,7 @@ release:
       new-prefix: ''
     - replace-prefix: 'chore(): '
       new-prefix: ''
+  pull-request-commit: 'include_merge_commit_only'
 branch:
   base-branch: 'main'
   version-branch-prefix: 'v'
