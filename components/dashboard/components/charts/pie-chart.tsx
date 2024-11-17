@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
 
 import { useCurrency } from '@/hooks/use-currency';
+import { cn } from '@/lib/utils';
 import { getEllipsed } from '@/utils/const';
 import { formatAmount } from '@/utils/format-amount';
 import type { PieChartData } from '../../types/pie-chart';
@@ -51,7 +52,7 @@ const renderActiveShape = ({ props, pieColor, currency }: RenderActiveShapeProps
     <g>
       <foreignObject x={cx - 50} y={cy - 8} width='95' height='40'>
         <div
-          className={`w-full text-center text-[14px] text-sm ${getEllipsed}`}
+          className={cn('w-full text-center text-sm', getEllipsed)}
           style={{ color: fill.slice(0, -2) }}
         >
           {payload.name}
