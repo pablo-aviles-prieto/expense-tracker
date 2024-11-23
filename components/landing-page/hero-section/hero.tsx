@@ -7,7 +7,7 @@ export const HeroSection = () => {
       <Typography className='font-rifton text-xl sm:text-3xl md:text-4xl xl:text-5xl'>
         Manage your transactions and subscriptions with ease
       </Typography>
-      <Typography variant='h5' className='mx-auto my-6 max-w-sm font-normal text-gray-400'>
+      <Typography variant='h5' className='mx-auto mb-14 mt-6 max-w-sm font-normal text-gray-400'>
         Track your incomes, expenses and subscriptions all in one place
       </Typography>
       <ActionButton />

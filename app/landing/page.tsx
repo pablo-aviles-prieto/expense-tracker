@@ -12,7 +12,7 @@ export default function LandingPage() {
       <section className='space-y-8'>
         <BlobBackground blobBground='inset-[5rem] bottom-[20rem] md:inset-[15rem] md:bottom-[20rem]'>
           <Header />
-          <div className='container mx-auto mt-32'>
+          <div className='container mx-auto mt-36'>
             <HeroSection />
           </div>
         </BlobBackground>

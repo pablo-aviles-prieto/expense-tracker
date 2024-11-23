@@ -10,12 +10,12 @@ export async function ActionButton() {
       <AnimatedGradientText>
         <span
           className={cn(
-            `inline animate-gradient bg-gradient-to-r from-[#00e60c] via-[#9c40ff] to-[#00e60c] bg-[length:var(--bg-size)_100%] bg-clip-text px-2 py-1 text-base text-transparent`
+            `inline animate-gradient bg-gradient-to-r from-[#00e60c] via-[#9c40ff] to-[#00e60c] bg-[length:var(--bg-size)_100%] bg-clip-text px-2 py-1 text-lg text-transparent`
           )}
         >
           Start growing your wealth
         </span>
-        <ChevronRight className='ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5' />
+        <ChevronRight className='ml-1 size-4 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5' />
       </AnimatedGradientText>
     </Link>
   );
