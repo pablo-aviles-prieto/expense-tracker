@@ -22,7 +22,6 @@ export default function LandingPage() {
       <FeaturesSection />
       <OpenSourceSection />
       <ContactSection />
-      {/* <section className='h-[400px] text-center'>Contact/suggestions via mail/github</section> */}
     </section>
   );
 }

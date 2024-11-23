@@ -4,6 +4,7 @@ import { Icons } from '../icons';
 import { Typography } from '../ui/typography';
 
 // TODO: Clean unused landing images
+// TODO: Change the color of the text and bgrounds to work only for dark theme
 export const Header = () => {
   return (
     <header className='h-16'>
