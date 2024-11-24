@@ -13,7 +13,7 @@ import { TransactionsInfo } from './transactions-info';
 const IPHONE_MOCKUP_HEIGHT = 590;
 
 export const ImagesSection = () => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [viewportHeight, setViewportHeight] = useState(0);
 
   // Checking if the viewport height is high enough to display the iphone height + 90px on top and bottom
@@ -21,7 +21,7 @@ export const ImagesSection = () => {
 
   useEffect(() => {
     const updateViewportHeight = () => {
-      setViewportHeight(window.innerHeight);
+      setViewportHeight(window.outerHeight);
     };
 
     updateViewportHeight();
@@ -36,14 +36,21 @@ export const ImagesSection = () => {
     () => {
       gsap.registerPlugin(ScrollTrigger);
 
+      ScrollTrigger.defaults({
+        trigger: containerRef.current,
+        scrub: true,
+      });
+
+      // TODO: Add an opacity 0 for the first pixels of scroll in mobile with
+      // gsap.matchMedia().add() to avoid in iOS the fucking lag on resize when
+      // the navigation bar disappears
+
       // Animating the 3 images into the iphone15 mockup
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: containerRef.current,
             start: 200,
             end: 500,
-            scrub: true,
           },
         })
         .fromTo(
@@ -68,10 +75,8 @@ export const ImagesSection = () => {
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: containerRef.current,
             start: '-=200 top',
             end: '+=100px',
-            scrub: true,
           },
         })
         .fromTo('.dashboard-info-text', { opacity: 0, x: -100 }, { opacity: 1, x: 0, duration: 1 });
@@ -79,10 +84,8 @@ export const ImagesSection = () => {
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: containerRef.current,
             start: '-100 top',
             end: '+=200px',
-            scrub: true,
           },
         })
         .fromTo('.dashboard-frame', { opacity: 0 }, { opacity: 1 })
@@ -92,10 +95,8 @@ export const ImagesSection = () => {
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: containerRef.current,
             start: '+=200 top', // Start 200px from the top of the container when the viewport's top reaches it
             end: '+=200px', // Finishing the animation 400px later
-            scrub: true,
           },
         })
         .to('.right-image-dashboard', { x: -600, opacity: 0, duration: 1 })
@@ -110,10 +111,8 @@ export const ImagesSection = () => {
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: containerRef.current,
             start: '+=400 top',
             end: '+=200px',
-            scrub: true,
           },
         })
         .fromTo('.transactions-frame', { opacity: 0 }, { opacity: 1 })
@@ -123,10 +122,8 @@ export const ImagesSection = () => {
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: containerRef.current,
             start: '+=700 top', // Start 200px from the top of the container when the viewport's top reaches it
             end: '+=200px', // Finishing the animation 400px later
-            scrub: true,
           },
         })
         .to('.center-image-transactions', { x: 300, opacity: 0, duration: 1 })
@@ -141,10 +138,8 @@ export const ImagesSection = () => {
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: containerRef.current,
             start: '+=900 top',
             end: '+=200px',
-            scrub: true,
           },
         })
         .fromTo('.subscriptions-frame', { opacity: 0 }, { opacity: 1 })
@@ -153,7 +148,6 @@ export const ImagesSection = () => {
       // Makes the iphone15 mockup sticky while scrolling
       // Keeping in last position scroll trigger to not interfere on the scroll order
       ScrollTrigger.create({
-        trigger: containerRef.current,
         start: 'top top',
         end: '+=1300px',
         pin: true,

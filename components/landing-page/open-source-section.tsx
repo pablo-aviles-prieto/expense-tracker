@@ -12,7 +12,7 @@ export const OpenSourceSection = () => {
           behind the scenes. You’re welcome to explore the repository, make suggestions, and
           contribute through pull requests or issues. Let’s build a better tool together!
         </Typography>
-        <div className='titled-image-container h-[300px] rounded-lg contain-strict md:h-[550px] xl:h-[700px]'>
+        <div className='tilted-image-container h-[300px] rounded-lg contain-strict md:h-[550px] xl:h-[700px]'>
           <a
             href='https://github.com/pablo-aviles-prieto/expense-tracker'
             target='_blank'

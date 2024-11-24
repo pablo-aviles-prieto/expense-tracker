@@ -1,3 +1,5 @@
+import { Metadata } from 'next';
+
 import { ContactSection } from '@/components/landing-page/contact-section/contact-section';
 import { FeaturesSection } from '@/components/landing-page/features-section/features';
 import { Header } from '@/components/landing-page/header';
@@ -6,7 +8,11 @@ import { HeroSection } from '@/components/landing-page/hero-section/hero';
 import { ImagesSection } from '@/components/landing-page/images-section/images-section';
 import { OpenSourceSection } from '@/components/landing-page/open-source-section';
 
-export default function LandingPage() {
+export const metadata: Metadata = {
+  title: 'Expense tracker - Discover what we can offer you',
+};
+
+export default async function LandingPage() {
   return (
     <section className='space-y-52 overflow-auto overflow-x-hidden bg-black'>
       <section className='space-y-8'>
