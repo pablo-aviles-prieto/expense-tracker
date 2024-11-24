@@ -44,7 +44,6 @@ export const ImagesSection = () => {
             start: 200,
             end: 500,
             scrub: true,
-            // markers: true,
           },
         })
         .fromTo(
@@ -73,7 +72,6 @@ export const ImagesSection = () => {
             start: '-=200 top',
             end: '+=100px',
             scrub: true,
-            // markers: true,
           },
         })
         .fromTo('.dashboard-info-text', { opacity: 0, x: -100 }, { opacity: 1, x: 0, duration: 1 });
@@ -85,7 +83,6 @@ export const ImagesSection = () => {
             start: '-100 top',
             end: '+=200px',
             scrub: true,
-            // markers: true,
           },
         })
         .fromTo('.dashboard-frame', { opacity: 0 }, { opacity: 1 })
@@ -99,7 +96,6 @@ export const ImagesSection = () => {
             start: '+=200 top', // Start 200px from the top of the container when the viewport's top reaches it
             end: '+=200px', // Finishing the animation 400px later
             scrub: true,
-            // markers: true,
           },
         })
         .to('.right-image-dashboard', { x: -600, opacity: 0, duration: 1 })
@@ -118,7 +114,6 @@ export const ImagesSection = () => {
             start: '+=400 top',
             end: '+=200px',
             scrub: true,
-            // markers: true,
           },
         })
         .fromTo('.transactions-frame', { opacity: 0 }, { opacity: 1 })
@@ -132,7 +127,6 @@ export const ImagesSection = () => {
             start: '+=700 top', // Start 200px from the top of the container when the viewport's top reaches it
             end: '+=200px', // Finishing the animation 400px later
             scrub: true,
-            // markers: true,
           },
         })
         .to('.center-image-transactions', { x: 300, opacity: 0, duration: 1 })
@@ -151,7 +145,6 @@ export const ImagesSection = () => {
             start: '+=900 top',
             end: '+=200px',
             scrub: true,
-            // markers: true,
           },
         })
         .fromTo('.subscriptions-frame', { opacity: 0 }, { opacity: 1 })
@@ -166,7 +159,6 @@ export const ImagesSection = () => {
         pin: true,
         pinSpacing: false,
         scrub: false,
-        markers: true,
       });
     },
     { scope: containerRef }
