@@ -10,10 +10,12 @@ import { DashboardInfo } from './dashboard-info';
 import { SubscriptionsInfo } from './subscriptions-info';
 import { TransactionsInfo } from './transactions-info';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const IPHONE_MOCKUP_HEIGHT = 590;
 
 export const ImagesSection = () => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [viewportHeight, setViewportHeight] = useState(0);
 
   // Checking if the viewport height is high enough to display the iphone height + 90px on top and bottom
@@ -21,7 +23,7 @@ export const ImagesSection = () => {
 
   useEffect(() => {
     const updateViewportHeight = () => {
-      setViewportHeight(window.innerHeight);
+      setViewportHeight(window.outerHeight);
     };
 
     updateViewportHeight();
@@ -34,7 +36,32 @@ export const ImagesSection = () => {
 
   useGSAP(
     () => {
-      gsap.registerPlugin(ScrollTrigger);
+      gsap.matchMedia().add(
+        {
+          // Condition created to trigger the animation if it has 300px or more
+          isMobile: `(min-width: 300px)`,
+          // Condition for screens 768px and up
+          isDesktop: `(min-width: 768px)`,
+        },
+        context => {
+          const isDesktop = context.conditions?.isDesktop;
+          const startingCenterImageOpacity = isDesktop ? 1 : 0;
+          gsap
+            .timeline({
+              scrollTrigger: {
+                trigger: containerRef.current,
+                start: 200,
+                end: 350,
+                scrub: true,
+              },
+            })
+            .fromTo(
+              '.center-image-transactions',
+              { opacity: startingCenterImageOpacity },
+              { opacity: 1, duration: 0.5 }
+            );
+        }
+      );
 
       // Animating the 3 images into the iphone15 mockup
       gsap
@@ -44,24 +71,14 @@ export const ImagesSection = () => {
             start: 200,
             end: 500,
             scrub: true,
-            // markers: true,
           },
         })
-        .fromTo(
-          '.left-image-subscriptions',
-          { x: -150, y: -350, opacity: 1 },
-          { x: 300, y: 10, opacity: 1, duration: 1 }
-        )
-        .fromTo(
-          '.center-image-transactions',
-          { x: 0, y: -350, opacity: 1 },
-          { x: -0, y: 10, opacity: 1, duration: 1 },
-          '<'
-        )
+        .fromTo('.left-image-subscriptions', { x: -150, y: -350 }, { x: 300, y: 10, duration: 1 })
+        .fromTo('.center-image-transactions', { x: 0, y: -350 }, { x: -0, y: 10, duration: 1 }, '<')
         .fromTo(
           '.right-image-dashboard',
-          { x: 150, y: -350, opacity: 1 },
-          { x: -300, y: 10, opacity: 1, duration: 1 },
+          { x: 150, y: -350 },
+          { x: -300, y: 10, duration: 1 },
           '<'
         );
 
@@ -73,7 +90,6 @@ export const ImagesSection = () => {
             start: '-=200 top',
             end: '+=100px',
             scrub: true,
-            // markers: true,
           },
         })
         .fromTo('.dashboard-info-text', { opacity: 0, x: -100 }, { opacity: 1, x: 0, duration: 1 });
@@ -85,7 +101,6 @@ export const ImagesSection = () => {
             start: '-100 top',
             end: '+=200px',
             scrub: true,
-            // markers: true,
           },
         })
         .fromTo('.dashboard-frame', { opacity: 0 }, { opacity: 1 })
@@ -99,7 +114,6 @@ export const ImagesSection = () => {
             start: '+=200 top', // Start 200px from the top of the container when the viewport's top reaches it
             end: '+=200px', // Finishing the animation 400px later
             scrub: true,
-            // markers: true,
           },
         })
         .to('.right-image-dashboard', { x: -600, opacity: 0, duration: 1 })
@@ -118,7 +132,6 @@ export const ImagesSection = () => {
             start: '+=400 top',
             end: '+=200px',
             scrub: true,
-            // markers: true,
           },
         })
         .fromTo('.transactions-frame', { opacity: 0 }, { opacity: 1 })
@@ -132,7 +145,6 @@ export const ImagesSection = () => {
             start: '+=700 top', // Start 200px from the top of the container when the viewport's top reaches it
             end: '+=200px', // Finishing the animation 400px later
             scrub: true,
-            // markers: true,
           },
         })
         .to('.center-image-transactions', { x: 300, opacity: 0, duration: 1 })
@@ -151,7 +163,6 @@ export const ImagesSection = () => {
             start: '+=900 top',
             end: '+=200px',
             scrub: true,
-            // markers: true,
           },
         })
         .fromTo('.subscriptions-frame', { opacity: 0 }, { opacity: 1 })
@@ -166,7 +177,6 @@ export const ImagesSection = () => {
         pin: true,
         pinSpacing: false,
         scrub: false,
-        markers: true,
       });
     },
     { scope: containerRef }

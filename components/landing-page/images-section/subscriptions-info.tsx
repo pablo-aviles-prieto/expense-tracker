@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+// TODO: Add the mobile text/arrow
 export const SubscriptionsInfo = () => {
   return (
     <div className='subscriptions-info-text absolute -left-[215px] top-[calc(50%-123px)] max-w-[210px]'>

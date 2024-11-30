@@ -134,7 +134,7 @@
   background-color: rgb(196, 78, 71);
 }
 
-.titled-image-container {
+.tilted-image-container {
   position: relative;
   perspective: 1500px;
   perspective-origin: 100% 0;
@@ -142,19 +142,19 @@
 }
 
 @media (min-width: 768px) {
-  .titled-image-container {
+  .tilted-image-container {
     perspective: 3000px;
   }
 }
 
 @media (min-width: 1280px) {
-  .titled-image-container {
+  .tilted-image-container {
     perspective: 4500px;
   }
 }
 
 /* Bottom fade */
-.titled-image-container::after {
+.tilted-image-container::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -167,7 +167,7 @@
 }
 
 /* Right fade */
-.titled-image-container::before {
+.tilted-image-container::before {
   content: '';
   position: absolute;
   top: 0;
