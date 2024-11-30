@@ -53,7 +53,6 @@ export const ImagesSection = () => {
                 start: 200,
                 end: 350,
                 scrub: true,
-                markers: true,
               },
             })
             .fromTo(
