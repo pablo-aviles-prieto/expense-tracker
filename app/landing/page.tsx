@@ -22,6 +22,7 @@ export default function LandingPage() {
             <HeroSection />
           </div>
         </BlobBackground>
+        <section className='spacing-the-header h-[200px] md:h-0' />
         <ImagesSection />
         <section className='spacing-the-scroll-animation h-[1100px]' />
       </section>

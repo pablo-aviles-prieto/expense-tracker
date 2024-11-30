@@ -11,6 +11,10 @@ export const HeroSection = () => {
         Track your incomes, expenses and subscriptions all in one place
       </Typography>
       <ActionButton />
+      {/* TODO: Improve the text */}
+      <Typography variant='h5' className='mx-auto my-14 max-w-sm font-normal text-gray-400'>
+        Or keep scrolling to discover more
+      </Typography>
     </div>
   );
 };

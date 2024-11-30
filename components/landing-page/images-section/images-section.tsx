@@ -36,9 +36,33 @@ export const ImagesSection = () => {
 
   useGSAP(
     () => {
-      // TODO: Add an opacity 0 for the first pixels of scroll in mobile with
-      // gsap.matchMedia().add() to avoid in iOS the fucking lag on resize when
-      // the navigation bar disappears
+      gsap.matchMedia().add(
+        {
+          // Condition created to trigger the animation if it has 300px or more
+          isMobile: `(min-width: 300px)`,
+          // Condition for screens 768px and up
+          isDesktop: `(min-width: 768px)`,
+        },
+        context => {
+          const isDesktop = context.conditions?.isDesktop;
+          const startingCenterImageOpacity = isDesktop ? 1 : 0;
+          gsap
+            .timeline({
+              scrollTrigger: {
+                trigger: containerRef.current,
+                start: 200,
+                end: 350,
+                scrub: true,
+                markers: true,
+              },
+            })
+            .fromTo(
+              '.center-image-transactions',
+              { opacity: startingCenterImageOpacity },
+              { opacity: 1, duration: 0.5 }
+            );
+        }
+      );
 
       // Animating the 3 images into the iphone15 mockup
       gsap
@@ -50,21 +74,12 @@ export const ImagesSection = () => {
             scrub: true,
           },
         })
-        .fromTo(
-          '.left-image-subscriptions',
-          { x: -150, y: -350, opacity: 1 },
-          { x: 300, y: 10, opacity: 1, duration: 1 }
-        )
-        .fromTo(
-          '.center-image-transactions',
-          { x: 0, y: -350, opacity: 1 },
-          { x: -0, y: 10, opacity: 1, duration: 1 },
-          '<'
-        )
+        .fromTo('.left-image-subscriptions', { x: -150, y: -350 }, { x: 300, y: 10, duration: 1 })
+        .fromTo('.center-image-transactions', { x: 0, y: -350 }, { x: -0, y: 10, duration: 1 }, '<')
         .fromTo(
           '.right-image-dashboard',
-          { x: 150, y: -350, opacity: 1 },
-          { x: -300, y: 10, opacity: 1, duration: 1 },
+          { x: 150, y: -350 },
+          { x: -300, y: 10, duration: 1 },
           '<'
         );
 
