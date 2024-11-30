@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: 'Expense tracker - Discover what we can offer you',
 };
 
-export default async function LandingPage() {
+export default function LandingPage() {
   return (
     <section className='space-y-52 overflow-auto overflow-x-hidden bg-black'>
       <section className='space-y-8'>
