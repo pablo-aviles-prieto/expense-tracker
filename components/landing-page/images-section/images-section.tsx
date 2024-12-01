@@ -216,7 +216,7 @@ export const ImagesSection = () => {
       />
 
       <DashboardInfo hasEnoughHeight={hasEnoughHeight} />
-      <TransactionsInfo />
+      <TransactionsInfo hasEnoughHeight={hasEnoughHeight} />
       <SubscriptionsInfo />
     </div>
   );
