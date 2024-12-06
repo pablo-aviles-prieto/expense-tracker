@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { Icons } from '../icons';
 import { Typography } from '../ui/typography';
 
-// TODO: Clean unused landing images!
 export const Header = () => {
   return (
     <header className='h-16'>
