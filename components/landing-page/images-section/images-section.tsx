@@ -182,7 +182,6 @@ export const ImagesSection = () => {
     { scope: containerRef }
   );
 
-  // TODO: Finish the texts for subscriptions and transactions in mobile, adding their arrows!
   // TODO: Convert the png imgs to webp
   return (
     <div
