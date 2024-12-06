@@ -1,3 +1,4 @@
+import WordFadeIn from '@/components/ui/word-fade-in';
 import { Typography } from '../../ui/typography';
 import { ActionButton } from './action-button';
 
@@ -11,9 +12,10 @@ export const HeroSection = () => {
         Track your incomes, expenses and subscriptions all in one place
       </Typography>
       <ActionButton />
-      <Typography variant='h5' className='mx-auto my-14 mt-28 font-normal text-gray-400 md:mt-14'>
-        Scroll down to see how we simplify managing your finances
-      </Typography>
+      <WordFadeIn
+        className='mx-auto my-14 mt-28 text-base font-normal tracking-tight text-gray-400 dark:text-gray-400 md:mt-14 md:text-base'
+        words='Discover how we simplify managing your finances'
+      />
     </div>
   );
 };
