@@ -182,7 +182,6 @@ export const ImagesSection = () => {
     { scope: containerRef }
   );
 
-  // TODO: Convert the png imgs to webp
   return (
     <div
       ref={containerRef}
@@ -191,25 +190,25 @@ export const ImagesSection = () => {
       <div className='images-wrapper flex items-center justify-center gap-x-4'>
         <img
           className='left-image-subscriptions h-[565px] w-[281px] rounded-lg'
-          src='/images/landing/image3.png'
-          alt='Dashboard image'
+          src='/images/landing/subscriptions-image.png'
+          alt='Subscriptions image'
         />
         <img
           className='center-image-transactions h-[565px] w-[281px] rounded-lg'
-          src='/images/landing/image2.png'
+          src='/images/landing/transactions-image.png'
           alt='Transactions image'
         />
         <img
           className='right-image-dashboard h-[565px] w-[281px] rounded-lg'
-          src='/images/landing/image1.png'
-          alt='Subscriptions image'
+          src='/images/landing/dashboard-image.png'
+          alt='Dasboard image'
         />
       </div>
 
       {/* iPhone mockup */}
       <img
         alt='iphone15 mockup'
-        src='/images/landing/iphone15-mockup.png'
+        src='/images/landing/iphone15-mockup.webp'
         className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2'
         style={{ height: IPHONE_MOCKUP_HEIGHT }}
       />
