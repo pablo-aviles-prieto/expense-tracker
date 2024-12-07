@@ -29,17 +29,17 @@ export const GSAPFadeInContainer = ({
       },
       context => {
         const isDesktop = context.conditions?.isDesktop;
+        const useFadeInFromTop = isDesktop || disableMobileAnimations;
 
         childrenRefs.current.forEach((childElement, index) => {
           if (!childElement) return;
 
-          const delay = isDesktop || disableMobileAnimations ? delayStep * index : 0;
-          const startXAxis =
-            isDesktop || disableMobileAnimations ? 0 : 50 * (index % 2 === 0 ? 1 : -1);
+          const delay = useFadeInFromTop ? delayStep * index : 0;
+          const startXAxis = useFadeInFromTop ? 0 : 50 * (index % 2 === 0 ? 1 : -1);
 
           gsap.fromTo(
             childElement,
-            { opacity: 0, y: isDesktop ? 25 : 0, x: startXAxis },
+            { opacity: 0, y: useFadeInFromTop ? 25 : 0, x: startXAxis },
             {
               delay,
               opacity: 1,
