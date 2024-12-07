@@ -9,7 +9,7 @@ import { ImagesSection } from '@/components/landing-page/images-section/images-s
 import { OpenSourceSection } from '@/components/landing-page/open-source-section';
 
 export const metadata: Metadata = {
-  title: 'Expense tracker - Discover what we can offer you',
+  title: 'Expense Tracker - Discover what we can offer you',
 };
 
 export default function LandingPage() {
