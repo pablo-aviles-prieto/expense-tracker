@@ -1,3 +1,4 @@
+import { GSAPFadeInContainer } from '@/components/containers/gsap-fade-in-container';
 import { SectionBlock } from '../section-block-wrapper';
 import { FeatureCard, FeatureCardProps } from './feature-card';
 
@@ -26,9 +27,11 @@ export const FeaturesSection = () => {
   return (
     <SectionBlock title='Empower Your Finances'>
       <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
-        {FEATURES_DATA.map((feature, idx) => (
-          <FeatureCard key={feature.title} delay={idx * 0.2} index={idx} {...feature} />
-        ))}
+        <GSAPFadeInContainer delayStep={1}>
+          {FEATURES_DATA.map(feature => (
+            <FeatureCard key={feature.title} {...feature} />
+          ))}
+        </GSAPFadeInContainer>
       </div>
     </SectionBlock>
   );
