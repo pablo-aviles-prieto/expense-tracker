@@ -11,10 +11,14 @@ gsap.registerPlugin(ScrollTrigger);
 export interface GSAPAnimatedContainerProps {
   children: React.ReactNode;
   delayStep?: number;
+  disableMobileAnimations?: boolean;
 }
 
-export const GSAPFadeInContainer = ({ children, delayStep = 0.2 }: GSAPAnimatedContainerProps) => {
-  // const containerRef = useRef<HTMLDivElement>(null);
+export const GSAPFadeInContainer = ({
+  children,
+  delayStep = 0.2,
+  disableMobileAnimations = false,
+}: GSAPAnimatedContainerProps) => {
   const childrenRefs = useRef<HTMLElement[]>([]);
 
   useGSAP(() => {
@@ -29,8 +33,9 @@ export const GSAPFadeInContainer = ({ children, delayStep = 0.2 }: GSAPAnimatedC
         childrenRefs.current.forEach((childElement, index) => {
           if (!childElement) return;
 
-          const delay = isDesktop ? delayStep * index : 0;
-          const startXAxis = isDesktop ? 0 : 50 * (index % 2 === 0 ? 1 : -1);
+          const delay = isDesktop || disableMobileAnimations ? delayStep * index : 0;
+          const startXAxis =
+            isDesktop || disableMobileAnimations ? 0 : 50 * (index % 2 === 0 ? 1 : -1);
 
           gsap.fromTo(
             childElement,
@@ -51,7 +56,7 @@ export const GSAPFadeInContainer = ({ children, delayStep = 0.2 }: GSAPAnimatedC
         });
       }
     );
-  }, [children, delayStep]);
+  }, [children, delayStep, disableMobileAnimations]);
 
   const assignRef = (ref: HTMLElement | null, index: number) => {
     if (ref) childrenRefs.current[index] = ref;

@@ -27,7 +27,7 @@ export const FeaturesSection = () => {
   return (
     <SectionBlock title='Empower Your Finances'>
       <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
-        <GSAPFadeInContainer delayStep={1}>
+        <GSAPFadeInContainer delayStep={0.2}>
           {FEATURES_DATA.map(feature => (
             <FeatureCard key={feature.title} {...feature} />
           ))}
