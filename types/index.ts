@@ -1,12 +1,12 @@
-import { Icons } from "@/components/icons";
+import { Icons } from '@/components/icons';
 
-export * from "./get-values-from-obj";
-export * from "./custom-session";
-export * from "./user";
-export * from "./categories";
-export * from "./toaster-toast";
-export * from "./transaction";
-export * from "./subscriptions";
+export * from './get-values-from-obj';
+export * from './custom-session';
+export * from './user';
+export * from './categories';
+export * from './toaster-toast';
+export * from './transaction';
+export * from './subscriptions';
 
 export interface NavItem {
   title: string;
@@ -38,3 +38,9 @@ export interface FooterItem {
 export type MainNavItem = NavItemWithOptionalChildren;
 
 export type SidebarNavItem = NavItemWithChildren;
+
+export type ParamsProps = {
+  searchParams: {
+    [key: string]: string | undefined;
+  };
+};

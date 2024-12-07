@@ -1,12 +1,7 @@
-import { ResetPasswordBlock } from "@/components/reset-password-block/reset-password-block";
-import { verifyRecoveryToken } from "@/services/user";
-import { errorMessages } from "@/utils/const";
-
-type ParamsProps = {
-  searchParams: {
-    [key: string]: string | undefined;
-  };
-};
+import { ResetPasswordBlock } from '@/components/reset-password-block/reset-password-block';
+import { verifyRecoveryToken } from '@/services/user';
+import { ParamsProps } from '@/types';
+import { errorMessages } from '@/utils/const';
 
 const decodedToken = async (token: string) => {
   try {
@@ -19,11 +14,9 @@ const decodedToken = async (token: string) => {
   }
 };
 
-export default async function AuthenticationPage({
-  searchParams,
-}: ParamsProps) {
+export default async function AuthenticationPage({ searchParams }: ParamsProps) {
   const { token } = searchParams;
-  const decodedTkn = await decodedToken(token ?? "");
+  const decodedTkn = await decodedToken(token ?? '');
 
   return <ResetPasswordBlock decodedToken={decodedTkn} />;
 }
