@@ -7,8 +7,19 @@ import Image from 'next/image';
 import { UserLoginBlock } from './forms/user-login-form/user-login-block';
 import { UserRegisterBlock } from './forms/user-register-form/user-register-block';
 
-export const AuthBlock = () => {
-  const [isLoginPage, setIsLoginPage] = useState(true);
+interface AuthBlockProps {
+  page?: string;
+}
+
+type PossibleAuthTypes = 'login' | 'signup';
+
+const isPossibleAuthType = (value?: string): value is PossibleAuthTypes =>
+  value === 'login' || value === 'signup';
+
+export const AuthBlock = ({ page }: AuthBlockProps) => {
+  const [pageType, setPageType] = useState<PossibleAuthTypes>(
+    isPossibleAuthType(page) ? page : 'login'
+  );
 
   return (
     <div className='mx-auto w-full'>
@@ -19,17 +30,17 @@ export const AuthBlock = () => {
       <div className='relative mx-auto flex min-h-[600px] w-full flex-col justify-center space-y-6 overflow-hidden sm:w-[375px]'>
         <div
           className={`absolute inset-0 px-1 transition-transform duration-500 sm:px-4 ${
-            isLoginPage ? 'translate-x-0' : '-translate-x-full'
+            pageType === 'login' ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
-          <UserLoginBlock switchForm={() => setIsLoginPage(false)} />
+          <UserLoginBlock switchForm={() => setPageType('signup')} />
         </div>
         <div
           className={`absolute inset-0 !mt-0 px-1 transition-transform duration-500 sm:px-4 ${
-            isLoginPage ? 'translate-x-full' : 'translate-x-0'
+            pageType === 'signup' ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <UserRegisterBlock switchForm={() => setIsLoginPage(true)} />
+          <UserRegisterBlock switchForm={() => setPageType('login')} />
         </div>
       </div>
     </div>
