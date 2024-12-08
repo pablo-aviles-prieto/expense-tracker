@@ -1,15 +1,9 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 
 import ShinyButton from '../ui/shiny-button';
 import { Typography } from '../ui/typography';
 
-// TODO: (IN A NEW BRANCH FROM LANDING-PAGE) Change the routes so '/' index is the landing,
-// create a route for auth (login/signup) and if is logged in, go to dashboard.
-// If the user tries to access any path but / and is not logged in, finish on auth
-// since it should mean that he already knows the page
 export const Header = () => {
   return (
     <header className='h-16'>
