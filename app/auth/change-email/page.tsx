@@ -1,12 +1,7 @@
-import { ChangeEmail } from "@/components/change-email-page/change-email-page";
-import { verifyChangeMailToken } from "@/services/user";
-import { errorMessages } from "@/utils/const";
-
-type ParamsProps = {
-  searchParams: {
-    [key: string]: string | undefined;
-  };
-};
+import { ChangeEmail } from '@/components/change-email-page/change-email-page';
+import { verifyChangeMailToken } from '@/services/user';
+import { ParamsProps } from '@/types';
+import { errorMessages } from '@/utils/const';
 
 const decodedToken = async (token: string) => {
   try {
@@ -21,7 +16,7 @@ const decodedToken = async (token: string) => {
 
 export default async function ChangeEmailPage({ searchParams }: ParamsProps) {
   const { token } = searchParams;
-  const decodedTkn = await decodedToken(token ?? "");
+  const decodedTkn = await decodedToken(token ?? '');
 
   return <ChangeEmail decodedToken={decodedTkn} />;
 }

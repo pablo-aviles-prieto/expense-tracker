@@ -1,39 +1,29 @@
-import BreadCrumb from "@/components/breadcrumb";
-import { ErrorBlock } from "@/components/tables/transactions-tables/error-block";
-import { TransactionsTable } from "@/components/tables/transactions-tables/transaction-table";
-import { getActiveFilters } from "@/components/tables/transactions-tables/utils/get-active-filters";
-import { buttonVariants } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { authOptions } from "@/lib/auth-options";
-import { cn } from "@/lib/utils";
-import { FilteredTransactionsSchema } from "@/schemas/filtered-transactions-schema";
-import { getFilteredTransactions } from "@/services/transactions";
-import { getUserCategories } from "@/services/user";
-import type { CustomSessionI } from "@/types";
-import {
-  DEFAULT_PAGE,
-  DEFAULT_PAGE_LIMIT,
-  dateFormat,
-  errorMessages,
-} from "@/utils/const";
-import { parseZodErrors } from "@/utils/parse-zod-errors";
-import { format, subYears } from "date-fns";
-import { Plus } from "lucide-react";
-import { type NextAuthOptions, getServerSession } from "next-auth";
-import Link from "next/link";
-import { z } from "zod";
+import { format, subYears } from 'date-fns';
+import { Plus } from 'lucide-react';
+import { getServerSession, type NextAuthOptions } from 'next-auth';
+import Link from 'next/link';
+import { z } from 'zod';
+
+import BreadCrumb from '@/components/breadcrumb';
+import { ErrorBlock } from '@/components/tables/transactions-tables/error-block';
+import { TransactionsTable } from '@/components/tables/transactions-tables/transaction-table';
+import { getActiveFilters } from '@/components/tables/transactions-tables/utils/get-active-filters';
+import { buttonVariants } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { Separator } from '@/components/ui/separator';
+import { authOptions } from '@/lib/auth-options';
+import { cn } from '@/lib/utils';
+import { FilteredTransactionsSchema } from '@/schemas/filtered-transactions-schema';
+import { getFilteredTransactions } from '@/services/transactions';
+import { getUserCategories } from '@/services/user';
+import type { CustomSessionI, ParamsProps } from '@/types';
+import { dateFormat, DEFAULT_PAGE, DEFAULT_PAGE_LIMIT, errorMessages } from '@/utils/const';
+import { parseZodErrors } from '@/utils/parse-zod-errors';
 
 const breadcrumbItems = [
-  { title: "Transactions", link: "/dashboard/transactions" },
-  { title: "List", link: "/dashboard/transactions/list" },
+  { title: 'Transactions', link: '/dashboard/transactions' },
+  { title: 'List', link: '/dashboard/transactions/list' },
 ];
-
-type ParamsProps = {
-  searchParams: {
-    [key: string]: string | undefined;
-  };
-};
 
 type TransactionsProps = {
   userId: string;
@@ -99,27 +89,25 @@ export default async function ListTransactions({ searchParams }: ParamsProps) {
   const page = Number(pageParam) || DEFAULT_PAGE;
   const pageLimit = Number(pageLimitParam) || DEFAULT_PAGE_LIMIT;
   const offset = (page - 1) * pageLimit;
-  const parsedCategories = categories?.split(",");
+  const parsedCategories = categories?.split(',');
 
   const session = (await getServerSession(
-    authOptions as unknown as NextAuthOptions,
+    authOptions as unknown as NextAuthOptions
   )) as CustomSessionI;
 
-  const userCategories = await getUserCategories(session?.user?.id ?? "");
+  const userCategories = await getUserCategories(session?.user?.id ?? '');
 
   const startDate =
-    typeof startDateParam === "string"
+    typeof startDateParam === 'string'
       ? startDateParam
-      : session?.user?.transactionsDate?.from ??
-        format(subYears(new Date(), 1), dateFormat.ISO);
+      : (session?.user?.transactionsDate?.from ?? format(subYears(new Date(), 1), dateFormat.ISO));
   const endDate =
-    typeof endDateParam === "string"
+    typeof endDateParam === 'string'
       ? endDateParam
-      : session?.user?.transactionsDate?.to ??
-        format(new Date(), dateFormat.ISO);
+      : (session?.user?.transactionsDate?.to ?? format(new Date(), dateFormat.ISO));
 
   const transResult = await getTransactions({
-    userId: session?.user?.id ?? "",
+    userId: session?.user?.id ?? '',
     startDate,
     endDate,
     transType: transType ?? null,
@@ -145,26 +133,23 @@ export default async function ListTransactions({ searchParams }: ParamsProps) {
   const pageCount = Math.ceil(totalTrans / pageLimit);
   return (
     <>
-      <div className="flex-1 p-4 pt-6 space-y-2 sm:space-y-4 md:p-8">
+      <div className='flex-1 space-y-2 p-4 pt-6 sm:space-y-4 md:p-8'>
         <BreadCrumb items={breadcrumbItems} />
 
-        <div className="flex items-start justify-between">
+        <div className='flex items-start justify-between'>
           <Heading
-            maxWidthClass="max-w-[calc(100%-175px)]"
+            maxWidthClass='max-w-[calc(100%-175px)]'
             title={
               transResult.error
-                ? "Error retrieving the transactions"
+                ? 'Error retrieving the transactions'
                 : `Transactions (${totalTrans})`
             }
-            description={transResult.error ? "" : filteredTrans}
+            description={transResult.error ? '' : filteredTrans}
           />
 
           {!transResult.error && (
-            <Link
-              href={"/dashboard/transactions/add/multiple"}
-              className={cn(buttonVariants())}
-            >
-              <Plus className="w-4 h-4 mr-2" /> Add transactions
+            <Link href={'/dashboard/transactions/add/multiple'} className={cn(buttonVariants())}>
+              <Plus className='mr-2 size-4' /> Add transactions
             </Link>
           )}
         </div>

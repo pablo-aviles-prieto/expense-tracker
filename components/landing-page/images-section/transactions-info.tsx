@@ -1,12 +1,15 @@
 import Image from 'next/image';
 
-// TODO: Add the mobile text/arrow
-export const TransactionsInfo = () => {
+interface TransactionsInfoProps {
+  hasEnoughHeight: boolean;
+}
+
+const TRANSACTIONS_INFO_TEXT = 'Add transactions fast with a form or multiple via CSV upload';
+
+export const TransactionsInfo = ({ hasEnoughHeight }: TransactionsInfoProps) => {
   return (
     <div className='transactions-info-text absolute -right-[255px] top-[calc(50%-265px)] max-w-[225px]'>
-      <p className='invisible text-balance md:visible'>
-        Add transactions fast with a form or multiple via CSV upload
-      </p>
+      <p className='invisible text-balance md:visible'>{TRANSACTIONS_INFO_TEXT}</p>
       <Image
         alt='arrow'
         src='/images/landing/orange-left-arrow.webp'
@@ -18,12 +21,18 @@ export const TransactionsInfo = () => {
         className='transactions-frame absolute -left-[311px] top-[113px] h-[35px] w-[245px] rounded-lg border-2'
         style={{ borderColor: '#f68420' }}
       />
-      {/* TODO: Use this bottom and right properties with the text/arrow */}
-      {/* <div className='test visible absolute -bottom-[540px] right-[240px] w-[250px] md:invisible'>
-        inner height - {window.innerHeight}
-        <br />
-        outer height - {window.outerHeight}
-      </div> */}
+      {hasEnoughHeight && (
+        <div className='visible absolute -bottom-[545px] right-[280px] w-[250px] md:invisible'>
+          <Image
+            alt='arrow'
+            src='/images/landing/orange-up-arrow.webp'
+            className='absolute -top-[90px] right-[60px]'
+            width={100}
+            height={120}
+          />
+          <p className='text-balance'>{TRANSACTIONS_INFO_TEXT}</p>
+        </div>
+      )}
     </div>
   );
 };

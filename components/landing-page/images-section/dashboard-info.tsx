@@ -22,13 +22,13 @@ export const DashboardInfo = ({ hasEnoughHeight }: DashboardInfoProps) => {
         style={{ borderColor: '#e91223' }}
       />
       {hasEnoughHeight && (
-        <div className='visible absolute -bottom-[290px] -right-[300px] max-w-[250px] md:invisible'>
+        <div className='visible absolute -bottom-[280px] -right-[300px] max-w-[250px] md:invisible'>
           <Image
             alt='arrow'
             src='/images/landing/red-up-arrow.webp'
-            className='absolute -top-[65px] right-[30px]'
-            width={70}
-            height={75}
+            className='absolute -top-[85px] right-[40px]'
+            width={100}
+            height={120}
           />
           <p className='text-balance'>{DASHBOARD_INFO_TEXT}</p>
         </div>

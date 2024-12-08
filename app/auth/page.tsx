@@ -1,16 +1,17 @@
-import { AuthBlock } from "@/components/auth-block";
-import { authOptions } from "@/lib/auth-options";
-import { NextAuthOptions, getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import { getServerSession, NextAuthOptions } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-export default async function AuthenticationPage() {
-  const session = await getServerSession(
-    authOptions as unknown as NextAuthOptions,
-  );
+import { AuthBlock } from '@/components/auth-block';
+import { authOptions } from '@/lib/auth-options';
+import { ParamsProps } from '@/types';
+
+export default async function AuthenticationPage({ searchParams }: ParamsProps) {
+  const { page } = searchParams;
+  const session = await getServerSession(authOptions as unknown as NextAuthOptions);
 
   if (session?.user) {
-    redirect("/dashboard");
+    redirect('/dashboard');
   }
 
-  return <AuthBlock />;
+  return <AuthBlock page={page} />;
 }

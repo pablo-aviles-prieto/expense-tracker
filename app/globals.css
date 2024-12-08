@@ -149,7 +149,8 @@
 
 @media (min-width: 1280px) {
   .tilted-image-container {
-    perspective: 4500px;
+    perspective: 3500px;
+    perspective-origin: 85% 0;
   }
 }
 

@@ -125,7 +125,7 @@ export const ContactSectionForm = ({ onSubmit, isSendingMail, boxDuration, boxCo
             )}
           />
         </BoxReveal>
-        <div className='mt-8 w-full'>
+        <div className='!mt-6 w-full'>
           <BoxReveal width='100%' boxColor={boxColor} duration={boxDuration}>
             <Button disabled={isSendingMail} className='w-full' type='submit'>
               {isSendingMail && <ClockLoader className='mr-2' />}
