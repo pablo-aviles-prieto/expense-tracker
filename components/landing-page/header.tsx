@@ -22,9 +22,7 @@ export const Header = () => {
             </Typography>
           </Link>
           <Link href='/auth?page=signup'>
-            <ShinyButton className='font' onClick={() => console.log('sign up')}>
-              Sign up
-            </ShinyButton>
+            <ShinyButton className='font-inter'>Sign up</ShinyButton>
           </Link>
         </div>
       </div>
