@@ -23,7 +23,13 @@ interface ResponseSubscriptions {
   subscriptions?: Subscription[];
 }
 
-//  TODO: Add a total sum per month/year of the subscriptions
+// TODO: Add a cron that gets all the users with subscriptions, checking if there is subscriptions
+// with a notify prop to true and make the calculations based on the billing interval and next billing date
+// since it might send more than 1 email if the interval is a big one.
+// MAYBE MONGO IS QUERYABLE TO GET THE users with subscriptions array where an object inside has the
+// notify to true
+
+// TODO: Add a total sum per month/year of the subscriptions
 export const SubscriptionContent = () => {
   const [openCreateSubModal, setOpenCreateSubModal] = useState(false);
   const { fetchPetition } = useFetch();
