@@ -1,18 +1,18 @@
-import { type IUser } from "@/models";
+import { type IUser } from '@/models';
 
 export enum BillingPeriod {
-  Monthly = "MONTHLY",
-  BiMonthly = "BI-MONTHLY",
-  Quarterly = "QUARTERLY",
-  SemiAnnually = "SEMI-ANNUALLY",
-  Annually = "ANNUALLY",
-  Biennially = "BIENNIALLY",
+  Monthly = 'MONTHLY',
+  BiMonthly = 'BI-MONTHLY',
+  Quarterly = 'QUARTERLY',
+  SemiAnnually = 'SEMI-ANNUALLY',
+  Annually = 'ANNUALLY',
+  Biennially = 'BIENNIALLY',
 }
 
 export enum SubscriptionStatus {
-  Active = "ACTIVE",
-  Paused = "PAUSED",
-  Cancelled = "CANCELLED",
+  Active = 'ACTIVE',
+  Paused = 'PAUSED',
+  Cancelled = 'CANCELLED',
 }
 
 export interface Subscription {
@@ -21,6 +21,7 @@ export interface Subscription {
   startDate: string; // Date in format yyyy-MM-dd
   billingPeriod: BillingPeriod;
   autoRenew: boolean;
+  notify: boolean;
   status: SubscriptionStatus;
   notes?: string;
 }

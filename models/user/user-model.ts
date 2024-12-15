@@ -1,10 +1,7 @@
-import { Schema, model, Document, ObjectId, Model } from "mongoose";
-import { modelExists } from "@/utils/check-model-exists";
-import {
-  BillingPeriod,
-  SubscriptionStatus,
-  type Subscription,
-} from "@/types/subscriptions";
+import { Document, model, Model, ObjectId, Schema } from 'mongoose';
+
+import { BillingPeriod, SubscriptionStatus, type Subscription } from '@/types/subscriptions';
+import { modelExists } from '@/utils/check-model-exists';
 
 export interface IUser extends Document {
   _id: ObjectId;
@@ -34,6 +31,10 @@ const SubscriptionSchema = new Schema({
     enum: Object.values(BillingPeriod),
   },
   autoRenew: { type: Boolean, required: true },
+  notify: {
+    type: Boolean,
+    required: true,
+  },
   status: {
     type: String,
     required: true,
@@ -54,7 +55,7 @@ const UserSchema: Schema = new Schema({
   },
   password: { type: String, required: true },
   signupDate: { type: String, required: true },
-  categories: [{ type: Schema.Types.ObjectId, ref: "categories" }],
+  categories: [{ type: Schema.Types.ObjectId, ref: 'categories' }],
   subscriptions: [SubscriptionSchema],
   currency: { type: String, required: true },
   dateFormat: { type: String, required: true },
@@ -65,11 +66,11 @@ const UserSchema: Schema = new Schema({
   },
 });
 
-UserSchema.set("toJSON", {
+UserSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
-  transform: (doc: Document, ret: Record<string, any>) => {
-    if ("_id" in doc && "password" in doc) {
+  transform: (doc: Document, ret: Record<string, unknown>) => {
+    if ('_id' in doc && 'password' in doc) {
       delete ret._id;
       delete ret.password;
     }
@@ -78,10 +79,10 @@ UserSchema.set("toJSON", {
 
 let UserModel: Model<IUser>;
 
-if (modelExists("users")) {
-  UserModel = model<IUser>("users");
+if (modelExists('users')) {
+  UserModel = model<IUser>('users');
 } else {
-  UserModel = model<IUser>("users", UserSchema);
+  UserModel = model<IUser>('users', UserSchema);
 }
 
 export default UserModel;

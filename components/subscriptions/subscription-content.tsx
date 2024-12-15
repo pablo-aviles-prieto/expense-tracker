@@ -23,6 +23,7 @@ interface ResponseSubscriptions {
   subscriptions?: Subscription[];
 }
 
+//  TODO: Add a total sum per month/year of the subscriptions
 export const SubscriptionContent = () => {
   const [openCreateSubModal, setOpenCreateSubModal] = useState(false);
   const { fetchPetition } = useFetch();
