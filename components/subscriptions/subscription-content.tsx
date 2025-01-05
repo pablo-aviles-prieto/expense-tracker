@@ -27,7 +27,7 @@ interface ResponseSubscriptions {
 // with a notify prop to true and make the calculations based on the billing interval and next billing date
 // since it might send more than 1 email if the interval is a big one.
 // MAYBE MONGO IS QUERYABLE TO GET THE users with subscriptions array where an object inside has the
-// notify to true
+// notify to true!
 
 // TODO: Add a total sum per month/year of the subscriptions
 export const SubscriptionContent = () => {
