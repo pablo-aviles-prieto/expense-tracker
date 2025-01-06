@@ -23,6 +23,7 @@ export interface User {
   updatedAt: string;
   subscriptions: Subscription[];
   categories: Categories[];
+  dateFormat: string;
   transactionsDate?: {
     from: string; // Date in format yyyy-MM-dd
     to: string; // Date in format yyyy-MM-dd
