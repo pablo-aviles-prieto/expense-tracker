@@ -4,7 +4,6 @@ import connectDb from '@/lib/mongoose-config';
 import UserModel from '@/models/user/user-model';
 import { User } from '@/types';
 
-// TODO: Change the docker file to use "npm" "run" "start:cron" (with the run)
 class SubscriptionNotificationJob {
   private schedules = {
     midnight: '00 00 * * *',
