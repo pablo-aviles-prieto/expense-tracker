@@ -4,13 +4,10 @@ import connectDb from '@/lib/mongoose-config';
 import UserModel from '@/models/user/user-model';
 import { User } from '@/types';
 
-// TODO: Create custom server.ts
-// https://nextjs.org/docs/14/pages/building-your-application/configuring/custom-server
-// https://medium.com/@farmaan30327/running-a-scheduled-job-in-nextjs-with-node-cron-77f0433a713b
-
+// TODO: Change the docker file to use "npm" "run" "start:cron" (with the run)
 class SubscriptionNotificationJob {
   private schedules = {
-    midnight: '00 16 * * *',
+    midnight: '00 00 * * *',
   };
 
   private jobs: Map<string, ScheduledTask> = new Map();
@@ -31,12 +28,10 @@ class SubscriptionNotificationJob {
 
   private async notifySubscribers(): Promise<void> {
     const userSubscriptionsToNotify = await this.fetchUserActiveSubscriptions();
-    console.log('userSubscriptionsToNotify', userSubscriptionsToNotify);
+    console.dir(userSubscriptionsToNotify, { depth: null });
 
     for (const userSubscriptions of userSubscriptionsToNotify) {
-      console.log(
-        `Notifying subscriber: ${userSubscriptions.email}, about subscriptions: ${userSubscriptions.subscriptions}`
-      );
+      console.log(`Notifying subscriber: ${userSubscriptions.email}`);
       // TODO: Calculate if is necessary to send the notification
       // If is necessary, send notification via this.sendNotificationMail method
     }
@@ -79,10 +74,7 @@ class SubscriptionNotificationJob {
 
   public async startAllJobs(): Promise<void> {
     try {
-      console.log('Establishing database connection...');
       await connectDb();
-      console.log('Database connection established.');
-
       this.initializeJobs(); // Initialize jobs before starting
       this.jobs.forEach((job, name) => {
         console.log(`Starting job: ${name}`);
