@@ -1,3 +1,4 @@
+import cronParser from 'cron-parser';
 import cron, { ScheduledTask } from 'node-cron';
 
 import connectDb from '@/lib/mongoose-config';
@@ -9,7 +10,7 @@ class SubscriptionNotificationJob {
     midnight: '00 00 * * *',
   };
 
-  private jobs: Map<string, ScheduledTask> = new Map();
+  private jobs: Map<string, { task: ScheduledTask; schedule: string }> = new Map();
 
   private initializeJobs(): void {
     const notifySubscribersJob = cron.schedule(
@@ -22,7 +23,10 @@ class SubscriptionNotificationJob {
       { scheduled: false }
     );
 
-    this.jobs.set('notify-user-subscriptions', notifySubscribersJob);
+    this.jobs.set('notify-user-subscriptions', {
+      task: notifySubscribersJob,
+      schedule: this.schedules.midnight,
+    });
   }
 
   private async notifySubscribers(): Promise<void> {
@@ -75,26 +79,23 @@ class SubscriptionNotificationJob {
     try {
       await connectDb();
       this.initializeJobs(); // Initialize jobs before starting
-      this.jobs.forEach((job, name) => {
-        console.log(`Starting job: ${name}`);
-        job.start();
+      this.jobs.forEach(({ task, schedule }, name) => {
+        const interval = cronParser.parseExpression(schedule);
+        const nextExecution = interval.next().toString();
+        console.log(
+          `Starting job: ${name} with schedule: ${schedule}, next execution: ${nextExecution}`
+        );
+        task.start();
       });
     } catch (error) {
-      console.error('Failed to start cron jobs due to database connection error:', error);
+      console.error('Failed to start cron jobs. ERROR:', error);
     }
   }
-  // public startAllJobs(): void {
-  //   this.initializeJobs(); // Initialize jobs before starting
-  //   this.jobs.forEach((job, name) => {
-  //     console.log(`Starting job: ${name}`);
-  //     job.start();
-  //   });
-  // }
 
   public stopAllJobs(): void {
-    this.jobs.forEach((job, name) => {
+    this.jobs.forEach(({ task, schedule }, name) => {
       console.log(`Stopping job: ${name}`);
-      job.stop();
+      task.stop();
     });
   }
 }

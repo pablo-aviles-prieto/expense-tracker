@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:cron": "concurrently \"tsx ./services/subscription-notification/init-notifications.ts\" \"next dev\"",
     "build": "next build",
     "start": "next start",
     "start:cron": "concurrently \"tsx ./services/subscription-notification/init-notifications.ts\" \"next start\"",
@@ -53,6 +54,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.1",
     "concurrently": "^9.1.2",
+    "cron-parser": "^4.9.0",
     "csv-parser": "^3.0.0",
     "date-fns": "^2.30.0",
     "dotenv": "^16.4.2",
