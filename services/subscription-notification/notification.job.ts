@@ -161,6 +161,7 @@ class SubscriptionNotificationJob {
     return subscriptionsToNotify;
   }
 
+  // TODO: Use a dynamic template
   private async sendNotificationMail(
     email: string,
     subscriptionsDetails: SubscriptionDetails[]
