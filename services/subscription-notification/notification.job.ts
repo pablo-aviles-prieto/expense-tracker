@@ -9,7 +9,7 @@ import UserModel, { IUser } from '@/models/user/user-model';
 import { BillingPeriod, Subscription } from '@/types';
 import { getNextBillingDate } from '@/utils/get-next-billing-date';
 
-type ParsedUser = Pick<IUser, '_id' | 'email' | 'subscriptions' | 'dateFormat'>;
+type ParsedUser = Pick<IUser, '_id' | 'email' | 'subscriptions' | 'dateFormat' | 'currency'>;
 
 interface SubscriptionDetails {
   data: Subscription;
@@ -70,7 +70,13 @@ class SubscriptionNotificationJob {
             formattedNextBillingDate,
           };
         });
-        emailPromises.push(this.sendNotificationMail(userSubscriptions.email, subscriptionDetails));
+        emailPromises.push(
+          this.sendNotificationMail(
+            userSubscriptions.email,
+            userSubscriptions.currency,
+            subscriptionDetails
+          )
+        );
       }
     }
 
@@ -93,6 +99,7 @@ class SubscriptionNotificationJob {
           $project: {
             email: 1,
             dateFormat: 1,
+            currency: 1,
             subscriptions: {
               $filter: {
                 input: '$subscriptions',
@@ -162,14 +169,17 @@ class SubscriptionNotificationJob {
   }
 
   // TODO: Use a dynamic template
+  // email variables: subscriptionName, nextBillingDate, subscriptionUrlPage, subscriptionAmount
   private async sendNotificationMail(
     email: string,
+    currency: string,
     subscriptionsDetails: SubscriptionDetails[]
   ): Promise<void> {
     sgMail.setApiKey(this.sendgridApiKey);
 
     const subscriptionDetails = subscriptionsDetails
       .map(subscription => {
+        const amount = `${subscription.data.price}${currency}`;
         return `<li>Subscription: ${subscription.data.name}, Next Billing: ${subscription.formattedNextBillingDate}</li>`;
       })
       .join('');
