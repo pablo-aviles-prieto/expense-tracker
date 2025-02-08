@@ -26,7 +26,6 @@ const notificationDataSchema = z.object({
 
 type NotificationData = z.infer<typeof notificationDataSchema>;
 
-// TODO: Check the algorithm is working
 // TODO: Check if it compiles correctly because the process.env used
 class SubscriptionNotificationJob {
   private schedules = {
@@ -67,8 +66,8 @@ class SubscriptionNotificationJob {
 
   private async notifySubscribers(): Promise<void> {
     const userSubscriptionsToNotify = await this.fetchUserActiveSubscriptions();
-    console.dir(userSubscriptionsToNotify, { depth: null });
     const emailPromises: Promise<void>[] = [];
+    const subscriptionNotificationsSent: { email: string; subscriptionName: string }[] = [];
 
     for (const userSubscriptions of userSubscriptionsToNotify) {
       const subscriptionsToNotify = this.notifySubscriptionAlgorithm(
@@ -87,12 +86,24 @@ class SubscriptionNotificationJob {
             formattedNextBillingDate,
           })
         );
+        subscriptionNotificationsSent.push({
+          email: userSubscriptions.email,
+          subscriptionName: sub.subscription.name,
+        });
       }
     }
 
     try {
       await Promise.all(emailPromises);
-      console.log('All subscriptions notifications sent successfully.');
+      console.log(
+        `${subscriptionNotificationsSent.length} subscriptions notifications sent successfully.`
+      );
+      if (subscriptionNotificationsSent.length > 0) {
+        console.log('Notifications sent to:');
+        subscriptionNotificationsSent.forEach(sub =>
+          console.log(`${sub.email}, for the subscription ${sub.subscriptionName}`)
+        );
+      }
     } catch (error) {
       console.error('Error sending subscriptions notifications:', error);
     }
@@ -157,8 +168,8 @@ class SubscriptionNotificationJob {
         case BillingPeriod.Monthly:
         case BillingPeriod.BiMonthly:
         case BillingPeriod.Quarterly:
-          const notifyDate = addDays(nextBillingDate, -1);
-          if (isSameDay(today, notifyDate)) {
+          const theDayBefore = addDays(nextBillingDate, -1);
+          if (isSameDay(today, theDayBefore)) {
             subscriptionsToNotify.push({ subscription, nextBillingDate });
           }
           break;
