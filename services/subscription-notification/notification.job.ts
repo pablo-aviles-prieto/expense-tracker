@@ -3,6 +3,7 @@ import sgMail from '@sendgrid/mail';
 import cronParser from 'cron-parser';
 import { addDays, format, isSameDay } from 'date-fns';
 import cron, { ScheduledTask } from 'node-cron';
+import { z } from 'zod';
 
 import connectDb from '@/lib/mongoose-config';
 import UserModel, { IUser } from '@/models/user/user-model';
@@ -16,6 +17,15 @@ interface SubscriptionDetails {
   formattedNextBillingDate: string;
 }
 
+const notificationDataSchema = z.object({
+  subscriptionName: z.string().min(1),
+  nextBillingDate: z.string().min(1),
+  subscriptionUrlPage: z.string().min(1),
+  subscriptionAmount: z.string().min(1),
+});
+
+type NotificationData = z.infer<typeof notificationDataSchema>;
+
 // TODO: Check the algorithm is working
 // TODO: Check if it compiles correctly because the process.env used
 class SubscriptionNotificationJob {
@@ -24,10 +34,16 @@ class SubscriptionNotificationJob {
   };
   private sendgridApiKey: string;
   private senderMailAcc: string;
+  private sendgridNotificationMailTemplateId: string;
 
-  constructor(sendgridApiKey: string, senderMailAcc: string) {
+  constructor(
+    sendgridApiKey: string,
+    senderMailAcc: string,
+    sendgridNotificationMailTemplateId: string
+  ) {
     this.sendgridApiKey = sendgridApiKey;
     this.senderMailAcc = senderMailAcc;
+    this.sendgridNotificationMailTemplateId = sendgridNotificationMailTemplateId;
   }
 
   private jobs: Map<string, { task: ScheduledTask; schedule: string }> = new Map();
@@ -59,23 +75,17 @@ class SubscriptionNotificationJob {
         userSubscriptions.subscriptions ?? []
       );
 
-      if (subscriptionsToNotify.length > 0) {
-        const subscriptionDetails = subscriptionsToNotify.map(sub => {
-          const formattedNextBillingDate = format(
-            new Date(sub.nextBillingDate),
-            userSubscriptions.dateFormat
-          );
-          return {
+      for (const sub of subscriptionsToNotify) {
+        const formattedNextBillingDate = format(
+          new Date(sub.nextBillingDate),
+          userSubscriptions.dateFormat
+        );
+
+        emailPromises.push(
+          this.sendNotificationMail(userSubscriptions.email, userSubscriptions.currency, {
             data: sub.subscription,
             formattedNextBillingDate,
-          };
-        });
-        emailPromises.push(
-          this.sendNotificationMail(
-            userSubscriptions.email,
-            userSubscriptions.currency,
-            subscriptionDetails
-          )
+          })
         );
       }
     }
@@ -168,41 +178,33 @@ class SubscriptionNotificationJob {
     return subscriptionsToNotify;
   }
 
-  // TODO: Use a dynamic template
-  // email variables: subscriptionName, nextBillingDate, subscriptionUrlPage, subscriptionAmount
   private async sendNotificationMail(
     email: string,
     currency: string,
-    subscriptionsDetails: SubscriptionDetails[]
+    subscriptionsDetails: SubscriptionDetails
   ): Promise<void> {
     sgMail.setApiKey(this.sendgridApiKey);
 
-    const subscriptionDetails = subscriptionsDetails
-      .map(subscription => {
-        const amount = `${subscription.data.price}${currency}`;
-        return `<li>Subscription: ${subscription.data.name}, Next Billing: ${subscription.formattedNextBillingDate}</li>`;
-      })
-      .join('');
+    const baseUrl =
+      process.env.NODE_ENV === 'production'
+        ? process.env.APP_BASE_URL_PROD
+        : process.env.APP_BASE_URL_DEV;
 
-    const emailData = {
+    const dynamicData: NotificationData = {
+      nextBillingDate: subscriptionsDetails.formattedNextBillingDate,
+      subscriptionAmount: `${subscriptionsDetails.data.price}${currency}`,
+      subscriptionName: subscriptionsDetails.data.name,
+      subscriptionUrlPage: `${baseUrl}/dashboard/subscriptions`,
+    };
+
+    const emailData: sgMail.MailDataRequired = {
       to: email,
       from: this.senderMailAcc,
       subject: `Upcoming Subscription Billing Notification`,
-      html: `
-        <p>Dear user,</p>
-        <p>You have the following upcoming subscription payments:</p>
-        <ul>${subscriptionDetails}</ul>
-        <p>Thank you for using our service!</p>
-      `,
-      text: `Dear user,\n\nYou have the following upcoming subscription payments:\n${subscriptionsDetails
-        .map(
-          subscription =>
-            `Subscription: ${subscription.data.name}, Next Billing: ${subscription.formattedNextBillingDate}`
-        )
-        .join('\n')}\n\nThank you for using our service!`,
+      templateId: this.sendgridNotificationMailTemplateId,
+      dynamicTemplateData: dynamicData,
     };
 
-    // Send the email using SendGrid
     await sgMail.send(emailData);
   }
 
@@ -233,6 +235,7 @@ class SubscriptionNotificationJob {
 
 const subscriptionNotificationSingleton = new SubscriptionNotificationJob(
   process.env.SENDGRID_API_KEY ?? '',
-  process.env.SENDER_MAIL_ACC ?? ''
+  process.env.SENDER_MAIL_ACC ?? '',
+  process.env.SENDGRID_SUBSCRIPTION_MAIL_TEMPLATE_ID ?? ''
 );
 export default subscriptionNotificationSingleton;
