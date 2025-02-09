@@ -26,7 +26,6 @@ const notificationDataSchema = z.object({
 
 type NotificationData = z.infer<typeof notificationDataSchema>;
 
-// TODO: Check if it compiles correctly because the process.env used
 class SubscriptionNotificationJob {
   private schedules = {
     midnight: '00 00 * * *',
