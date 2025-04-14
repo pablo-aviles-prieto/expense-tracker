@@ -7,6 +7,8 @@ import { Plus } from 'lucide-react';
 
 import { Separator } from '@/components//ui/separator';
 import { CreateSubscriptionModal } from '@/components/modal/subscriptions/create-subscription-modal';
+import { SubscriptionCosts } from '@/components/subscriptions/subscription-costs';
+import { getSubscriptionCosts } from '@/components/subscriptions/utils/get-subscription-costs';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { useToast } from '@/components/ui/use-toast';
@@ -23,7 +25,6 @@ interface ResponseSubscriptions {
   subscriptions?: Subscription[];
 }
 
-// TODO: Add a total sum per month/year of the subscriptions!
 export const SubscriptionContent = () => {
   const [openCreateSubModal, setOpenCreateSubModal] = useState(false);
   const { fetchPetition } = useFetch();
@@ -60,6 +61,8 @@ export const SubscriptionContent = () => {
     }
   }, [error, isLoading]);
 
+  const subscriptionCosts = getSubscriptionCosts(userData);
+
   return (
     <>
       <CreateSubscriptionModal
@@ -67,15 +70,18 @@ export const SubscriptionContent = () => {
         onClose={() => setOpenCreateSubModal(false)}
         refetch={refetch}
       />
-      <div className='flex items-start justify-between'>
-        <Heading
-          maxWidthClass='max-w-[calc(100%-180px)]'
-          title='Subscriptions'
-          description="Manage all your subscriptions to ensure you're not paying for anything you don't use"
-        />
-        <Button variant='default' onClick={() => setOpenCreateSubModal(true)}>
-          <Plus className='mr-2 size-4' /> Add subscriptions
-        </Button>
+      <div className='space-y-1'>
+        <div className='flex items-start justify-between'>
+          <Heading
+            maxWidthClass='max-w-[calc(100%-180px)]'
+            title='Subscriptions'
+            description="Manage all your subscriptions to ensure you're not paying for anything you don't use"
+          />
+          <Button variant='default' onClick={() => setOpenCreateSubModal(true)}>
+            <Plus className='mr-2 size-4' /> Add subscriptions
+          </Button>
+        </div>
+        {subscriptionCosts && <SubscriptionCosts subscriptionCosts={subscriptionCosts} />}
       </div>
       <Separator />
       {error ? (
