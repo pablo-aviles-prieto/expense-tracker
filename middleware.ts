@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
   }
 
   const url = request.nextUrl;
-  const { device, os } = userAgent(request);
+  const { device } = userAgent(request);
   const viewport = device.type === DEVICE_TYPE.mobile ? DEVICE_TYPE.mobile : DEVICE_TYPE.desktop;
   url.searchParams.set('viewport', viewport);
 
