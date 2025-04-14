@@ -1,10 +1,11 @@
-import { isInvalidUserId } from "@/utils/is-invalid-user-id";
-import UserModel from "@/models/user/user-model";
-import { errorMessages } from "@/utils/const";
-import connectDb from "@/lib/mongoose-config";
-import type { ICategories } from "@/models";
-import type { EnhancedSubscription, Subscription } from "@/types";
-import { decode, encode } from "next-auth/jwt";
+import { decode, encode } from 'next-auth/jwt';
+
+import connectDb from '@/lib/mongoose-config';
+import type { ICategories } from '@/models';
+import UserModel from '@/models/user/user-model';
+import type { EnhancedSubscription, Subscription } from '@/types';
+import { errorMessages } from '@/utils/const';
+import { isInvalidUserId } from '@/utils/is-invalid-user-id';
 
 type UpdateUserTransactionsDateProps = {
   userId: string;
@@ -65,11 +66,7 @@ export const updateUserTransactionsDate = async ({
 
   await connectDb();
 
-  return UserModel.findByIdAndUpdate(
-    userId,
-    { $set: { transactionsDate } },
-    { new: true },
-  ).exec();
+  return UserModel.findByIdAndUpdate(userId, { $set: { transactionsDate } }, { new: true }).exec();
 };
 
 /**
@@ -85,7 +82,7 @@ export const getUserTransactionsDate = async (userId: string) => {
 
   await connectDb();
 
-  const user = await UserModel.findById(userId, "transactionsDate").exec();
+  const user = await UserModel.findById(userId, 'transactionsDate').exec();
   if (!user || !user.transactionsDate) {
     throw new Error(errorMessages.generic);
   }
@@ -107,17 +104,13 @@ export const getUserCategories = async (userId: string) => {
 
   await connectDb();
 
-  const userWithCategories = await UserModel.findById(userId)
-    .populate("categories")
-    .exec();
+  const userWithCategories = await UserModel.findById(userId).populate('categories').exec();
 
   if (!userWithCategories) {
     throw new Error(errorMessages.generic);
   }
 
-  const categories = (
-    userWithCategories.categories as unknown as ICategories[]
-  ).map((category) => ({
+  const categories = (userWithCategories.categories as unknown as ICategories[]).map(category => ({
     id: category._id.toString(), // Convert ObjectId to string
     name: category.name,
     common: category.common,
@@ -155,11 +148,11 @@ export const addSubscriptionToUser = async ({
   const updatedUser = await UserModel.findByIdAndUpdate(
     userId,
     { $push: { subscriptions: subscription } },
-    { new: true },
+    { new: true }
   ).exec();
 
   if (!updatedUser) {
-    throw new Error("User not found or creation failed");
+    throw new Error('User not found or creation failed');
   }
 
   return updatedUser;
@@ -180,17 +173,17 @@ export const updateSubscription = async ({
   const result = await UserModel.updateOne(
     {
       _id: userId,
-      "subscriptions._id": subscriptionId,
+      'subscriptions._id': subscriptionId,
     },
     {
       $set: {
-        "subscriptions.$": subscription,
+        'subscriptions.$': subscription,
       },
-    },
+    }
   );
 
   if (!result.acknowledged || result.modifiedCount === 0) {
-    throw new Error("User not found or update failed");
+    throw new Error('User not found or update failed');
   }
 
   return result;
@@ -212,11 +205,11 @@ export const deleteSubscriptions = async ({
       $pull: {
         subscriptions: { _id: { $in: subscriptionIds } },
       },
-    },
+    }
   );
 
   if (!result.acknowledged || result.modifiedCount === 0) {
-    throw new Error("Subscription not found or deletion failed");
+    throw new Error('Subscription not found or deletion failed');
   }
 
   return result;
@@ -225,7 +218,7 @@ export const deleteSubscriptions = async ({
 export const generateRecoveryToken = async (userId: string) => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
-    throw new Error("JWT secret key is not defined");
+    throw new Error('JWT secret key is not defined');
   }
 
   return encode({
@@ -238,27 +231,23 @@ export const generateRecoveryToken = async (userId: string) => {
 export const verifyRecoveryToken = async (token: string) => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
-    throw new Error("JWT secret key is not defined");
+    throw new Error('JWT secret key is not defined');
   }
 
-  try {
-    const decodedToken = (await decode({ token, secret })) as DecodedResetJWT;
+  const decodedToken = (await decode({ token, secret })) as DecodedResetJWT;
 
-    // Check if the token has expired
-    if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
-      throw new Error(errorMessages.resetTokenExpired);
-    }
-
-    return decodedToken;
-  } catch (error) {
-    throw error;
+  // Check if the token has expired
+  if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
+    throw new Error(errorMessages.resetTokenExpired);
   }
+
+  return decodedToken;
 };
 
 export const generateRegisterToken = async (email: string) => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
-    throw new Error("JWT secret key is not defined");
+    throw new Error('JWT secret key is not defined');
   }
 
   return encode({
@@ -271,24 +260,20 @@ export const generateRegisterToken = async (email: string) => {
 export const verifyRegisterToken = async (token: string) => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
-    throw new Error("JWT secret key is not defined");
+    throw new Error('JWT secret key is not defined');
   }
 
-  try {
-    const decodedToken = (await decode({
-      token,
-      secret,
-    })) as DecodedRegisterJWT;
+  const decodedToken = (await decode({
+    token,
+    secret,
+  })) as DecodedRegisterJWT;
 
-    // Check if the token has expired
-    if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
-      throw new Error(errorMessages.registerTokenExpired);
-    }
-
-    return decodedToken;
-  } catch (error) {
-    throw error;
+  // Check if the token has expired
+  if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
+    throw new Error(errorMessages.registerTokenExpired);
   }
+
+  return decodedToken;
 };
 
 export const generateChangeMailToken = async ({
@@ -300,7 +285,7 @@ export const generateChangeMailToken = async ({
 }) => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
-    throw new Error("JWT secret key is not defined");
+    throw new Error('JWT secret key is not defined');
   }
 
   return encode({
@@ -313,22 +298,18 @@ export const generateChangeMailToken = async ({
 export const verifyChangeMailToken = async (token: string) => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
-    throw new Error("JWT secret key is not defined");
+    throw new Error('JWT secret key is not defined');
   }
 
-  try {
-    const decodedToken = (await decode({
-      token,
-      secret,
-    })) as DecodedChangeEmailJWT;
+  const decodedToken = (await decode({
+    token,
+    secret,
+  })) as DecodedChangeEmailJWT;
 
-    // Check if the token has expired
-    if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
-      throw new Error(errorMessages.changeEmailTokenExpired);
-    }
-
-    return decodedToken;
-  } catch (error) {
-    throw error;
+  // Check if the token has expired
+  if (decodedToken && Date.now() >= decodedToken.exp * 1000) {
+    throw new Error(errorMessages.changeEmailTokenExpired);
   }
+
+  return decodedToken;
 };

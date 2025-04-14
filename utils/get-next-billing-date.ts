@@ -1,19 +1,17 @@
-import { BillingPeriod } from "@/types";
-import { format } from "date-fns";
+import { BillingPeriod } from '@/types';
 
 type NextBillingDateParams = {
   startDateStr: string;
   billingPeriod: BillingPeriod;
-  dateFormat: string;
 };
 
 export const getNextBillingDate = ({
   startDateStr,
   billingPeriod,
-  dateFormat,
-}: NextBillingDateParams): string => {
+}: NextBillingDateParams): Date => {
   const startDate = new Date(startDateStr);
   const today = new Date();
+  // eslint-disable-next-line prefer-const
   let nextBillingDate = new Date(startDate);
 
   while (nextBillingDate <= today) {
@@ -37,9 +35,9 @@ export const getNextBillingDate = ({
         nextBillingDate.setFullYear(nextBillingDate.getFullYear() + 2);
         break;
       default:
-        throw new Error("Invalid billing period");
+        throw new Error('Invalid billing period');
     }
   }
 
-  return format(new Date(nextBillingDate), dateFormat);
+  return nextBillingDate;
 };

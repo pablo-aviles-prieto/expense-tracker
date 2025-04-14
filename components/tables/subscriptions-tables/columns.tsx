@@ -3,6 +3,7 @@
 import { ColumnDef, Row, Table } from '@tanstack/react-table';
 
 import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { BillingPeriod, type EnhancedSubscription, type Subscription } from '@/types';
@@ -12,6 +13,7 @@ import { DateCell } from '../date-cell';
 import { CellAction } from './cell-action';
 import { NextBillingDateCell } from './next-billing-date-cell';
 import { getAutoRenewInfo } from './utils/get-auto-renew-info';
+import { getNotificationInfo } from './utils/get-notification-info';
 import { getStatusInfo } from './utils/get-status-info';
 
 interface ParsedRow {
@@ -113,6 +115,26 @@ export const columns: ColumnDef<Subscription>[] = [
     },
   },
   {
+    header: 'NOTIFY',
+    accessorKey: 'notify',
+    cell: ({ getValue }) => {
+      const notificationInfo = getNotificationInfo(Boolean(getValue()));
+      const Icon = Icons[notificationInfo?.icon ?? 'notifyOff'];
+      return (
+        <Tooltip>
+          <TooltipTrigger>
+            <div className='flex min-w-[50px] items-center justify-center'>
+              <Icon className={notificationInfo?.color} />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className='text-sm font-bold'>{notificationInfo?.text}</p>
+          </TooltipContent>
+        </Tooltip>
+      );
+    },
+  },
+  {
     accessorKey: 'notes',
     header: 'NOTES',
   },
@@ -123,6 +145,12 @@ export const columns: ColumnDef<Subscription>[] = [
       const selectedSubscriptions = (selectedRows as unknown as ParsedRow[]).map(
         row => row.original
       );
+
+      // Not displaying the actions button in case there are selected rows and this row is not selected
+      if (selectedRows.length > 0 && selectedRows.every(selectedRow => selectedRow.id !== row.id)) {
+        return null;
+      }
+
       return (
         <CellAction
           row={row as unknown as Row<EnhancedSubscription>}

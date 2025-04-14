@@ -1,19 +1,21 @@
-"use client";
+'use client';
 
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components//ui/separator";
-import { Button } from "@/components/ui/button";
-import type { Subscription } from "@/types";
-import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
-import { CreateSubscriptionModal } from "@/components/modal/subscriptions/create-subscription-modal";
-import { URL_GET_SUBSCRIPTION } from "@/utils/const";
-import { useQuery } from "@tanstack/react-query";
-import { useFetch } from "@/hooks/use-fetch";
-import { useToast } from "@/components/ui/use-toast";
-import { SubscriptionTable } from "../tables/subscriptions-tables/subscription-table";
-import { columns } from "../tables/subscriptions-tables/columns";
-import { LoadingSpinner } from "../ui/spinner";
+import { useEffect, useState } from 'react';
+
+import { useQuery } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
+
+import { Separator } from '@/components//ui/separator';
+import { CreateSubscriptionModal } from '@/components/modal/subscriptions/create-subscription-modal';
+import { Button } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { useToast } from '@/components/ui/use-toast';
+import { useFetch } from '@/hooks/use-fetch';
+import type { Subscription } from '@/types';
+import { URL_GET_SUBSCRIPTION } from '@/utils/const';
+import { columns } from '../tables/subscriptions-tables/columns';
+import { SubscriptionTable } from '../tables/subscriptions-tables/subscription-table';
+import { LoadingSpinner } from '../ui/spinner';
 
 interface ResponseSubscriptions {
   ok: boolean;
@@ -21,6 +23,7 @@ interface ResponseSubscriptions {
   subscriptions?: Subscription[];
 }
 
+// TODO: Add a total sum per month/year of the subscriptions
 export const SubscriptionContent = () => {
   const [openCreateSubModal, setOpenCreateSubModal] = useState(false);
   const { fetchPetition } = useFetch();
@@ -29,10 +32,10 @@ export const SubscriptionContent = () => {
   const fetchSubscriptions = async () => {
     const response = await fetchPetition<ResponseSubscriptions>({
       url: URL_GET_SUBSCRIPTION,
-      method: "GET",
+      method: 'GET',
     });
     if (!response.ok) {
-      throw new Error(response.error ?? "Network response was not ok");
+      throw new Error(response.error ?? 'Network response was not ok');
     }
     return response.subscriptions;
   };
@@ -50,9 +53,9 @@ export const SubscriptionContent = () => {
   useEffect(() => {
     if (error && !isLoading) {
       toast({
-        title: "There has been an error",
+        title: 'There has been an error',
         description: error.message,
-        variant: "destructive",
+        variant: 'destructive',
       });
     }
   }, [error, isLoading]);
@@ -64,32 +67,31 @@ export const SubscriptionContent = () => {
         onClose={() => setOpenCreateSubModal(false)}
         refetch={refetch}
       />
-      <div className="flex items-start justify-between">
+      <div className='flex items-start justify-between'>
         <Heading
-          maxWidthClass="max-w-[calc(100%-180px)]"
-          title="Subscriptions"
+          maxWidthClass='max-w-[calc(100%-180px)]'
+          title='Subscriptions'
           description="Manage all your subscriptions to ensure you're not paying for anything you don't use"
         />
-        <Button variant="default" onClick={() => setOpenCreateSubModal(true)}>
-          <Plus className="w-4 h-4 mr-2" /> Add subscriptions
+        <Button variant='default' onClick={() => setOpenCreateSubModal(true)}>
+          <Plus className='mr-2 size-4' /> Add subscriptions
         </Button>
       </div>
       <Separator />
       {error ? (
-        <p className="pt-2 text-center">
-          There was an error retrieving the subscriptions. Please try again
-          later
+        <p className='pt-2 text-center'>
+          There was an error retrieving the subscriptions. Please try again later
         </p>
       ) : isLoading ? (
-        <div className="flex items-center justify-center pt-10">
+        <div className='flex items-center justify-center pt-10'>
           <LoadingSpinner size={140} />
         </div>
       ) : !userData || userData?.length === 0 ? (
-        <div className="flex items-end justify-center pt-2 gap-x-2">
+        <div className='flex items-end justify-center gap-x-2 pt-2'>
           <p>Seems like you dont have any subscription. </p>
           <Button
-            className="p-0 h-[22px]"
-            variant="link"
+            className='h-[22px] p-0'
+            variant='link'
             onClick={() => setOpenCreateSubModal(true)}
           >
             Want to add some?

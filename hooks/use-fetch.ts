@@ -1,19 +1,14 @@
-"use client";
+'use client';
 
 export type FetchParams = {
   url: string;
-  method: "GET" | "POST" | "PUT" | "DELETE";
-  body?: Record<string, any>;
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  body?: Record<string, unknown>;
   extraHeaders?: Record<string, string>;
 };
 
 export const useFetch = () => {
-  const fetchPetition = async <T>({
-    url,
-    method,
-    body,
-    extraHeaders,
-  }: FetchParams) => {
+  const fetchPetition = async <T>({ url, method, body, extraHeaders }: FetchParams) => {
     const response = await fetch(url, {
       method,
       body: body ? JSON.stringify(body) : undefined,
