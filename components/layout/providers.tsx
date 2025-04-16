@@ -27,7 +27,7 @@ export default function Providers({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const landingPageForcedTheme = pathname === '/landing' ? 'dark' : undefined;
+  const landingPageForcedTheme = pathname === '/' ? 'dark' : undefined;
 
   return (
     <ThemeProvider

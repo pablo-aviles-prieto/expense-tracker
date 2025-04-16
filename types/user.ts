@@ -1,5 +1,6 @@
-import { IUser } from "@/models";
-import { Categories } from "./categories";
+import { IUser } from '@/models';
+import { Subscription } from '@/types/subscriptions';
+import { Categories } from './categories';
 
 export interface ResponseUser {
   ok: boolean;
@@ -20,7 +21,9 @@ export interface User {
   image: string;
   signupDate: string;
   updatedAt: string;
-  categories: Categories;
+  subscriptions: Subscription[];
+  categories: Categories[];
+  dateFormat: string;
   transactionsDate?: {
     from: string; // Date in format yyyy-MM-dd
     to: string; // Date in format yyyy-MM-dd

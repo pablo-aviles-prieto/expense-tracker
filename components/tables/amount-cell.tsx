@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import { useCurrency } from "@/hooks/use-currency";
-import { formatAmount } from "@/utils/format-amount";
-import { parseAmount } from "@/utils/parse-amount";
+import { useCurrency } from '@/hooks/use-currency';
+import { cn } from '@/lib/utils';
+import { formatAmount } from '@/utils/format-amount';
+import { parseAmount } from '@/utils/parse-amount';
 
 type AmountCellProps = {
   amount: string;
@@ -13,7 +14,7 @@ export const AmountCell = ({ amount, textLeft = false }: AmountCellProps) => {
   const { currency } = useCurrency();
   const parsedAmount = parseAmount(String(amount));
   return (
-    <p className={`pr-1 ${textLeft ? "text-left" : "text-right"} min-w-[95px]`}>
+    <p className={cn('min-w-[60px] pr-1', textLeft ? 'text-left' : 'text-right')}>
       {formatAmount(parsedAmount)} {currency}
     </p>
   );

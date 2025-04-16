@@ -1,5 +1,6 @@
-import { Schema, model, Document, ObjectId, Model } from "mongoose";
-import { modelExists } from "../../utils/check-model-exists"; // imported like this to make the seeder work
+import { Document, model, Model, ObjectId, Schema } from 'mongoose';
+
+import { modelExists } from '../../utils/check-model-exists'; // imported like this to make the seeder work
 
 export interface ITransaction extends Document {
   _id: ObjectId;
@@ -16,20 +17,20 @@ export interface ITransaction extends Document {
 const TransactionSchema: Schema = new Schema(
   {
     amount: { type: Number, required: true },
-    categories: [{ type: Schema.Types.ObjectId, ref: "categories" }],
+    categories: [{ type: Schema.Types.ObjectId, ref: 'categories' }],
     date: { type: String, required: true },
     name: { type: String, required: true },
-    userId: { type: Schema.Types.ObjectId, ref: "users" },
+    userId: { type: Schema.Types.ObjectId, ref: 'users' },
     notes: String,
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-TransactionSchema.set("toJSON", {
+TransactionSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
-  transform: (doc: Document, ret: Record<string, any>) => {
-    if ("_id" in doc) {
+  transform: (doc: Document, ret: Record<string, unknown>) => {
+    if ('_id' in doc) {
       delete ret._id;
     }
   },
@@ -37,10 +38,10 @@ TransactionSchema.set("toJSON", {
 
 let TransactionModel: Model<ITransaction>;
 
-if (modelExists("transactions")) {
-  TransactionModel = model<ITransaction>("transactions");
+if (modelExists('transactions')) {
+  TransactionModel = model<ITransaction>('transactions');
 } else {
-  TransactionModel = model<ITransaction>("transactions", TransactionSchema);
+  TransactionModel = model<ITransaction>('transactions', TransactionSchema);
 }
 
 export default TransactionModel;

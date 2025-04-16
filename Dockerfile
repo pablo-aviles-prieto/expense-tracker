@@ -1,4 +1,6 @@
-FROM node:18-alpine as BUILD_IMAGE
+FROM node:18-alpine AS build_image
+
+ENV TZ='Europe/Madrid'
 
 # Define build-time environment variables
 ARG MONGODB_URI
@@ -21,8 +23,8 @@ FROM node:18-alpine
 WORKDIR /app
 
 # copy from build image
-COPY --from=BUILD_IMAGE /app .
+COPY --from=build_image /app .
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:cron"]
