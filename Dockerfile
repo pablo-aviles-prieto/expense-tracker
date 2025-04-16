@@ -1,5 +1,7 @@
 FROM node:18-alpine AS build_image
 
+ENV TZ='Europe/Madrid'
+
 # Define build-time environment variables
 ARG MONGODB_URI
 
