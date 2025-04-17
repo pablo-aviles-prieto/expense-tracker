@@ -60,6 +60,7 @@
     "dotenv": "^16.4.2",
     "filepond": "^4.30.6",
     "framer-motion": "^11.13.1",
+    "lenis": "^1.2.3",
     "lucide-react": "^0.291.0",
     "mongodb": "^6.3.0",
     "mongoose": "^8.8.3",

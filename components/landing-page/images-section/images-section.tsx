@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable tailwindcss/no-custom-classname */
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -6,6 +8,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
+import { LenisProvider } from '@/contexts/lenis-scroll-provider';
 import { DashboardInfo } from './dashboard-info';
 import { SubscriptionsInfo } from './subscriptions-info';
 import { TransactionsInfo } from './transactions-info';
@@ -183,39 +186,48 @@ export const ImagesSection = () => {
   );
 
   return (
-    <div
-      ref={containerRef}
-      className='relative mx-auto flex h-screen max-w-xs items-center justify-center gap-x-4'
+    <LenisProvider
+      options={{
+        virtualScroll: e => {
+          e.deltaY /= 2;
+          return true;
+        },
+      }}
     >
-      <div className='images-wrapper flex items-center justify-center gap-x-4'>
+      <div
+        ref={containerRef}
+        className='relative mx-auto flex h-screen max-w-xs items-center justify-center gap-x-4'
+      >
+        <div className='images-wrapper flex items-center justify-center gap-x-4'>
+          <img
+            className='left-image-subscriptions h-[565px] w-[281px] rounded-lg'
+            src='/images/landing/subscriptions-image.png'
+            alt='Subscriptions image'
+          />
+          <img
+            className='center-image-transactions h-[565px] w-[281px] rounded-lg'
+            src='/images/landing/transactions-image.png'
+            alt='Transactions image'
+          />
+          <img
+            className='right-image-dashboard h-[565px] w-[281px] rounded-lg'
+            src='/images/landing/dashboard-image.png'
+            alt='Dasboard image'
+          />
+        </div>
+
+        {/* iPhone mockup */}
         <img
-          className='left-image-subscriptions h-[565px] w-[281px] rounded-lg'
-          src='/images/landing/subscriptions-image.png'
-          alt='Subscriptions image'
+          alt='iphone15 mockup'
+          src='/images/landing/iphone15-mockup.webp'
+          className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2'
+          style={{ height: IPHONE_MOCKUP_HEIGHT }}
         />
-        <img
-          className='center-image-transactions h-[565px] w-[281px] rounded-lg'
-          src='/images/landing/transactions-image.png'
-          alt='Transactions image'
-        />
-        <img
-          className='right-image-dashboard h-[565px] w-[281px] rounded-lg'
-          src='/images/landing/dashboard-image.png'
-          alt='Dasboard image'
-        />
+
+        <DashboardInfo hasEnoughHeight={hasEnoughHeight} />
+        <TransactionsInfo hasEnoughHeight={hasEnoughHeight} />
+        <SubscriptionsInfo hasEnoughHeight={hasEnoughHeight} />
       </div>
-
-      {/* iPhone mockup */}
-      <img
-        alt='iphone15 mockup'
-        src='/images/landing/iphone15-mockup.webp'
-        className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2'
-        style={{ height: IPHONE_MOCKUP_HEIGHT }}
-      />
-
-      <DashboardInfo hasEnoughHeight={hasEnoughHeight} />
-      <TransactionsInfo hasEnoughHeight={hasEnoughHeight} />
-      <SubscriptionsInfo hasEnoughHeight={hasEnoughHeight} />
-    </div>
+    </LenisProvider>
   );
 };
