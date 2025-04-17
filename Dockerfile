@@ -1,7 +1,5 @@
 FROM node:18-alpine AS build_image
 
-ENV TZ='Europe/Madrid'
-
 # Define build-time environment variables
 ARG MONGODB_URI
 
@@ -19,7 +17,11 @@ RUN npm run build
 # remove dev dependencies
 RUN npm prune --production
 
+# --- FINAL IMAGE STAGE ---
 FROM node:18-alpine
+
+ENV TZ=Europe/Madrid
+
 WORKDIR /app
 
 # copy from build image
