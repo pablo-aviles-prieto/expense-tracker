@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/no-custom-classname */
 import { Metadata } from 'next';
 import { getServerSession, type NextAuthOptions } from 'next-auth';
 import { redirect } from 'next/navigation';
