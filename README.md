@@ -22,7 +22,7 @@ Expense Tracker leverages a modern technology stack to deliver a seamless and ef
 
 ## 🌐 Live Demo
 
-To see Expense Tracker in action, visit [www.expense-tracker.pabloaviles.es](https://www.expense-tracker.pabloaviles.es).
+To see Expense Tracker in action, visit [www.expense-tracker.pabloaviles.dev](https://www.expense-tracker.pabloaviles.dev).
 
 ## ⭐ Features
 
@@ -38,4 +38,4 @@ Dive into the code, explore the features, and feel free to contribute or provide
 
 Happy Tracking!
 
-[Pablo Avilés](https://www.pabloaviles.es/)
+[Pablo Avilés](https://www.pabloaviles.dev/)
