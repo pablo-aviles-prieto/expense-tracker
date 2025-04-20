@@ -29,18 +29,18 @@ export const metadata: Metadata = {
     'expense tracking',
     'subscription management',
   ],
-  authors: [{ name: 'Pablo Avilés Prieto', url: 'https://www.pabloaviles.es' }],
+  authors: [{ name: 'Pablo Avilés Prieto', url: 'https://www.pabloaviles.dev' }],
   applicationName: 'Expense Tracker',
   icons: [{ rel: 'icon', url: '/images/favicon.ico' }],
   openGraph: {
     type: 'website',
-    url: 'https://www.expense-tracker.pabloaviles.es',
+    url: 'https://www.expense-tracker.pabloaviles.dev',
     title: 'Manage Your Finances with Ease | Expense Tracker',
     description:
       'Track your incomes and expenses, manage subscriptions, and get insights into your financial habits with Expense Tracker. Start simplifying your financial management today.',
     images: [
       {
-        url: 'https://www.expense-tracker.pabloaviles.es/images/social-networks-preview.png',
+        url: 'https://www.expense-tracker.pabloaviles.dev/images/social-networks-preview.png',
       },
     ],
     siteName: 'Expense Tracker',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title: 'Manage Your Finances with Ease | Expense Tracker',
     description:
       'Track your incomes and expenses, manage subscriptions, and get insights into your financial habits with Expense Tracker. Start simplifying your financial management today.',
-    images: 'https://www.expense-tracker.pabloaviles.es/images/social-networks-preview.png',
+    images: 'https://www.expense-tracker.pabloaviles.dev/images/social-networks-preview.png',
   },
 };
 
