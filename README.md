@@ -18,7 +18,7 @@ Expense Tracker leverages a modern technology stack to deliver a seamless and ef
 - Forms - [React Hook Form](https://ui.shadcn.com/docs/components/form)
 - Linting - [ESLint](https://eslint.org)
 - Formatting - [Prettier](https://prettier.io)
-- Email API - [Sendgrid](https://sendgrid.com/)
+- Email API - [Resend](https://resend.com/)
 
 ## 🌐 Live Demo
 
@@ -30,7 +30,7 @@ To see Expense Tracker in action, visit [www.expense-tracker.pabloaviles.dev](ht
 - **Transaction Management**: Easily upload CSV files or input transactions manually to keep track of your financial activities.
 - **Subscription Tracking**: Monitor both active and inactive subscriptions in one place.
 - **Responsive Design**: Enjoy a consistent and smooth experience across all your devices.
-- **Secure Authentication**: Utilizes Next-Auth for robust security, allowing users to log in via Google or with an email/password combination. Emails are verified through SendGrid, ensuring users have rightful access to the email provided.
+- **Secure Authentication**: Utilizes Next-Auth for robust security, allowing users to log in via Google or with an email/password combination. Emails are verified through Resend, ensuring users have rightful access to the email provided.
 
 Dive into the code, explore the features, and feel free to contribute or provide feedback!
 
