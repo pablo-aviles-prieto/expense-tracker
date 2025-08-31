@@ -1,12 +1,13 @@
 /* eslint-disable no-case-declarations */
-import sgMail from '@sendgrid/mail';
 import cronParser from 'cron-parser';
 import { addDays, format, isSameDay } from 'date-fns';
 import cron, { ScheduledTask } from 'node-cron';
 import { z } from 'zod';
 
 import connectDb from '@/lib/mongoose-config';
+import { ContantMailPayload, resend } from '@/lib/resend';
 import UserModel, { IUser } from '@/models/user/user-model';
+import { renderSubscriptionMailHtml } from '@/services/mail-templates/subscription-mail-html';
 import { BillingPeriod, Subscription } from '@/types';
 import { getNextBillingDate } from '@/utils/get-next-billing-date';
 
@@ -24,25 +25,12 @@ const notificationDataSchema = z.object({
   subscriptionAmount: z.string().min(1),
 });
 
-type NotificationData = z.infer<typeof notificationDataSchema>;
+export type NotificationData = z.infer<typeof notificationDataSchema>;
 
 class SubscriptionNotificationJob {
   private schedules = {
     midnight: '00 00 * * *',
   };
-  private sendgridApiKey: string;
-  private senderMailAcc: string;
-  private sendgridNotificationMailTemplateId: string;
-
-  constructor(
-    sendgridApiKey: string,
-    senderMailAcc: string,
-    sendgridNotificationMailTemplateId: string
-  ) {
-    this.sendgridApiKey = sendgridApiKey;
-    this.senderMailAcc = senderMailAcc;
-    this.sendgridNotificationMailTemplateId = sendgridNotificationMailTemplateId;
-  }
 
   private jobs: Map<string, { task: ScheduledTask; schedule: string }> = new Map();
 
@@ -193,8 +181,6 @@ class SubscriptionNotificationJob {
     currency: string,
     subscriptionsDetails: SubscriptionDetails
   ): Promise<void> {
-    sgMail.setApiKey(this.sendgridApiKey);
-
     const baseUrl =
       process.env.NODE_ENV === 'production'
         ? process.env.APP_BASE_URL_PROD
@@ -207,15 +193,13 @@ class SubscriptionNotificationJob {
       subscriptionUrlPage: `${baseUrl}/dashboard/subscriptions`,
     };
 
-    const emailData: sgMail.MailDataRequired = {
+    const emailData: ContantMailPayload = {
       to: email,
-      from: this.senderMailAcc,
       subject: `Upcoming Subscription Billing Notification`,
-      templateId: this.sendgridNotificationMailTemplateId,
-      dynamicTemplateData: dynamicData,
+      html: renderSubscriptionMailHtml(dynamicData),
     };
 
-    await sgMail.send(emailData);
+    await resend.sendMail(emailData);
   }
 
   public async startAllJobs(): Promise<void> {
@@ -243,9 +227,5 @@ class SubscriptionNotificationJob {
   }
 }
 
-const subscriptionNotificationSingleton = new SubscriptionNotificationJob(
-  process.env.SENDGRID_API_KEY ?? '',
-  process.env.SENDER_MAIL_ACC ?? '',
-  process.env.SENDGRID_SUBSCRIPTION_MAIL_TEMPLATE_ID ?? ''
-);
+const subscriptionNotificationSingleton = new SubscriptionNotificationJob();
 export default subscriptionNotificationSingleton;
