@@ -211,7 +211,7 @@ body {font-family: 'Chivo', sans-serif;}
           <td style="padding:0px;margin:0px;border-spacing:0;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="8c54c8a5-caee-4b33-b6b0-e8aaed51c545" data-mc-module-version="2019-10-22">
     <tbody>
       <tr>
-        <td style="padding:0px 10px 0px 10px; line-height:25px; text-align:inherit;" height="100%" valign="top" bgcolor="" role="module-content"><div><div style="font-family: inherit; text-align: center"><span style="color: #79a6ff; font-size: 20px">Your <strong>${subscriptionName}</strong> subscription <strong>(${subscriptionAmount}ƒ{})</strong> is about to be due on <strong>${nextBillingDate}</strong>.</span></div><div></div></div></td>
+        <td style="padding:0px 10px 0px 10px; line-height:25px; text-align:inherit;" height="100%" valign="top" bgcolor="" role="module-content"><div><div style="font-family: inherit; text-align: center"><span style="color: #79a6ff; font-size: 20px">Your <strong>${subscriptionName}</strong> subscription <strong>(${subscriptionAmount})</strong> is about to be due on <strong>${nextBillingDate}</strong>.</span></div><div></div></div></td>
       </tr>
       <tr>
     </tbody>
