@@ -2,6 +2,10 @@ FROM node:18-alpine AS build_image
 
 # Define build-time environment variables
 ARG MONGODB_URI
+ARG RESEND_API_KEY=re_1234567890dummy
+
+# set ENV for build
+ENV RESEND_API_KEY=${RESEND_API_KEY}
 
 WORKDIR /app
 
