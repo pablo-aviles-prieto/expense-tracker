@@ -16,11 +16,8 @@ class ResendClient {
   private senderMail: string;
 
   constructor() {
-    const apiKey = process.env.RESEND_API_KEY;
-    const senderMail = process.env.SENDER_MAIL;
-    if (!apiKey || !senderMail) {
-      throw new Error('RESEND_API_KEY or SENDER_MAIL is not defined');
-    }
+    const apiKey = process.env.RESEND_API_KEY ?? '';
+    const senderMail = process.env.SENDER_MAIL ?? '';
     this.client = new Resend(apiKey);
     this.senderMail = senderMail;
   }
