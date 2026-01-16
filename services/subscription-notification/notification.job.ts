@@ -195,7 +195,7 @@ class SubscriptionNotificationJob {
 
     const emailData: ContantMailPayload = {
       to: email,
-      subject: `Upcoming Subscription Billing Notification`,
+      subject: `Reminder: Your Subscription Payment is Coming Up`,
       html: renderSubscriptionMailHtml(dynamicData),
     };
 
