@@ -29,7 +29,7 @@ export type NotificationData = z.infer<typeof notificationDataSchema>;
 
 class SubscriptionNotificationJob {
   private schedules = {
-    midnight: '42 01 * * *',
+    midnight: '00 00 * * *',
   };
 
   private jobs: Map<string, { task: ScheduledTask; schedule: string }> = new Map();
