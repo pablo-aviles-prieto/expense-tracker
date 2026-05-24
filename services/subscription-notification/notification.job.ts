@@ -29,7 +29,7 @@ export type NotificationData = z.infer<typeof notificationDataSchema>;
 
 class SubscriptionNotificationJob {
   private schedules = {
-    midnight: '28 01 * * *',
+    midnight: '42 01 * * *',
   };
 
   private jobs: Map<string, { task: ScheduledTask; schedule: string }> = new Map();
@@ -199,89 +199,11 @@ class SubscriptionNotificationJob {
       html: renderSubscriptionMailHtml(dynamicData),
     };
 
-    // #region agent log
-    fetch('http://127.0.0.1:7638/ingest/adc2a1c0-19d9-4b6f-ae7a-888f5620a0ee', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0f60bd' },
-      body: JSON.stringify({
-        sessionId: '0f60bd',
-        runId: 'initial',
-        hypothesisId: 'H1',
-        location: 'services/subscription-notification/notification.job.ts:215',
-        message: 'sendNotificationMail payload baseline',
-        data: {
-          toDomain: email.includes('@') ? email.split('@')[1] : null,
-          hasBaseUrl: Boolean(baseUrl),
-          nodeEnv: process.env.NODE_ENV ?? null,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
-
-    try {
-      await resend.sendMail(emailData);
-      // #region agent log
-      fetch('http://127.0.0.1:7638/ingest/adc2a1c0-19d9-4b6f-ae7a-888f5620a0ee', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0f60bd' },
-        body: JSON.stringify({
-          sessionId: '0f60bd',
-          runId: 'initial',
-          hypothesisId: 'H3',
-          location: 'services/subscription-notification/notification.job.ts:232',
-          message: 'sendNotificationMail success',
-          data: { toDomain: email.includes('@') ? email.split('@')[1] : null },
-          timestamp: Date.now(),
-        }),
-      }).catch(() => {});
-      // #endregion
-    } catch (error) {
-      // #region agent log
-      fetch('http://127.0.0.1:7638/ingest/adc2a1c0-19d9-4b6f-ae7a-888f5620a0ee', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0f60bd' },
-        body: JSON.stringify({
-          sessionId: '0f60bd',
-          runId: 'initial',
-          hypothesisId: 'H3',
-          location: 'services/subscription-notification/notification.job.ts:248',
-          message: 'sendNotificationMail failure',
-          data: {
-            errorName: error instanceof Error ? error.name : 'UnknownError',
-            errorMessage: error instanceof Error ? error.message : String(error),
-          },
-          timestamp: Date.now(),
-        }),
-      }).catch(() => {});
-      // #endregion
-      throw error;
-    }
+    await resend.sendMail(emailData);
   }
 
   public async startAllJobs(): Promise<void> {
     try {
-      // #region agent log
-      fetch('http://127.0.0.1:7638/ingest/adc2a1c0-19d9-4b6f-ae7a-888f5620a0ee', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0f60bd' },
-        body: JSON.stringify({
-          sessionId: '0f60bd',
-          runId: 'initial',
-          hypothesisId: 'H1',
-          location: 'services/subscription-notification/notification.job.ts:258',
-          message: 'startAllJobs env sanity',
-          data: {
-            nodeEnv: process.env.NODE_ENV ?? null,
-            hasResendApiKey: Boolean(process.env.RESEND_API_KEY),
-            hasSenderMail: Boolean(process.env.SENDER_MAIL),
-            hasProdBaseUrl: Boolean(process.env.APP_BASE_URL_PROD),
-          },
-          timestamp: Date.now(),
-        }),
-      }).catch(() => {});
-      // #endregion
-
       await connectDb();
       this.initializeJobs(); // Initialize jobs before starting
       this.jobs.forEach(({ task, schedule }, name) => {
