@@ -4,6 +4,26 @@ export const renderSubscriptionMailHtml = (dynamicData: NotificationData) => {
   const { subscriptionName, nextBillingDate, subscriptionAmount, subscriptionUrlPage } =
     dynamicData;
 
+  // #region agent log
+  fetch('http://127.0.0.1:7638/ingest/adc2a1c0-19d9-4b6f-ae7a-888f5620a0ee', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0f60bd' },
+    body: JSON.stringify({
+      sessionId: '0f60bd',
+      runId: 'initial',
+      hypothesisId: 'H4',
+      location: 'services/mail-templates/subscription-mail-html.ts:7',
+      message: 'renderSubscriptionMailHtml invoked',
+      data: {
+        hasName: Boolean(subscriptionName),
+        hasNextBillingDate: Boolean(nextBillingDate),
+        hasSubscriptionUrlPage: Boolean(subscriptionUrlPage),
+      },
+      timestamp: Date.now(),
+    }),
+  }).catch(() => {});
+  // #endregion
+
   return `
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html data-editor-version="2" class="sg-campaigns" xmlns="http://www.w3.org/1999/xhtml">

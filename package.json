@@ -7,7 +7,7 @@
     "dev:cron": "concurrently \"tsx ./services/subscription-notification/init-notifications.ts\" \"next dev\"",
     "build": "next build",
     "start": "next start",
-    "start:cron": "concurrently \"tsx ./services/subscription-notification/init-notifications.ts\" \"next start\"",
+    "start:cron": "concurrently \"NODE_ENV=production tsx ./services/subscription-notification/init-notifications.ts\" \"next start\"",
     "lint": "next lint",
     "prettier": "prettier . --write",
     "seed:compile": "tsc -p seed.tsconfig.json",
