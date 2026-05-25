@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 
 import Providers from '@/components/layout/providers';
 import { Toaster } from '@/components/ui/toaster';
@@ -63,6 +64,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Toaster />
           {children}
         </Providers>
+        {process.env.NODE_ENV === 'production' && (
+          <Script
+            src='https://analytics.pabloaviles.dev/script.js'
+            data-website-id='a4e835ad-4e57-4d01-bc42-8a4e63102dc6'
+            strategy='afterInteractive'
+          />
+        )}
       </body>
     </html>
   );
